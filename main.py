@@ -8,12 +8,7 @@ TICKERS = ["AAPL", "MSFT", "GOOGL", "TSLA", "META", "AMZN", "NVDA", "INTU"]
 def get_data():
     ticker_list_str = ", ".join([f"'{t}'" for t in TICKERS])
     
-    # Simple query selecting all columns to avoid missing-column errors
-    query = f"""
-    SELECT * FROM income_statement 
-    WHERE act_symbol IN ({ticker_list_str})
-    """
-    
+    query = f"SELECT * FROM income_statement WHERE act_symbol IN ({ticker_list_str})"
     cwd_dir = "earnings" if os.path.exists("earnings") else None
 
     result = subprocess.run(
@@ -22,28 +17,39 @@ def get_data():
     )
     
     stdout = result.stdout.strip()
-
     if not stdout or "[" not in stdout:
-        print("Dolt Error output:", result.stderr)
+        print("Dolt Error:", result.stderr)
         return []
 
     start = stdout.find("[")
     end = stdout.rfind("]") + 1
     records = json.loads(stdout[start:end])
 
+    if records:
+        print("=== DB KEYS FOUND IN FIRST RECORD ===")
+        print(list(records[0].keys()))
+        print("=====================================")
+
     latest_by_ticker = {}
     for r in records:
         sym = r.get("act_symbol") or r.get("symbol")
         if sym and sym not in latest_by_ticker:
-            # Map revenue and shares from whatever column names Dolt provides
-            rev = r.get("total_revenue") or r.get("revenue") or r.get("RevenueTTM") or 0.0
-            shares = r.get("weighted_average_shares_diluted") or r.get("shares_outstanding") or r.get("SharesOutstanding") or 0.0
+            # Map values dynamically using key matching
+            rev = 0.0
+            shares = 0.0
 
-            try:
-                rev = float(rev)
-                shares = float(shares)
-            except (ValueError, TypeError):
-                rev, shares = 0.0, 0.0
+            for key, val in r.items():
+                k_lower = key.lower()
+                # Find revenue column
+                if "revenue" in k_lower or "sales" in k_lower:
+                    if val is not None:
+                        try: rev = float(val)
+                        except (ValueError, TypeError): pass
+                # Find shares column
+                if "share" in k_lower or "diluted" in k_lower:
+                    if val is not None:
+                        try: shares = float(val)
+                        except (ValueError, TypeError): pass
 
             latest_by_ticker[sym] = {
                 "act_symbol": sym,
@@ -58,10 +64,9 @@ def get_data():
 
 if __name__ == "__main__":
     data = get_data()
-    print(f"Successfully generated data for {len(data)} items: {[d['symbol'] for d in data]}")
+    print(f"Sample processed item: {data[0] if data else 'None'}")
     
     if len(data) == 0:
-        print("CRITICAL: No data fetched, aborting file write.")
         sys.exit(1)
 
     with open("data.json", "w") as f:
