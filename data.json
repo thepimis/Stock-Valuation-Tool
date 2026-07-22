@@ -1,1 +1,66 @@
-[]
+[
+  {
+    "act_symbol": "AAPL",
+    "symbol": "AAPL",
+    "Name": "AAPL",
+    "RevenueTTM": 0.0,
+    "SharesOutstanding": 0.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AMZN",
+    "symbol": "AMZN",
+    "Name": "AMZN",
+    "RevenueTTM": 0.0,
+    "SharesOutstanding": 0.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "GOOGL",
+    "symbol": "GOOGL",
+    "Name": "GOOGL",
+    "RevenueTTM": 0.0,
+    "SharesOutstanding": 0.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "INTU",
+    "symbol": "INTU",
+    "Name": "INTU",
+    "RevenueTTM": 0.0,
+    "SharesOutstanding": 0.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "META",
+    "symbol": "META",
+    "Name": "META",
+    "RevenueTTM": 0.0,
+    "SharesOutstanding": 0.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "MSFT",
+    "symbol": "MSFT",
+    "Name": "MSFT",
+    "RevenueTTM": 0.0,
+    "SharesOutstanding": 0.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "NVDA",
+    "symbol": "NVDA",
+    "Name": "NVDA",
+    "RevenueTTM": 0.0,
+    "SharesOutstanding": 0.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "TSLA",
+    "symbol": "TSLA",
+    "Name": "TSLA",
+    "RevenueTTM": 0.0,
+    "SharesOutstanding": 0.0,
+    "price": 0.0
+  }
+]
