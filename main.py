@@ -1,12 +1,9 @@
 import subprocess
 import json
 
-def get_data(tickers):
-    # Create a comma-separated string of tickers for the SQL query, e.g., 'AAPL', 'MSFT'
-    ticker_list = ", ".join([f"'{t}'" for t in tickers])
-    
-    # Query using act_symbol and date
-    query = f"SELECT * FROM income_statement WHERE act_symbol IN ({ticker_list}) ORDER BY act_symbol, date DESC"
+def get_data():
+    # Query ALL stocks from the income_statement table
+    query = "SELECT * FROM income_statement"
     
     # Run the query
     result = subprocess.run(
@@ -33,10 +30,7 @@ def get_data(tickers):
     # Parse JSON
     return json.loads(stdout)
 
-# Add as many tickers as you like here
-my_stocks = ["AAPL", "MSFT", "GOOGL", "TSLA"]
-
-# Get the data and save it
-data = get_data(my_stocks)
+# Get all stock data and save it
+data = get_data()
 with open("data.json", "w") as f:
     json.dump(data, f)
