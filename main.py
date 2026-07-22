@@ -14,8 +14,24 @@ def get_data(tickers):
         capture_output=True, text=True, cwd="earnings"
     )
     
-    # Return the parsed data
-    return json.loads(result.stdout)
+    # Print diagnostic info to GitHub log if stderr is not empty
+    if result.stderr:
+        print("Dolt stderr:", result.stderr)
+
+    stdout = result.stdout.strip()
+    
+    # Check if Dolt returned valid stdout
+    if not stdout:
+        raise ValueError(f"Dolt returned empty stdout. Exit code: {result.returncode}. Stderr: {result.stderr}")
+
+    # If Dolt output contains warning/status text before the JSON array, extract the JSON portion
+    if "[" in stdout and "]" in stdout:
+        start = stdout.find("[")
+        end = stdout.rfind("]") + 1
+        stdout = stdout[start:end]
+
+    # Parse JSON
+    return json.loads(stdout)
 
 # Add as many tickers as you like here
 my_stocks = ["AAPL", "MSFT", "GOOGL", "TSLA"]
