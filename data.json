@@ -3,64 +3,64 @@
     "act_symbol": "AAPL",
     "symbol": "AAPL",
     "Name": "AAPL",
-    "RevenueTTM": 0.0,
-    "SharesOutstanding": 0.0,
+    "RevenueTTM": 170910000000.0,
+    "SharesOutstanding": 5.68,
     "price": 0.0
   },
   {
     "act_symbol": "AMZN",
     "symbol": "AMZN",
     "Name": "AMZN",
-    "RevenueTTM": 0.0,
-    "SharesOutstanding": 0.0,
+    "RevenueTTM": 61093000000.0,
+    "SharesOutstanding": -0.09,
     "price": 0.0
   },
   {
     "act_symbol": "GOOGL",
     "symbol": "GOOGL",
     "Name": "GOOGL",
-    "RevenueTTM": 0.0,
-    "SharesOutstanding": 0.0,
+    "RevenueTTM": 50175000000.0,
+    "SharesOutstanding": 16.16,
     "price": 0.0
   },
   {
     "act_symbol": "INTU",
     "symbol": "INTU",
     "Name": "INTU",
-    "RevenueTTM": 0.0,
-    "SharesOutstanding": 0.0,
+    "RevenueTTM": 4171000000.0,
+    "SharesOutstanding": 2.83,
     "price": 0.0
   },
   {
     "act_symbol": "META",
     "symbol": "META",
     "Name": "META",
-    "RevenueTTM": 0.0,
-    "SharesOutstanding": 0.0,
+    "RevenueTTM": 40653000000.0,
+    "SharesOutstanding": 5.39,
     "price": 0.0
   },
   {
     "act_symbol": "MSFT",
     "symbol": "MSFT",
     "Name": "MSFT",
-    "RevenueTTM": 0.0,
-    "SharesOutstanding": 0.0,
+    "RevenueTTM": 77849000000.0,
+    "SharesOutstanding": 2.58,
     "price": 0.0
   },
   {
     "act_symbol": "NVDA",
     "symbol": "NVDA",
     "Name": "NVDA",
-    "RevenueTTM": 0.0,
-    "SharesOutstanding": 0.0,
+    "RevenueTTM": 4280000000.0,
+    "SharesOutstanding": 0.9,
     "price": 0.0
   },
   {
     "act_symbol": "TSLA",
     "symbol": "TSLA",
     "Name": "TSLA",
-    "RevenueTTM": 0.0,
-    "SharesOutstanding": 0.0,
+    "RevenueTTM": 413000000.0,
+    "SharesOutstanding": -3.69,
     "price": 0.0
   }
 ]
