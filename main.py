@@ -22,7 +22,6 @@ def get_all_symbols():
     offset = 0
     
     while True:
-        # Paging through symbols alphabetically to bypass the 1,000-row limit per request
         symbol_query = f"""
         SELECT DISTINCT act_symbol 
         FROM income_statement 
@@ -49,7 +48,6 @@ def get_all_symbols():
             print(f"    Error fetching symbols at offset {offset}: {e}")
             break
             
-    # Remove duplicates just in case
     unique_symbols = sorted(list(set(all_symbols)))
     print(f"--> Total unique symbols found across the alphabet: {len(unique_symbols)}")
     return unique_symbols
@@ -60,22 +58,25 @@ def get_data():
         return []
 
     processed_data = []
-    batch_size = 50
+    batch_size = 40
     
     for i in range(0, len(symbols), batch_size):
         batch = symbols[i:i+batch_size]
         ticker_list_str = ", ".join([f"'{s}'" for s in batch])
         
+        # Pull income statements and join/fetch equity balance sheet data for shares
         chunk_query = f"""
-        SELECT act_symbol, date, period, sales, average_shares 
-        FROM income_statement 
-        WHERE act_symbol IN ({ticker_list_str}) 
-          AND sales IS NOT NULL 
-          AND sales > 0 
-          AND UPPER(period) NOT IN ('FY', 'ANNUAL', 'A', '12M', 'Y', 'YEAR')
-          AND UPPER(period) NOT LIKE '%YEAR%'
-          AND UPPER(period) NOT LIKE '%ANNUAL%'
-        ORDER BY act_symbol, date DESC
+        i.act_symbol, i.date, i.period, i.sales, e.common_stock_shares_outstanding 
+        FROM income_statement i
+        LEFT JOIN balance_sheet_equity e 
+          ON i.act_symbol = e.act_symbol AND i.date = e.date AND i.period = e.period
+        WHERE i.act_symbol IN ({ticker_list_str}) 
+          AND i.sales IS NOT NULL 
+          AND i.sales > 0 
+          AND UPPER(i.period) NOT IN ('FY', 'ANNUAL', 'A', '12M', 'Y', 'YEAR')
+          AND UPPER(i.period) NOT LIKE '%YEAR%'
+          AND UPPER(i.period) NOT LIKE '%ANNUAL%'
+        ORDER BY i.act_symbol, i.date DESC
         """
         
         try:
@@ -83,17 +84,17 @@ def get_data():
         except Exception:
             continue
             
-        ticker_quarters = {}
+        ticker_records = {}
         for r in rows:
             sym = r.get("act_symbol")
             if not sym:
                 continue
             sym = sym.strip().upper()
-            if sym not in ticker_quarters:
-                ticker_quarters[sym] = []
-            ticker_quarters[sym].append(r)
+            if sym not in ticker_records:
+                ticker_records[sym] = []
+            ticker_records[sym].append(r)
             
-        for sym, records in ticker_quarters.items():
+        for sym, records in ticker_records.items():
             if len(records) < 4:
                 continue
                 
@@ -103,8 +104,10 @@ def get_data():
                 raw_sales_sum = sum(float(q.get("sales") or 0.0) for q in latest_4_quarters)
                 rev_in_billions = raw_sales_sum / 1e9 if raw_sales_sum > 1e6 else raw_sales_sum
 
+                # Fetch shares outstanding from balance_sheet_equity of the most recent period
                 most_recent_q = latest_4_quarters[0]
-                shares_in_billions = float(most_recent_q.get("average_shares") or 0.0)
+                shares_raw = float(most_recent_q.get("common_stock_shares_outstanding") or 0.0)
+                shares_in_billions = shares_raw / 1e9 if shares_raw > 1e6 else shares_raw
             except (ValueError, TypeError):
                 continue
 
