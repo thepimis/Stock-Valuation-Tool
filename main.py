@@ -1,18 +1,22 @@
 import subprocess
 import json
 
+# Add all tickers you want to support here
+TICKERS = ["AAPL", "MSFT", "GOOGL", "TSLA", "META", "AMZN", "NVDA", "INTU"]
+
 def get_data():
-    # Query income_statement and extract latest revenue & shares
-    query = """
+    ticker_list_str = ", ".join([f"'{t}'" for t in TICKERS])
+    
+    # Query income_statement for revenue, shares, and recent dates
+    query = f"""
     SELECT 
         act_symbol AS act_symbol,
         act_symbol AS symbol,
-        act_symbol AS Name,
         period_end_date AS date,
         total_revenue AS RevenueTTM,
-        weighted_average_shares_diluted AS SharesOutstanding,
-        0.0 AS price
+        weighted_average_shares_diluted AS SharesOutstanding
     FROM income_statement
+    WHERE act_symbol IN ({ticker_list_str})
     ORDER BY act_symbol, date DESC
     """
     
@@ -25,34 +29,38 @@ def get_data():
         print("Dolt stderr:", result.stderr)
 
     stdout = result.stdout.strip()
-    
-    if not stdout:
-        raise ValueError("Dolt returned empty stdout.")
+    if not stdout or "[" not in stdout:
+        print("No valid JSON output from Dolt. Output was:", stdout)
+        return []
 
-    if "[" in stdout and "]" in stdout:
-        start = stdout.find("[")
-        end = stdout.rfind("]") + 1
-        stdout = stdout[start:end]
-
-    records = json.loads(stdout)
+    start = stdout.find("[")
+    end = stdout.rfind("]") + 1
+    records = json.loads(stdout[start:end])
     
-    # Deduplicate to keep only the most recent entry for each ticker
+    # Keep only the latest statement per ticker
     latest_by_ticker = {}
     for r in records:
         sym = r.get("act_symbol")
         if sym and sym not in latest_by_ticker:
-            # Format numbers cleanly
-            rev = float(r.get("RevenueTTM") or 0)
-            shares = float(r.get("SharesOutstanding") or 0)
-            
-            r["RevenueTTM"] = rev
-            r["SharesOutstanding"] = shares
-            r["price"] = 0.0
-            
-            latest_by_ticker[sym] = r
+            try:
+                rev = float(r.get("RevenueTTM") or 0)
+                shares = float(r.get("SharesOutstanding") or 0)
+            except (ValueError, TypeError):
+                rev, shares = 0.0, 0.0
+
+            latest_by_ticker[sym] = {
+                "act_symbol": sym,
+                "symbol": sym,
+                "Name": sym,
+                "RevenueTTM": rev,
+                "SharesOutstanding": shares,
+                "price": 0.0  # Stock price can be entered in UI or fetched via API
+            }
 
     return list(latest_by_ticker.values())
 
-data = get_data()
-with open("data.json", "w") as f:
-    json.dump(data, f)
+if __name__ == "__main__":
+    data = get_data()
+    print(f"Generated data for {len(data)} stocks: {[d['act_symbol'] for d in data]}")
+    with open("data.json", "w") as f:
+        json.dump(data, f, indent=2)
