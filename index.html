@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Everything Money Stock Valuation</title>
+  
+  <!-- Browser Tab Favicon -->
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Web App Manifest Link -->
+  <link rel="manifest" href="manifest.json">
+  <!-- Android Status Bar Theme Color -->
+  <meta name="theme-color" content="#0b0d10">
+
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --card-bg: #15181e;
+      --card-inner: #1c2028;
+      --border-color: #2a303c;
+      --em-green: #73be43;
+      --em-green-hover: #83e04a;
+      --em-red: #ff4d4d;
+      --text: #ffffff;
+      --muted: #9da6b4;
+      --input-bg: #232832;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* Top Controls Bar */
+    .top-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .dropdown-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dropdown-group label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .dropdown-group select {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .reminder {
+      color: var(--em-green);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    /* Baseline Inputs Card */
+    .baseline-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .baseline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .baseline-card label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* Unit Toggle Segmented Buttons */
+    .unit-toggle {
+      display: flex;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .unit-toggle button {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .unit-toggle button.active {
+      background: var(--em-green);
+      color: #0b0d10;
+    }
+
+    .baseline-card input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text);
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .baseline-card input:focus {
+      border-color: var(--em-green);
+    }
+
+    /* Table Boxes */
+    .table-box {
+      background: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      background: var(--em-green);
+      color: #0b0d10;
+      font-size: 0.9rem;
+      padding: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sub-head th {
+      background: #5ca033;
+      color: #ffffff;
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+      vertical-align: middle;
+    }
+
+    .metric-name {
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    /* Info Tooltip Icon Styling */
+    .info-tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      margin-left: 4px;
+      color: var(--em-green);
+      font-weight: bold;
+    }
+
+    .info-tooltip .tooltip-text {
+      visibility: hidden;
+      width: 230px;
+      background-color: var(--card-inner);
+      color: var(--text);
+      text-align: left;
+      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      font-size: 0.75rem;
+      font-weight: 400;
+      line-height: 1.3;
+      text-transform: none; /* Prevents upper case in tooltip */
+
+      position: absolute;
+      z-index: 10;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .info-tooltip .tooltip-text::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: var(--card-inner) transparent transparent transparent;
+    }
+
+    .info-tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Distinct Return Row Styling */
+    .return-row-bg {
+      background-color: var(--card-inner);
+      border-top: 2px solid var(--border-color);
+    }
+
+    .return-row-bg .metric-name {
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      text-transform: none; /* No caps lock */
+      letter-spacing: normal;
+    }
+
+    /* Clean Return Value Text (No Boxes) */
+    .ret-val-text {
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    /* Dynamic Flex Layout for Entries */
+    .inputs-flex {
+      display: grid;
+      gap: 8px;
+    }
+    
+    .cols-1 { grid-template-columns: 1fr; }
+    .cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text);
+      padding: 8px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--em-green);
+    }
+
+    .input-wrapper .symbol {
+      position: absolute;
+      right: 8px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      pointer-events: none;
+    }
+
+    /* Hide Chevrons / Number Arrows globally on number inputs */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    /* Actions Row */
+    .action-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 12px;
+    }
+
+    .price-display {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+    }
+
+    .price-display span:last-child {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    /* Standout Analyze Button */
+    .analyze-btn {
+      background: linear-gradient(135deg, #73be43 0%, #51902d 100%);
+      color: #0d0f12;
+      border: 1px solid #8fe056;
+      font-weight: 800;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 14px 40px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(115, 190, 67, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .analyze-btn:hover {
+      background: linear-gradient(135deg, #83e04a 0%, #5ca033 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(115, 190, 67, 0.5);
+    }
+
+    .analyze-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Results Outputs */
+    .val-price {
+      font-weight: 800;
+      font-size: 1.05rem;
+      text-align: center;
+    }
+
+    /* Responsive Mobile Layout Adjustments */
+    @media (max-width: 650px) {
+      body { padding: 10px; }
+
+      .action-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .price-display {
+        justify-content: space-between;
+      }
+
+      .analyze-btn {
+        width: 100%;
+        text-align: center;
+        padding: 14px;
+      }
+
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead { display: none; }
+
+      .sub-head { display: none; }
+
+      tr {
+        border-bottom: 1px solid var(--border-color);
+        padding: 12px;
+      }
+
+      td {
+        border: none;
+        padding: 6px 0;
+      }
+
+      .metric-name {
+        margin-bottom: 8px;
+        color: var(--em-green);
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Top Controls -->
+  <div class="top-controls">
+    <div style="display: flex; gap: 10px;">
+      <div class="dropdown-group">
+        <label>Years of Analysis</label>
+        <select id="yearsSelect" onchange="calculateValuation()">
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+        </select>
+      </div>
+      <div class="dropdown-group">
+        <label>Number of Entries</label>
+        <select id="entriesSelect" onchange="renderDynamicLayout()">
+          <option value="1">1 (Base)</option>
+          <option value="3" selected>3 (Low, Mid, High)</option>
+          <option value="5">5 (Bear, Low, Mid, High, Bull)</option>
+        </select>
+      </div>
+    </div>
+    <div class="reminder">REMINDER: This does not factor in the balance sheet.</div>
+  </div>
+
+  <!-- Financial Baseline Inputs -->
+  <div class="baseline-card">
+    <div>
+      <div class="baseline-header">
+        <label>Current Stock Price ($)</label>
+      </div>
+      <input type="number" id="currentPrice" value="" placeholder="0.00" step="0.01" oninput="updateCurrentPriceDisplay()">
+    </div>
+
+    <div>
+      <div class="baseline-header">
+        <label id="revLabel">TTM Revenue ($B)</label>
+        <div class="unit-toggle">
+          <button id="revUnitM" onclick="setRevUnit('M')">M</button>
+          <button id="revUnitB" class="active" onclick="setRevUnit('B')">B</button>
+        </div>
+      </div>
+      <input type="number" id="ttmRevenue" value="" placeholder="0.00" step="0.01">
+    </div>
+
+    <div>
+      <div class="baseline-header">
+        <label id="sharesLabel">Shares Outstanding (B)</label>
+        <div class="unit-toggle">
+          <button id="sharesUnitM" onclick="setSharesUnit('M')">M</button>
+          <button id="sharesUnitB" class="active" onclick="setSharesUnit('B')">B</button>
+        </div>
+      </div>
+      <input type="number" id="sharesOut" value="" placeholder="0.00" step="0.001">
+    </div>
+  </div>
+
+  <!-- Assumptions Table -->
+  <div class="table-box">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 35%; text-align: left; padding-left: 16px;">Metric</th>
+          <th style="width: 65%;">My Assumptions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="sub-head">
+          <th style="text-align: left; padding-left: 16px;">Financial Drivers</th>
+          <th id="assumptionsHeader">Low &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mid &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; High</th>
+        </tr>
+
+        <tr>
+          <td class="metric-name">Rev. Growth %</td>
+          <td><div class="inputs-flex cols-3" id="row_g"></div></td>
+        </tr>
+
+        <tr>
+          <td class="metric-name">Profit Margin</td>
+          <td><div class="inputs-flex cols-3" id="row_pm"></div></td>
+        </tr>
+
+        <tr>
+          <td class="metric-name">Free Cash Flow Margin</td>
+          <td><div class="inputs-flex cols-3" id="row_fcfm"></div></td>
+        </tr>
+
+        <tr>
+          <td class="metric-name">P/E Multiple</td>
+          <td><div class="inputs-flex cols-3" id="row_pe"></div></td>
+        </tr>
+
+        <tr>
+          <td class="metric-name">P/FCF Multiple</td>
+          <td><div class="inputs-flex cols-3" id="row_pfcf"></div></td>
+        </tr>
+
+        <tr>
+          <td class="metric-name">Desired Annual Return</td>
+          <td><div class="inputs-flex cols-3" id="row_r"></div></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Action Row -->
+  <div class="action-row">
+    <div class="price-display">
+      <span>Current Price</span>
+      <span id="currentPriceDisplay">$0.00</span>
+    </div>
+    <button class="analyze-btn" onclick="calculateValuation()">Analyze</button>
+  </div>
+
+  <!-- Results Table -->
+  <div class="table-box">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 35%; text-align: left; padding-left: 16px;">Valuation Results</th>
+          <th style="width: 65%;">Calculated Fair Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="sub-head">
+          <th style="text-align: left; padding-left: 16px;">Method</th>
+          <th id="resultsHeader">Low &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mid &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; High</th>
+        </tr>
+
+        <tr>
+          <td class="metric-name">Multiple of Earnings Value</td>
+          <td><div class="inputs-flex cols-3" id="row_val_moe"></div></td>
+        </tr>
+
+        <tr>
+          <td class="metric-name">Discounted Cash Flow Value</td>
+          <td><div class="inputs-flex cols-3" id="row_val_dcf"></div></td>
+        </tr>
+
+        <tr class="return-row-bg">
+          <td class="metric-name">
+            Current Price Return 
+            <span class="info-tooltip">ⓘ
+              <span class="tooltip-text">
+                The estimated compound annual return (IRR) you would achieve if you buy the stock at today's market price and hold it through the analysis period.
+              </span>
+            </span>
+          </td>
+          <td><div class="inputs-flex cols-3" id="row_val_ret"></div></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  let revUnit = 'B';
+  let sharesUnit = 'B';
+
+  // Live Update Price Display without running full valuation math
+  function updateCurrentPriceDisplay() {
+    const rawPrice = document.getElementById('currentPrice').value;
+    const price = parseFloat(rawPrice);
+    document.getElementById('currentPriceDisplay').innerText = !isNaN(price) ? `$${price.toFixed(2)}` : '$0.00';
+  }
+
+  function setRevUnit(unit) {
+    revUnit = unit;
+    document.getElementById('revUnitM').classList.toggle('active', unit === 'M');
+    document.getElementById('revUnitB').classList.toggle('active', unit === 'B');
+    document.getElementById('revLabel').innerText = `TTM Revenue ($${unit})`;
+  }
+
+  function setSharesUnit(unit) {
+    sharesUnit = unit;
+    document.getElementById('sharesUnitM').classList.toggle('active', unit === 'M');
+    document.getElementById('sharesUnitB').classList.toggle('active', unit === 'B');
+    document.getElementById('sharesLabel').innerText = `Shares Outstanding (${unit})`;
+  }
+
+  // Scenario Configs
+  const scenariosMap = {
+    1: ['mid'],
+    3: ['low', 'mid', 'high'],
+    5: ['bear', 'low', 'mid', 'high', 'bull']
+  };
+
+  const headerTextMap = {
+    1: 'Mid / Base',
+    3: 'Low &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mid &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; High',
+    5: 'Bear &nbsp;&nbsp;&nbsp;&nbsp; Low &nbsp;&nbsp;&nbsp;&nbsp; Mid &nbsp;&nbsp;&nbsp;&nbsp; High &nbsp;&nbsp;&nbsp;&nbsp; Bull'
+  };
+
+  // Build Layout Dynamically on Load or Change
+  function renderDynamicLayout() {
+    const numEntries = parseInt(document.getElementById('entriesSelect').value);
+    const cases = scenariosMap[numEntries];
+
+    // Update Sub Headers
+    document.getElementById('assumptionsHeader').innerHTML = headerTextMap[numEntries];
+    document.getElementById('resultsHeader').innerHTML = headerTextMap[numEntries];
+
+    // Input Metrics Definition
+    const metrics = [
+      { id: 'g', hasSymbol: true },
+      { id: 'pm', hasSymbol: true },
+      { id: 'fcfm', hasSymbol: true },
+      { id: 'pe', hasSymbol: false },
+      { id: 'pfcf', hasSymbol: false },
+      { id: 'r', hasSymbol: true }
+    ];
+
+    // Render Input Fields
+    metrics.forEach(m => {
+      const rowContainer = document.getElementById(`row_${m.id}`);
+      rowContainer.className = `inputs-flex cols-${numEntries}`;
+      let html = '';
+      cases.forEach(c => {
+        const symbolHTML = m.hasSymbol ? '<span class="symbol">%</span>' : '';
+        html += `
+          <div class="input-wrapper">
+            <input type="number" id="${m.id}_${c}" value="" placeholder="0">
+            ${symbolHTML}
+          </div>`;
+      });
+      rowContainer.innerHTML = html;
+    });
+
+    // Render Result Containers
+    const results = ['moe', 'dcf', 'ret'];
+    results.forEach(res => {
+      const rowContainer = document.getElementById(`row_val_${res}`);
+      rowContainer.className = `inputs-flex cols-${numEntries}`;
+      let html = '';
+      cases.forEach(c => {
+        if (res === 'ret') {
+          html += `<div class="ret-val-text" id="ret_${c}">0.00%</div>`;
+        } else {
+          html += `<div class="val-price" id="${res}_${c}">$0.00</div>`;
+        }
+      });
+      rowContainer.innerHTML = html;
+    });
+
+    calculateValuation();
+  }
+
+  // Main Valuation Calculation
+  function calculateValuation() {
+    const rawPrice = document.getElementById('currentPrice').value;
+    const price = parseFloat(rawPrice) || 0;
+    
+    const rawRev = parseFloat(document.getElementById('ttmRevenue').value) || 0;
+    const rawShares = parseFloat(document.getElementById('sharesOut').value) || 0;
+    const years = parseInt(document.getElementById('yearsSelect').value) || 10;
+
+    // Standardize Revenue & Shares to absolute figures based on M/B unit toggles
+    const totalRev = rawRev * (revUnit === 'B' ? 1e9 : 1e6);
+    const totalShares = rawShares * (sharesUnit === 'B' ? 1e9 : 1e6);
+
+    updateCurrentPriceDisplay();
+
+    const numEntries = parseInt(document.getElementById('entriesSelect').value);
+    const cases = scenariosMap[numEntries];
+
+    cases.forEach(c => {
+      const gInput = document.getElementById(`g_${c}`)?.value;
+      const pmInput = document.getElementById(`pm_${c}`)?.value;
+      const fcfmInput = document.getElementById(`fcfm_${c}`)?.value;
+      const peInput = document.getElementById(`pe_${c}`)?.value;
+      const pfcfInput = document.getElementById(`pfcf_${c}`)?.value;
+      const rInput = document.getElementById(`r_${c}`)?.value;
+
+      if (!totalRev || !totalShares || !rawPrice) {
+        resetOutputCell(`moe_${c}`);
+        resetOutputCell(`dcf_${c}`);
+        resetRetCell(`ret_${c}`);
+        return;
+      }
+
+      const revPerShare = totalRev / totalShares;
+      const g = (parseFloat(gInput) || 0) / 100;
+      const pm = (parseFloat(pmInput) || 0) / 100;
+      const fcfm = (parseFloat(fcfmInput) || 0) / 100;
+      const pe = parseFloat(peInput) || 0;
+      const pfcf = parseFloat(pfcfInput) || 0;
+      const r = (parseFloat(rInput) || 0) / 100;
+
+      let pvEarningsCashFlows = 0;
+      let pvFreeCashFlows = 0;
+      let currentRev = revPerShare;
+
+      // Discounted Cash Flow Accumulation over Selected Years
+      for (let yr = 1; yr <= years; yr++) {
+        currentRev *= (1 + g);
+        
+        const annualEPS = currentRev * pm;
+        pvEarningsCashFlows += annualEPS / Math.pow(1 + r, yr);
+
+        const annualFCFPS = currentRev * fcfm;
+        pvFreeCashFlows += annualFCFPS / Math.pow(1 + r, yr);
+      }
+
+      // Terminal Stock Price calculation at Target Year
+      const yearN_EPS = currentRev * pm;
+      const terminalPriceMOE = yearN_EPS * pe;
+      const pvTerminalMOE = terminalPriceMOE / Math.pow(1 + r, years);
+
+      const yearN_FCFPS = currentRev * fcfm;
+      const terminalPriceDCF = yearN_FCFPS * pfcf;
+      const pvTerminalDCF = terminalPriceDCF / Math.pow(1 + r, years);
+
+      const pvMOE = peInput && pmInput ? (pvEarningsCashFlows + pvTerminalMOE) : 0;
+      const pvDCF = pfcfInput && fcfmInput ? (pvFreeCashFlows + pvTerminalDCF) : 0;
+
+      // Internal Rate of Return (IRR) Solver for Current Price Return
+      const targetTerminalValue = terminalPriceDCF;
+      let calculatedReturn = 0;
+
+      if (price > 0 && (fcfmInput || pmInput)) {
+        let rate = 0.10; // Initial guess 10%
+        for (let iter = 0; iter < 25; iter++) {
+          let npv = -price;
+          let derivative = 0;
+          let revIter = revPerShare;
+
+          for (let yr = 1; yr <= years; yr++) {
+            revIter *= (1 + g);
+            const cf = revIter * fcfm;
+            npv += cf / Math.pow(1 + rate, yr);
+            derivative -= (yr * cf) / Math.pow(1 + rate, yr + 1);
+          }
+
+          npv += targetTerminalValue / Math.pow(1 + rate, years);
+          derivative -= (years * targetTerminalValue) / Math.pow(1 + rate, years + 1);
+
+          if (Math.abs(npv) < 0.0001) break;
+          rate = rate - (npv / derivative);
+        }
+        calculatedReturn = rate * 100;
+      }
+
+      renderPriceCell(`moe_${c}`, pvMOE, price, peInput && pmInput);
+      renderPriceCell(`dcf_${c}`, pvDCF, price, pfcfInput && fcfmInput);
+      
+      const retElem = document.getElementById(`ret_${c}`);
+      if (retElem) {
+        if (pfcfInput && fcfmInput) {
+          retElem.innerText = `${calculatedReturn.toFixed(2)}%`;
+          
+          // Color logic: Red if negative, Green if >= Desired Return, White otherwise
+          if (calculatedReturn < 0) {
+            retElem.style.color = 'var(--em-red)';
+          } else if (calculatedReturn >= (r * 100)) {
+            retElem.style.color = 'var(--em-green)';
+          } else {
+            retElem.style.color = 'var(--text)';
+          }
+        } else {
+          resetRetCell(`ret_${c}`);
+        }
+      }
+    });
+  }
+
+  function renderPriceCell(elemId, calculatedValue, currentPrice, hasInput) {
+    const elem = document.getElementById(elemId);
+    if (!elem) return;
+
+    if (!hasInput) {
+      resetOutputCell(elemId);
+      return;
+    }
+    elem.innerText = `$${calculatedValue.toFixed(2)}`;
+
+    if (calculatedValue < currentPrice) {
+      elem.style.color = 'var(--em-red)';
+    } else {
+      elem.style.color = 'var(--em-green)';
+    }
+  }
+
+  function resetOutputCell(elemId) {
+    const elem = document.getElementById(elemId);
+    if (elem) {
+      elem.innerText = '$0.00';
+      elem.style.color = 'var(--text)';
+    }
+  }
+
+  function resetRetCell(elemId) {
+    const elem = document.getElementById(elemId);
+    if (elem) {
+      elem.innerText = '0.00%';
+      elem.style.color = 'var(--text)';
+    }
+  }
+
+  // Initial setup call
+  window.onload = renderDynamicLayout;
+</script>
+
+</body>
+</html>
