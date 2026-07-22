@@ -745,7 +745,7 @@
     }
   }
 
-  // Live On-Demand SQL API Stock Data Fetcher from DoltHub
+  // Live On-Demand SQL API Stock Data Fetcher via CORS Proxy
   async function fetchStockData() {
     const tickerInput = document.getElementById('tickerInput');
     const statusElem = document.getElementById('apiStatus');
@@ -780,12 +780,11 @@
     const owner = "post-no-preference";
     const repo = "earnings";
     const branch = "master";
-    const url = `https://www.dolthub.com/api/v1alpha1/${owner}/${repo}/${branch}?q=${encodeURIComponent(query)}`;
+    const targetUrl = `https://www.dolthub.com/api/v1alpha1/${owner}/${repo}/${branch}?q=${encodeURIComponent(query)}`;
+    const url = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
 
     try {
-      const response = await fetch(url, {
-        headers: { "User-Agent": "Mozilla/5.0" }
-      });
+      const response = await fetch(url);
       
       if (!response.ok) {
         throw new Error('Network response was not ok');
