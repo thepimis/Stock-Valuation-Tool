@@ -5,8 +5,8 @@ def get_data(tickers):
     # Create a comma-separated string of tickers for the SQL query, e.g., 'AAPL', 'MSFT'
     ticker_list = ", ".join([f"'{t}'" for t in tickers])
     
-    # Query using act_symbol and period_end_date for post-no-preference/earnings DB
-    query = f"SELECT * FROM income_statement WHERE act_symbol IN ({ticker_list}) ORDER BY act_symbol, period_end_date DESC"
+    # Query using act_symbol and date
+    query = f"SELECT * FROM income_statement WHERE act_symbol IN ({ticker_list}) ORDER BY act_symbol, date DESC"
     
     # Run the query
     result = subprocess.run(
@@ -24,7 +24,7 @@ def get_data(tickers):
     if not stdout:
         raise ValueError(f"Dolt returned empty stdout. Exit code: {result.returncode}. Stderr: {result.stderr}")
 
-    # If Dolt output contains warning/status text before the JSON array, extract the JSON portion
+    # Extract JSON portion if warnings or non-JSON headers exist
     if "[" in stdout and "]" in stdout:
         start = stdout.find("[")
         end = stdout.rfind("]") + 1
