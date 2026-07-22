@@ -5,8 +5,8 @@ def get_data(tickers):
     # Create a comma-separated string of tickers for the SQL query, e.g., 'AAPL', 'MSFT'
     ticker_list = ", ".join([f"'{t}'" for t in tickers])
     
-    # Use the 'IN' operator to fetch all stocks at once
-    query = f"SELECT * FROM income_statement WHERE symbol IN ({ticker_list}) ORDER BY symbol, fiscal_date DESC"
+    # Query using act_symbol and period_end_date for post-no-preference/earnings DB
+    query = f"SELECT * FROM income_statement WHERE act_symbol IN ({ticker_list}) ORDER BY act_symbol, period_end_date DESC"
     
     # Run the query
     result = subprocess.run(
