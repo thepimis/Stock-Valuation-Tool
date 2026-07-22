@@ -27,7 +27,6 @@ def get_data():
         return []
 
     processed_data = []
-    # Use larger batches (100 symbols per request) to finish quickly before any timeouts
     batch_size = 100
     
     for i in range(0, len(symbols), batch_size):
@@ -35,13 +34,17 @@ def get_data():
         print(f"--> Processing batch {i//batch_size + 1} of {(len(symbols) + batch_size - 1)//batch_size} (Tickers: {batch[0]} to {batch[-1]})...")
         
         ticker_list_str = ", ".join([f"'{s}'" for s in batch])
+        
+        # Updated query to explicitly block 'YEAR' and 'ANNUAL' rows
         chunk_query = f"""
         SELECT act_symbol, date, period, sales, average_shares 
         FROM income_statement 
         WHERE act_symbol IN ({ticker_list_str}) 
           AND sales IS NOT NULL 
           AND sales > 0 
-          AND UPPER(period) NOT IN ('FY', 'ANNUAL', 'A', '12M', 'Y')
+          AND UPPER(period) NOT IN ('FY', 'ANNUAL', 'A', '12M', 'Y', 'YEAR')
+          AND UPPER(period) NOT LIKE '%YEAR%'
+          AND UPPER(period) NOT LIKE '%ANNUAL%'
         ORDER BY act_symbol, date DESC
         """
         
