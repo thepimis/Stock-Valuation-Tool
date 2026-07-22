@@ -17,9 +17,7 @@ def fetch_sql(query):
 
 def get_data():
     print("--> Fetching unique stock symbols from DoltHub...")
-    
-    # Step 1: Get all unique stock symbols first to avoid pagination cutoff limits
-    symbol_query = "SELECT DISTINCT act_symbol FROM income_statement WHERE sales IS NOT NULL AND sales > 0"
+    symbol_query = "SELECT DISTINCT act_symbol FROM income_statement WHERE sales IS NOT NULL AND sales > 0 ORDER BY act_symbol"
     try:
         symbol_rows = fetch_sql(symbol_query)
         symbols = [r.get("act_symbol") for r in symbol_rows if r.get("act_symbol")]
@@ -29,31 +27,30 @@ def get_data():
         return []
 
     processed_data = []
+    # Use larger batches (100 symbols per request) to finish quickly before any timeouts
+    batch_size = 100
     
-    # Step 2: Query chunked or process key symbols efficiently
-    # To prevent hitting API request limits too fast while ensuring accurate TTM, 
-    # we can batch symbols or fetch directly. Let's do batches of 50 symbols.
-    batch_size = 50
     for i in range(0, len(symbols), batch_size):
         batch = symbols[i:i+batch_size]
-        ticker_list_str = ", ".join([f"'{s}'" for s in batch])
+        print(f"--> Processing batch {i//batch_size + 1} of {(len(symbols) + batch_size - 1)//batch_size} (Tickers: {batch[0]} to {batch[-1]})...")
         
+        ticker_list_str = ", ".join([f"'{s}'" for s in batch])
         chunk_query = f"""
         SELECT act_symbol, date, period, sales, average_shares 
         FROM income_statement 
         WHERE act_symbol IN ({ticker_list_str}) 
           AND sales IS NOT NULL 
           AND sales > 0 
-          AND UPPER(period) NOT IN ('FY', 'ANNUAL', 'A', '12M')
+          AND UPPER(period) NOT IN ('FY', 'ANNUAL', 'A', '12M', 'Y')
         ORDER BY act_symbol, date DESC
         """
         
         try:
             rows = fetch_sql(chunk_query)
         except Exception as e:
+            print(f"    Warning: Failed batch {batch[0]}-{batch[-1]}: {e}")
             continue
             
-        # Group by ticker for this batch
         ticker_quarters = {}
         for r in rows:
             sym = r.get("act_symbol")
@@ -65,9 +62,10 @@ def get_data():
             ticker_quarters[sym].append(r)
             
         for sym, records in ticker_quarters.items():
-            latest_4_quarters = records[:4]
-            if not latest_4_quarters:
+            if len(records) < 4:
                 continue
+                
+            latest_4_quarters = records[:4]
 
             try:
                 raw_sales_sum = sum(float(q.get("sales") or 0.0) for q in latest_4_quarters)
@@ -76,7 +74,10 @@ def get_data():
                 most_recent_q = latest_4_quarters[0]
                 shares_in_billions = float(most_recent_q.get("average_shares") or 0.0)
             except (ValueError, TypeError):
-                rev_in_billions, shares_in_billions = 0.0, 0.0
+                continue
+
+            if rev_in_billions < 0.05: 
+                continue
 
             processed_data.append({
                 "act_symbol": sym,
@@ -91,10 +92,10 @@ def get_data():
 
 if __name__ == "__main__":
     data = get_data()
-    print(f"--> Successfully processed {len(data)} unique stock tickers with accurate TTM calculations!")
+    print(f"--> Successfully processed {len(data)} stock tickers with valid TTM calculations!")
     
     if len(data) == 0:
-        print("--> CRITICAL: API returned 0 records, aborting write to prevent overwriting data.json.")
+        print("--> CRITICAL: API returned 0 records, aborting write.")
         sys.exit(1)
 
     with open("data.json", "w") as f:
