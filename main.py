@@ -64,12 +64,17 @@ def get_data():
         batch = symbols[i:i+batch_size]
         ticker_list_str = ", ".join([f"'{s}'" for s in batch])
         
-        # Pull income statements and join/fetch equity balance sheet data for shares
+        # Corrected join using `e.shares_outstanding` as shown in the table schema
         chunk_query = f"""
-        i.act_symbol, i.date, i.period, i.sales, e.common_stock_shares_outstanding 
+        SELECT 
+            i.act_symbol, 
+            i.date, 
+            i.period, 
+            i.sales, 
+            e.shares_outstanding 
         FROM income_statement i
         LEFT JOIN balance_sheet_equity e 
-          ON i.act_symbol = e.act_symbol AND i.date = e.date AND i.period = e.period
+            ON i.act_symbol = e.act_symbol AND i.date = e.date AND i.period = e.period
         WHERE i.act_symbol IN ({ticker_list_str}) 
           AND i.sales IS NOT NULL 
           AND i.sales > 0 
@@ -101,12 +106,13 @@ def get_data():
             latest_4_quarters = records[:4]
 
             try:
+                # Sum the exact 4 most recent quarters for true TTM Revenue
                 raw_sales_sum = sum(float(q.get("sales") or 0.0) for q in latest_4_quarters)
                 rev_in_billions = raw_sales_sum / 1e9 if raw_sales_sum > 1e6 else raw_sales_sum
 
-                # Fetch shares outstanding from balance_sheet_equity of the most recent period
+                # Get shares outstanding from the correct balance_sheet_equity column
                 most_recent_q = latest_4_quarters[0]
-                shares_raw = float(most_recent_q.get("common_stock_shares_outstanding") or 0.0)
+                shares_raw = float(most_recent_q.get("shares_outstanding") or 0.0)
                 shares_in_billions = shares_raw / 1e9 if shares_raw > 1e6 else shares_raw
             except (ValueError, TypeError):
                 continue
