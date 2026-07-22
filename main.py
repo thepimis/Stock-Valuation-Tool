@@ -15,27 +15,57 @@ def fetch_sql(query):
         res_data = json.loads(response.read().decode())
         return res_data.get("rows", [])
 
+def get_all_symbols():
+    print("--> Fetching all stock symbols using alphabetical pagination...")
+    all_symbols = []
+    limit = 1000
+    offset = 0
+    
+    while True:
+        # Paging through symbols alphabetically to bypass the 1,000-row limit per request
+        symbol_query = f"""
+        SELECT DISTINCT act_symbol 
+        FROM income_statement 
+        WHERE sales IS NOT NULL AND sales > 0 
+        ORDER BY act_symbol 
+        LIMIT {limit} OFFSET {offset}
+        """
+        try:
+            rows = fetch_sql(symbol_query)
+            if not rows:
+                break
+            
+            batch_symbols = [r.get("act_symbol") for r in rows if r.get("act_symbol")]
+            if not batch_symbols:
+                break
+                
+            all_symbols.extend(batch_symbols)
+            print(f"    Fetched symbol offset {offset}: got {len(batch_symbols)} symbols...")
+            
+            if len(rows) < limit:
+                break
+            offset += limit
+        except Exception as e:
+            print(f"    Error fetching symbols at offset {offset}: {e}")
+            break
+            
+    # Remove duplicates just in case
+    unique_symbols = sorted(list(set(all_symbols)))
+    print(f"--> Total unique symbols found across the alphabet: {len(unique_symbols)}")
+    return unique_symbols
+
 def get_data():
-    print("--> Fetching unique stock symbols from DoltHub...")
-    symbol_query = "SELECT DISTINCT act_symbol FROM income_statement WHERE sales IS NOT NULL AND sales > 0 ORDER BY act_symbol"
-    try:
-        symbol_rows = fetch_sql(symbol_query)
-        symbols = [r.get("act_symbol") for r in symbol_rows if r.get("act_symbol")]
-        print(f"--> Found {len(symbols)} total symbols to process.")
-    except Exception as e:
-        print(f"--> Error fetching symbols: {e}")
+    symbols = get_all_symbols()
+    if not symbols:
         return []
 
     processed_data = []
-    batch_size = 100
+    batch_size = 50
     
     for i in range(0, len(symbols), batch_size):
         batch = symbols[i:i+batch_size]
-        print(f"--> Processing batch {i//batch_size + 1} of {(len(symbols) + batch_size - 1)//batch_size} (Tickers: {batch[0]} to {batch[-1]})...")
-        
         ticker_list_str = ", ".join([f"'{s}'" for s in batch])
         
-        # Updated query to explicitly block 'YEAR' and 'ANNUAL' rows
         chunk_query = f"""
         SELECT act_symbol, date, period, sales, average_shares 
         FROM income_statement 
@@ -50,8 +80,7 @@ def get_data():
         
         try:
             rows = fetch_sql(chunk_query)
-        except Exception as e:
-            print(f"    Warning: Failed batch {batch[0]}-{batch[-1]}: {e}")
+        except Exception:
             continue
             
         ticker_quarters = {}
@@ -95,7 +124,7 @@ def get_data():
 
 if __name__ == "__main__":
     data = get_data()
-    print(f"--> Successfully processed {len(data)} stock tickers with valid TTM calculations!")
+    print(f"--> Successfully processed {len(data)} total stock tickers from A to Z!")
     
     if len(data) == 0:
         print("--> CRITICAL: API returned 0 records, aborting write.")
