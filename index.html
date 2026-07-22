@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Everything Money Stock Valuation</title>
+  <title>Stock Valuation Tool</title>
   
   <!-- Browser Tab Favicon -->
   <link rel="icon" type="image/png" href="logo.png">
@@ -32,29 +32,133 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
     }
 
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       background-color: var(--bg);
       color: var(--text);
       margin: 0;
-      padding: 16px;
+      padding: 12px;
       display: flex;
       justify-content: center;
-      min-height: 100vh;
+      align-items: flex-start;
     }
 
     .container {
       width: 100%;
       max-width: 900px;
+      margin: 0 auto;
     }
+
+    /* Header Logo & Title */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-top: 2px;
+    }
+
+    .app-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    .app-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    /* Company Header Styles */
+    .company-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 11px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .company-profile { display: flex; align-items: center; gap: 12px; }
+
+    /* Logo Container & Placeholder Styling */
+    .company-logo-container {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .company-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #ffffff;
+      padding: 3px;
+    }
+
+    .company-logo-fallback {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      user-select: none;
+    }
+
+    .company-name { 
+      font-size: 1.25rem; 
+      font-weight: 800; 
+      margin: 0 0 2px 0; 
+      color: var(--text); 
+      transition: color 0.3s ease;
+    }
+
+    .company-ticker { 
+      font-size: 0.8rem; 
+      color: var(--muted); 
+      font-weight: 900; 
+      text-transform: uppercase; 
+      transition: color 0.3s ease;
+    }
+
+    /* Bolder greyed-out state for placeholders */
+    .company-name.is-placeholder,
+    .company-ticker.is-placeholder {
+      color: var(--muted);
+      font-weight: 800;
+      opacity: 0.85;
+    }
+
+    .company-price { font-size: 1.55rem; font-weight: 800; color: var(--text); }
 
     /* Top Controls Bar */
     .top-controls {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
 
     .dropdown-group {
@@ -64,96 +168,86 @@
     }
 
     .dropdown-group label {
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-weight: 500;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      font-weight: 700;
+      letter-spacing: 0.3px;
     }
 
     .dropdown-group select {
       background: var(--card-bg);
       color: var(--text);
       border: 1px solid var(--border-color);
-      padding: 8px 12px;
+      padding: 6px 11px;
       border-radius: 6px;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      font-weight: 600;
       outline: none;
       cursor: pointer;
     }
 
-    .reminder {
-      color: var(--em-green);
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-
-    /* Baseline Inputs Card */
-    .baseline-card {
+    /* Ticker Search Section */
+    .search-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .baseline-header {
+      padding: 11px 15px;
+      margin-bottom: 12px;
       display: flex;
-      justify-content: space-between;
+      gap: 10px;
       align-items: center;
-      margin-bottom: 6px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
-    .baseline-card label {
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    /* Unit Toggle Segmented Buttons */
-    .unit-toggle {
+    .search-input-group {
       display: flex;
-      background: var(--input-bg);
-      border: 1px solid var(--border-color);
+      gap: 10px;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .search-input-group input {
+      text-transform: uppercase;
+      padding: 8px 12px;
       border-radius: 6px;
-      padding: 2px;
-    }
-
-    .unit-toggle button {
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .unit-toggle button.active {
-      background: var(--em-green);
-      color: #0b0d10;
-    }
-
-    .baseline-card input {
-      width: 100%;
-      background: var(--input-bg);
       border: 1px solid var(--border-color);
+      background: var(--input-bg);
       color: var(--text);
-      padding: 10px;
-      border-radius: 6px;
-      text-align: center;
-      font-size: 0.95rem;
-      font-weight: 700;
+      font-weight: bold;
+      width: 100%;
       outline: none;
-      transition: border-color 0.2s;
     }
 
-    .baseline-card input:focus {
+    .search-input-group input:focus {
       border-color: var(--em-green);
+    }
+
+    .search-btn {
+      padding: 8px 19px;
+      background: var(--em-green);
+      border: none;
+      border-radius: 6px;
+      font-weight: 800;
+      color: #0b0d10;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .search-btn:hover {
+      background: var(--em-green-hover);
+    }
+
+    .search-btn:active {
+      transform: scale(0.98);
+    }
+
+    .api-status {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 600;
     }
 
     /* Table Boxes */
@@ -162,8 +256,8 @@
       border-radius: 10px;
       border: 1px solid var(--border-color);
       overflow: hidden;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      margin-bottom: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     }
 
     table {
@@ -174,8 +268,8 @@
     thead th {
       background: var(--em-green);
       color: #0b0d10;
-      font-size: 0.9rem;
-      padding: 10px;
+      font-size: 0.95rem;
+      padding: 8px 11px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -184,13 +278,14 @@
     .sub-head th {
       background: #5ca033;
       color: #ffffff;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 6px 13px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
     }
 
     td {
-      padding: 12px;
+      padding: 7px 13px;
       border-bottom: 1px solid var(--border-color);
       font-size: 0.9rem;
       vertical-align: middle;
@@ -224,7 +319,7 @@
       font-size: 0.75rem;
       font-weight: 400;
       line-height: 1.3;
-      text-transform: none; /* Prevents upper case in tooltip */
+      text-transform: none;
 
       position: absolute;
       z-index: 10;
@@ -260,7 +355,7 @@
     .return-row-bg .metric-name {
       color: #e2e8f0;
       font-size: 0.9rem;
-      text-transform: none; /* No caps lock */
+      text-transform: none;
       letter-spacing: normal;
     }
 
@@ -275,7 +370,7 @@
     /* Dynamic Flex Layout for Entries */
     .inputs-flex {
       display: grid;
-      gap: 8px;
+      gap: 7px;
     }
     
     .cols-1 { grid-template-columns: 1fr; }
@@ -293,7 +388,7 @@
       background: var(--input-bg);
       border: 1px solid var(--border-color);
       color: var(--text);
-      padding: 8px;
+      padding: 5px 8px;
       border-radius: 6px;
       text-align: center;
       font-size: 0.9rem;
@@ -327,28 +422,9 @@
     /* Actions Row */
     .action-row {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
-      margin-bottom: 20px;
-      gap: 12px;
-    }
-
-    .price-display {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--muted);
-    }
-
-    .price-display span:last-child {
-      font-weight: 800;
-      font-size: 1.2rem;
-      color: var(--text);
+      margin-bottom: 12px;
     }
 
     /* Standout Analyze Button */
@@ -357,20 +433,20 @@
       color: #0d0f12;
       border: 1px solid #8fe056;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 1rem;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      padding: 14px 40px;
+      padding: 10px 34px;
       border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(115, 190, 67, 0.35);
+      box-shadow: 0 4px 15px rgba(115, 190, 67, 0.35);
       transition: all 0.25s ease;
     }
 
     .analyze-btn:hover {
       background: linear-gradient(135deg, #83e04a 0%, #5ca033 100%);
       transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(115, 190, 67, 0.5);
+      box-shadow: 0 6px 20px rgba(115, 190, 67, 0.5);
     }
 
     .analyze-btn:active {
@@ -386,21 +462,26 @@
 
     /* Responsive Mobile Layout Adjustments */
     @media (max-width: 650px) {
-      body { padding: 10px; }
+      body { padding: 8px; }
 
-      .action-row {
-        flex-direction: column;
-        align-items: stretch;
+      .app-header {
+        gap: 8px;
+        margin-bottom: 10px;
       }
 
-      .price-display {
-        justify-content: space-between;
+      .app-logo {
+        width: 32px;
+        height: 32px;
+      }
+
+      .app-title {
+        font-size: 1.3rem;
       }
 
       .analyze-btn {
         width: 100%;
         text-align: center;
-        padding: 14px;
+        padding: 12px;
       }
 
       table, thead, tbody, th, td, tr {
@@ -413,16 +494,16 @@
 
       tr {
         border-bottom: 1px solid var(--border-color);
-        padding: 12px;
+        padding: 8px;
       }
 
       td {
         border: none;
-        padding: 6px 0;
+        padding: 4px 0;
       }
 
       .metric-name {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         color: var(--em-green);
         font-size: 0.95rem;
       }
@@ -431,13 +512,43 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="appContainer">
+
+  <!-- Header with Logo & Title -->
+  <header class="app-header">
+    <img src="logo.png" alt="Stock Valuation Tool Logo" class="app-logo">
+    <h1 class="app-title">Stock Valuation Tool</h1>
+  </header>
+
+  <!-- Ticker Auto-Fill Search Card -->
+  <div class="search-card">
+    <div class="search-input-group">
+      <input type="text" id="tickerInput" placeholder="Enter Ticker (e.g., AAPL)">
+      <button class="search-btn" onclick="fetchStockData()">Search</button>
+    </div>
+    <span class="api-status" id="apiStatus"></span>
+  </div>
+
+  <!-- Always-Visible Company Header Box -->
+  <div id="companyHeader" class="company-header">
+    <div class="company-profile">
+      <div class="company-logo-container">
+        <img id="companyLogo" src="" alt="Logo" class="company-logo" style="display: none;">
+        <div id="companyLogoFallback" class="company-logo-fallback">📈</div>
+      </div>
+      <div>
+        <h2 id="companyName" class="company-name is-placeholder">Company Name (e.g. Apple)</h2>
+        <div id="companyTickerDisplay" class="company-ticker is-placeholder">_______</div>
+      </div>
+    </div>
+    <div id="headerPrice" class="company-price">$0.00</div>
+  </div>
 
   <!-- Top Controls -->
   <div class="top-controls">
-    <div style="display: flex; gap: 10px;">
+    <div style="display: flex; gap: 16px;">
       <div class="dropdown-group">
-        <label>Years of Analysis</label>
+        <label for="yearsSelect">Years of Analysis</label>
         <select id="yearsSelect" onchange="calculateValuation()">
           <option value="3">3</option>
           <option value="5">5</option>
@@ -445,7 +556,7 @@
         </select>
       </div>
       <div class="dropdown-group">
-        <label>Number of Entries</label>
+        <label for="entriesSelect">Number of Entries</label>
         <select id="entriesSelect" onchange="renderDynamicLayout()">
           <option value="1">1 (Base)</option>
           <option value="3" selected>3 (Low, Mid, High)</option>
@@ -453,39 +564,13 @@
         </select>
       </div>
     </div>
-    <div class="reminder">REMINDER: This does not factor in the balance sheet.</div>
   </div>
 
-  <!-- Financial Baseline Inputs -->
-  <div class="baseline-card">
-    <div>
-      <div class="baseline-header">
-        <label>Current Stock Price ($)</label>
-      </div>
-      <input type="number" id="currentPrice" value="" placeholder="0.00" step="0.01" oninput="updateCurrentPriceDisplay()">
-    </div>
-
-    <div>
-      <div class="baseline-header">
-        <label id="revLabel">TTM Revenue ($B)</label>
-        <div class="unit-toggle">
-          <button id="revUnitM" onclick="setRevUnit('M')">M</button>
-          <button id="revUnitB" class="active" onclick="setRevUnit('B')">B</button>
-        </div>
-      </div>
-      <input type="number" id="ttmRevenue" value="" placeholder="0.00" step="0.01">
-    </div>
-
-    <div>
-      <div class="baseline-header">
-        <label id="sharesLabel">Shares Outstanding (B)</label>
-        <div class="unit-toggle">
-          <button id="sharesUnitM" onclick="setSharesUnit('M')">M</button>
-          <button id="sharesUnitB" class="active" onclick="setSharesUnit('B')">B</button>
-        </div>
-      </div>
-      <input type="number" id="sharesOut" value="" placeholder="0.00" step="0.001">
-    </div>
+  <!-- Financial Baseline Inputs (Hidden from user, utilized by background logic) -->
+  <div style="display: none;">
+    <input type="number" id="currentPrice" value="">
+    <input type="number" id="ttmRevenue" value="">
+    <input type="number" id="sharesOut" value="">
   </div>
 
   <!-- Assumptions Table -->
@@ -539,10 +624,6 @@
 
   <!-- Action Row -->
   <div class="action-row">
-    <div class="price-display">
-      <span>Current Price</span>
-      <span id="currentPriceDisplay">$0.00</span>
-    </div>
     <button class="analyze-btn" onclick="calculateValuation()">Analyze</button>
   </div>
 
@@ -590,28 +671,124 @@
 </div>
 
 <script>
-  let revUnit = 'B';
-  let sharesUnit = 'B';
+  // Automatic Screen Fit Scale Adjuster
+  function fitToScreen() {
+    const container = document.getElementById('appContainer');
+    container.style.transform = 'none';
+    
+    const viewportHeight = window.innerHeight;
+    const contentHeight = container.offsetHeight;
 
-  // Live Update Price Display without running full valuation math
-  function updateCurrentPriceDisplay() {
-    const rawPrice = document.getElementById('currentPrice').value;
-    const price = parseFloat(rawPrice);
-    document.getElementById('currentPriceDisplay').innerText = !isNaN(price) ? `$${price.toFixed(2)}` : '$0.00';
+    // Apply scale down if content overflows height (desktop screens)
+    if (contentHeight > viewportHeight && window.innerWidth > 650) {
+      const scale = Math.max(0.70, (viewportHeight - 20) / contentHeight);
+      container.style.transformOrigin = 'top center';
+      container.style.transform = `scale(${scale})`;
+    }
   }
 
-  function setRevUnit(unit) {
-    revUnit = unit;
-    document.getElementById('revUnitM').classList.toggle('active', unit === 'M');
-    document.getElementById('revUnitB').classList.toggle('active', unit === 'B');
-    document.getElementById('revLabel').innerText = `TTM Revenue ($${unit})`;
+  // Local JSON Stock Data Fetcher
+  async function fetchStockData() {
+    const tickerInput = document.getElementById('tickerInput');
+    const statusElem = document.getElementById('apiStatus');
+    const ticker = tickerInput.value.trim().toUpperCase();
+
+    if (!ticker) {
+      alert('Please enter a stock ticker symbol (e.g., AAPL, MSFT, GOOGL).');
+      return;
+    }
+
+    statusElem.innerText = 'Searching data...';
+    statusElem.style.color = 'var(--muted)';
+
+    try {
+      // Fetch local data file generated by your main.py
+      const response = await fetch('data.json');
+      
+      if (!response.ok) {
+        throw new Error('Data file not found');
+      }
+
+      const allData = await response.json();
+
+      // Look for the ticker inside the JSON file
+      const stockData = allData.find(item => item.symbol === ticker);
+
+      if (!stockData) {
+        statusElem.innerText = `Ticker ${ticker} not found in local data file!`;
+        statusElem.style.color = 'var(--em-red)';
+        return;
+      }
+
+      statusElem.innerText = `Loaded ${ticker} successfully!`;
+      statusElem.style.color = 'var(--em-green)';
+
+      // Pass stock data to UI populate function
+      populateStockUI(ticker, stockData, { 'Global Quote': { '05. price': stockData.price } });
+
+    } catch (error) {
+      console.error('Fetch Error:', error);
+      statusElem.innerText = 'Failed to load data.json!';
+      statusElem.style.color = 'var(--em-red)';
+    }
   }
 
-  function setSharesUnit(unit) {
-    sharesUnit = unit;
-    document.getElementById('sharesUnitM').classList.toggle('active', unit === 'M');
-    document.getElementById('sharesUnitB').classList.toggle('active', unit === 'B');
-    document.getElementById('sharesLabel').innerText = `Shares Outstanding (${unit})`;
+  // Populate UI with retrieved stock data
+  function populateStockUI(ticker, overview, quote) {
+    const statusElem = document.getElementById('apiStatus');
+    const price = parseFloat(quote['Global Quote']?.['05. price']);
+    const sharesOut = parseFloat(overview['SharesOutstanding']);
+    const revenueTTM = parseFloat(overview['RevenueTTM']);
+
+    if (!price && !revenueTTM && !sharesOut) {
+      statusElem.innerText = 'Symbol not found or data missing!';
+      statusElem.style.color = 'var(--em-red)';
+      return;
+    }
+
+    // Update Company Header & Remove Placeholder states
+    const nameElem = document.getElementById('companyName');
+    nameElem.innerText = overview.Name || ticker;
+    nameElem.classList.remove('is-placeholder');
+
+    const tickerElem = document.getElementById('companyTickerDisplay');
+    tickerElem.innerText = ticker;
+    tickerElem.classList.remove('is-placeholder');
+
+    document.getElementById('headerPrice').innerText = `$${price ? price.toFixed(2) : '0.00'}`;
+    
+    const logoImg = document.getElementById('companyLogo');
+    const logoFallback = document.getElementById('companyLogoFallback');
+    
+    logoImg.src = `https://financialmodelingprep.com/image-stock/${ticker}.png`;
+    logoImg.onload = function() {
+      logoImg.style.display = 'block';
+      logoFallback.style.display = 'none';
+    };
+    logoImg.onerror = function() {
+      logoImg.style.display = 'none';
+      logoFallback.style.display = 'flex';
+    };
+
+    // Update Current Stock Price internally
+    if (price) {
+      document.getElementById('currentPrice').value = price.toFixed(2);
+    }
+
+    // Update Shares Outstanding internally
+    if (sharesOut) {
+      const sharesInUnit = sharesOut / 1e9;
+      document.getElementById('sharesOut').value = sharesInUnit.toFixed(3);
+    }
+
+    // Update TTM Revenue internally
+    if (revenueTTM) {
+      const revInUnit = revenueTTM / 1e9;
+      document.getElementById('ttmRevenue').value = revInUnit.toFixed(2);
+    }
+
+    calculateValuation();
+    fitToScreen();
   }
 
   // Scenario Configs
@@ -679,6 +856,7 @@
     });
 
     calculateValuation();
+    fitToScreen();
   }
 
   // Main Valuation Calculation
@@ -690,11 +868,9 @@
     const rawShares = parseFloat(document.getElementById('sharesOut').value) || 0;
     const years = parseInt(document.getElementById('yearsSelect').value) || 10;
 
-    // Standardize Revenue & Shares to absolute figures based on M/B unit toggles
-    const totalRev = rawRev * (revUnit === 'B' ? 1e9 : 1e6);
-    const totalShares = rawShares * (sharesUnit === 'B' ? 1e9 : 1e6);
-
-    updateCurrentPriceDisplay();
+    // Standardize Revenue & Shares to absolute figures
+    const totalRev = rawRev * 1e9;
+    const totalShares = rawShares * 1e9;
 
     const numEntries = parseInt(document.getElementById('entriesSelect').value);
     const cases = scenariosMap[numEntries];
@@ -784,7 +960,6 @@
         if (pfcfInput && fcfmInput) {
           retElem.innerText = `${calculatedReturn.toFixed(2)}%`;
           
-          // Color logic: Red if negative, Green if >= Desired Return, White otherwise
           if (calculatedReturn < 0) {
             retElem.style.color = 'var(--em-red)';
           } else if (calculatedReturn >= (r * 100)) {
@@ -832,8 +1007,21 @@
     }
   }
 
+  // Allow 'Enter' key inside the search bar to trigger Auto-Fill
+  document.getElementById('tickerInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      fetchStockData();
+    }
+  });
+
+  // Re-fit on window resize
+  window.addEventListener('resize', fitToScreen);
+
   // Initial setup call
-  window.onload = renderDynamicLayout;
+  window.onload = function() {
+    renderDynamicLayout();
+    fitToScreen();
+  };
 </script>
 
 </body>
