@@ -792,9 +792,9 @@
 
   // Populate UI with retrieved stock data
   function populateStockUI(ticker, overview) {
-    const price = parseFloat(overview['price'] || overview['close'] || 0);
-    const sharesOut = parseFloat(overview['SharesOutstanding'] || overview['weighted_average_shares_diluted'] || 0);
-    const revenueTTM = parseFloat(overview['RevenueTTM'] || overview['total_revenue'] || 0);
+    const price = parseFloat(overview.price || overview.close || overview['05. price'] || 0);
+    const sharesOut = parseFloat(overview.SharesOutstanding || overview.weighted_average_shares_diluted || overview.shares_outstanding || 0);
+    const revenueTTM = parseFloat(overview.RevenueTTM || overview.total_revenue || overview.revenue || 0);
 
     const nameElem = document.getElementById('companyName');
     nameElem.innerText = overview.Name || overview.company_name || ticker;
@@ -819,20 +819,20 @@
       logoFallback.style.display = 'flex';
     };
 
-    if (price) {
+    if (price > 0) {
       document.getElementById('currentPrice').value = price.toFixed(2);
     } else {
       document.getElementById('currentPrice').value = '';
     }
 
-    if (sharesOut) {
+    if (sharesOut > 0) {
       const sharesInUnit = sharesOut > 1e6 ? sharesOut / 1e9 : sharesOut;
       document.getElementById('sharesOut').value = sharesInUnit.toFixed(3);
     } else {
       document.getElementById('sharesOut').value = '';
     }
 
-    if (revenueTTM) {
+    if (revenueTTM > 0) {
       const revInUnit = revenueTTM > 1e6 ? revenueTTM / 1e9 : revenueTTM;
       document.getElementById('ttmRevenue').value = revInUnit.toFixed(2);
     } else {
