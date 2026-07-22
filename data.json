@@ -3,7 +3,7 @@
     "act_symbol": "A",
     "symbol": "A",
     "Name": "A",
-    "RevenueTTM": 12.44,
+    "RevenueTTM": 7.23,
     "SharesOutstanding": 283000000.0,
     "price": 0.0
   },
@@ -11,7 +11,7 @@
     "act_symbol": "AA",
     "symbol": "AA",
     "Name": "AA",
-    "RevenueTTM": 22.47,
+    "RevenueTTM": 12.65,
     "SharesOutstanding": 265690000.0,
     "price": 0.0
   },
@@ -19,16 +19,8 @@
     "act_symbol": "AAAP",
     "symbol": "AAAP",
     "Name": "AAAP",
-    "RevenueTTM": 0.23,
+    "RevenueTTM": 0.14,
     "SharesOutstanding": 45060000.0,
-    "price": 0.0
-  },
-  {
-    "act_symbol": "AABA",
-    "symbol": "AABA",
-    "Name": "AABA",
-    "RevenueTTM": 9.27,
-    "SharesOutstanding": 963170000.0,
     "price": 0.0
   },
   {
@@ -37,14 +29,6 @@
     "Name": "AAC",
     "RevenueTTM": 0.33,
     "SharesOutstanding": 24210000.0,
-    "price": 0.0
-  },
-  {
-    "act_symbol": "AACG",
-    "symbol": "AACG",
-    "Name": "AACG",
-    "RevenueTTM": 0.07,
-    "SharesOutstanding": 31350000.0,
     "price": 0.0
   },
   {
@@ -59,7 +43,7 @@
     "act_symbol": "AAL",
     "symbol": "AAL",
     "Name": "AAL",
-    "RevenueTTM": 96.23,
+    "RevenueTTM": 55.99,
     "SharesOutstanding": 661180000.0,
     "price": 0.0
   },
@@ -75,7 +59,7 @@
     "act_symbol": "AAMI",
     "symbol": "AAMI",
     "Name": "AAMI",
-    "RevenueTTM": 1.05,
+    "RevenueTTM": 0.61,
     "SharesOutstanding": 35800000.0,
     "price": 0.0
   },
@@ -83,7 +67,7 @@
     "act_symbol": "AAN",
     "symbol": "AAN",
     "Name": "AAN",
-    "RevenueTTM": 3.68,
+    "RevenueTTM": 2.07,
     "SharesOutstanding": 30790000.0,
     "price": 0.0
   },
@@ -91,7 +75,7 @@
     "act_symbol": "AAOI",
     "symbol": "AAOI",
     "Name": "AAOI",
-    "RevenueTTM": 0.86,
+    "RevenueTTM": 0.51,
     "SharesOutstanding": 75980000.0,
     "price": 0.0
   },
@@ -99,7 +83,7 @@
     "act_symbol": "AAON",
     "symbol": "AAON",
     "Name": "AAON",
-    "RevenueTTM": 2.75,
+    "RevenueTTM": 1.62,
     "SharesOutstanding": 83180000.0,
     "price": 0.0
   },
@@ -107,7 +91,7 @@
     "act_symbol": "AAP",
     "symbol": "AAP",
     "Name": "AAP",
-    "RevenueTTM": 15.22,
+    "RevenueTTM": 8.63,
     "SharesOutstanding": 60900000.0,
     "price": 0.0
   },
@@ -115,7 +99,7 @@
     "act_symbol": "AAPL",
     "symbol": "AAPL",
     "Name": "AAPL",
-    "RevenueTTM": 773.57,
+    "RevenueTTM": 451.44,
     "SharesOutstanding": 14725870000.0,
     "price": 0.0
   },
@@ -123,7 +107,7 @@
     "act_symbol": "AAT",
     "symbol": "AAT",
     "Name": "AAT",
-    "RevenueTTM": 0.77,
+    "RevenueTTM": 0.44,
     "SharesOutstanding": 76880000.0,
     "price": 0.0
   },
@@ -131,7 +115,7 @@
     "act_symbol": "AAUC",
     "symbol": "AAUC",
     "Name": "AAUC",
-    "RevenueTTM": 2.46,
+    "RevenueTTM": 1.38,
     "SharesOutstanding": 124100000.0,
     "price": 0.0
   },
@@ -139,7 +123,7 @@
     "act_symbol": "AAV",
     "symbol": "AAV",
     "Name": "AAV",
-    "RevenueTTM": 0.26,
+    "RevenueTTM": 0.18,
     "SharesOutstanding": 189270000.0,
     "price": 0.0
   },
@@ -147,7 +131,7 @@
     "act_symbol": "AAWW",
     "symbol": "AAWW",
     "Name": "AAWW",
-    "RevenueTTM": 8.06,
+    "RevenueTTM": 4.55,
     "SharesOutstanding": 34330000.0,
     "price": 0.0
   },
@@ -171,7 +155,7 @@
     "act_symbol": "ABAX",
     "symbol": "ABAX",
     "Name": "ABAX",
-    "RevenueTTM": 0.4,
+    "RevenueTTM": 0.23,
     "SharesOutstanding": 22970000.0,
     "price": 0.0
   },
@@ -179,7 +163,7 @@
     "act_symbol": "ABB",
     "symbol": "ABB",
     "Name": "ABB",
-    "RevenueTTM": 51.93,
+    "RevenueTTM": 29.45,
     "SharesOutstanding": 1881000000.0,
     "price": 0.0
   },
@@ -187,7 +171,7 @@
     "act_symbol": "ABBV",
     "symbol": "ABBV",
     "Name": "ABBV",
-    "RevenueTTM": 108.56,
+    "RevenueTTM": 62.82,
     "SharesOutstanding": 1774000000.0,
     "price": 0.0
   },
@@ -200,10 +184,98 @@
     "price": 0.0
   },
   {
+    "act_symbol": "ABCB",
+    "symbol": "ABCB",
+    "Name": "ABCB",
+    "RevenueTTM": 1.69,
+    "SharesOutstanding": 67770000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ABCD",
+    "symbol": "ABCD",
+    "Name": "ABCD",
+    "RevenueTTM": 0.16,
+    "SharesOutstanding": 48500000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ABCL",
+    "symbol": "ABCL",
+    "Name": "ABCL",
+    "RevenueTTM": 0.08,
+    "SharesOutstanding": 303080000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ABCO",
+    "symbol": "ABCO",
+    "Name": "ABCO",
+    "RevenueTTM": 0.8,
+    "SharesOutstanding": 41460000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ABEV",
+    "symbol": "ABEV",
+    "Name": "ABEV",
+    "RevenueTTM": 16.25,
+    "SharesOutstanding": 15674970000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ABG",
+    "symbol": "ABG",
+    "Name": "ABG",
+    "RevenueTTM": 17.96,
+    "SharesOutstanding": 19000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ABIL",
+    "symbol": "ABIL",
+    "Name": "ABIL",
+    "RevenueTTM": 660000.0,
+    "SharesOutstanding": 2820000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ABL",
+    "symbol": "ABL",
+    "Name": "ABL",
+    "RevenueTTM": 0.2,
+    "SharesOutstanding": 96650000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ABLV",
+    "symbol": "ABLV",
+    "Name": "ABLV",
+    "RevenueTTM": 0.23,
+    "SharesOutstanding": 49390000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ABM",
+    "symbol": "ABM",
+    "Name": "ABM",
+    "RevenueTTM": 9.05,
+    "SharesOutstanding": 59100000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ABMD",
+    "symbol": "ABMD",
+    "Name": "ABMD",
+    "RevenueTTM": 1.07,
+    "SharesOutstanding": 45710000.0,
+    "price": 0.0
+  },
+  {
     "act_symbol": "ACT",
     "symbol": "ACT",
     "Name": "ACT",
-    "RevenueTTM": 2.17,
+    "RevenueTTM": 1.24,
     "SharesOutstanding": 142630000.0,
     "price": 0.0
   },
@@ -211,7 +283,7 @@
     "act_symbol": "ACTA",
     "symbol": "ACTA",
     "Name": "ACTA",
-    "RevenueTTM": 0.18,
+    "RevenueTTM": 0.1,
     "SharesOutstanding": 31270000.0,
     "price": 0.0
   },
@@ -219,7 +291,7 @@
     "act_symbol": "ACTG",
     "symbol": "ACTG",
     "Name": "ACTG",
-    "RevenueTTM": 0.45,
+    "RevenueTTM": 0.22,
     "SharesOutstanding": 96490000.0,
     "price": 0.0
   },
@@ -227,7 +299,7 @@
     "act_symbol": "ACU",
     "symbol": "ACU",
     "Name": "ACU",
-    "RevenueTTM": 0.35,
+    "RevenueTTM": 0.2,
     "SharesOutstanding": 4160000.0,
     "price": 0.0
   },
@@ -235,7 +307,7 @@
     "act_symbol": "ACVA",
     "symbol": "ACVA",
     "Name": "ACVA",
-    "RevenueTTM": 1.35,
+    "RevenueTTM": 0.78,
     "SharesOutstanding": 173360000.0,
     "price": 0.0
   },
@@ -243,7 +315,7 @@
     "act_symbol": "ACXM",
     "symbol": "ACXM",
     "Name": "ACXM",
-    "RevenueTTM": 1.54,
+    "RevenueTTM": 0.88,
     "SharesOutstanding": 78670000.0,
     "price": 0.0
   },
@@ -251,7 +323,7 @@
     "act_symbol": "AD",
     "symbol": "AD",
     "Name": "AD",
-    "RevenueTTM": 1.18,
+    "RevenueTTM": 1.91,
     "SharesOutstanding": 86490000.0,
     "price": 0.0
   },
@@ -259,7 +331,7 @@
     "act_symbol": "ADAM",
     "symbol": "ADAM",
     "Name": "ADAM",
-    "RevenueTTM": 1.11,
+    "RevenueTTM": 0.64,
     "SharesOutstanding": 92060000.0,
     "price": 0.0
   },
@@ -267,7 +339,7 @@
     "act_symbol": "ADAP",
     "symbol": "ADAP",
     "Name": "ADAP",
-    "RevenueTTM": 0.2,
+    "RevenueTTM": 0.07,
     "SharesOutstanding": 264090000.0,
     "price": 0.0
   },
@@ -275,7 +347,7 @@
     "act_symbol": "ADBE",
     "symbol": "ADBE",
     "Name": "ADBE",
-    "RevenueTTM": 42.98,
+    "RevenueTTM": 25.2,
     "SharesOutstanding": 402000000.0,
     "price": 0.0
   },
@@ -283,7 +355,7 @@
     "act_symbol": "ADC",
     "symbol": "ADC",
     "Name": "ADC",
-    "RevenueTTM": 1.29,
+    "RevenueTTM": 0.75,
     "SharesOutstanding": 120380000.0,
     "price": 0.0
   },
@@ -291,23 +363,15 @@
     "act_symbol": "ADCT",
     "symbol": "ADCT",
     "Name": "ADCT",
-    "RevenueTTM": 0.14,
+    "RevenueTTM": 0.08,
     "SharesOutstanding": 154140000.0,
-    "price": 0.0
-  },
-  {
-    "act_symbol": "ADD",
-    "symbol": "ADD",
-    "Name": "ADD",
-    "RevenueTTM": 0.07,
-    "SharesOutstanding": 38080000.0,
     "price": 0.0
   },
   {
     "act_symbol": "ADEA",
     "symbol": "ADEA",
     "Name": "ADEA",
-    "RevenueTTM": 0.82,
+    "RevenueTTM": 0.46,
     "SharesOutstanding": 114200000.0,
     "price": 0.0
   },
@@ -323,7 +387,7 @@
     "act_symbol": "ADI",
     "symbol": "ADI",
     "Name": "ADI",
-    "RevenueTTM": 20.88,
+    "RevenueTTM": 12.74,
     "SharesOutstanding": 490460000.0,
     "price": 0.0
   },
@@ -331,7 +395,7 @@
     "act_symbol": "ADM",
     "symbol": "ADM",
     "Name": "ADM",
-    "RevenueTTM": 139.69,
+    "RevenueTTM": 80.58,
     "SharesOutstanding": 484000000.0,
     "price": 0.0
   },
@@ -339,7 +403,7 @@
     "act_symbol": "ADMA",
     "symbol": "ADMA",
     "Name": "ADMA",
-    "RevenueTTM": 0.9,
+    "RevenueTTM": 0.51,
     "SharesOutstanding": 239960000.0,
     "price": 0.0
   },
@@ -355,7 +419,7 @@
     "act_symbol": "ADNT",
     "symbol": "ADNT",
     "Name": "ADNT",
-    "RevenueTTM": 25.73,
+    "RevenueTTM": 14.94,
     "SharesOutstanding": 79300000.0,
     "price": 0.0
   },
@@ -371,7 +435,7 @@
     "act_symbol": "ADPT",
     "symbol": "ADPT",
     "Name": "ADPT",
-    "RevenueTTM": 0.51,
+    "RevenueTTM": 0.3,
     "SharesOutstanding": 155520000.0,
     "price": 0.0
   },
@@ -384,26 +448,90 @@
     "price": 0.0
   },
   {
-    "act_symbol": "ADSE",
-    "symbol": "ADSE",
-    "Name": "ADSE",
-    "RevenueTTM": 0.3,
-    "SharesOutstanding": 61560000.0,
-    "price": 0.0
-  },
-  {
     "act_symbol": "ADSK",
     "symbol": "ADSK",
     "Name": "ADSK",
-    "RevenueTTM": 12.95,
+    "RevenueTTM": 7.51,
     "SharesOutstanding": 212000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ADSW",
+    "symbol": "ADSW",
+    "Name": "ADSW",
+    "RevenueTTM": 1.62,
+    "SharesOutstanding": 90930000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ADT",
+    "symbol": "ADT",
+    "Name": "ADT",
+    "RevenueTTM": 5.14,
+    "SharesOutstanding": 822000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ADTH",
+    "symbol": "ADTH",
+    "Name": "ADTH",
+    "RevenueTTM": 0.17,
+    "SharesOutstanding": 90450000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ADTN",
+    "symbol": "ADTN",
+    "Name": "ADTN",
+    "RevenueTTM": 1.12,
+    "SharesOutstanding": 80320000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ADTX",
+    "symbol": "ADTX",
+    "Name": "ADTX",
+    "RevenueTTM": 140000.0,
+    "SharesOutstanding": 20000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ADUS",
+    "symbol": "ADUS",
+    "Name": "ADUS",
+    "RevenueTTM": 1.45,
+    "SharesOutstanding": 18490000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ADV",
+    "symbol": "ADV",
+    "Name": "ADV",
+    "RevenueTTM": 3.59,
+    "SharesOutstanding": 13080000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ADXN",
+    "symbol": "ADXN",
+    "Name": "ADXN",
+    "RevenueTTM": 310000.0,
+    "SharesOutstanding": 940000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AE",
+    "symbol": "AE",
+    "Name": "AE",
+    "RevenueTTM": 2.78,
+    "SharesOutstanding": 2580000.0,
     "price": 0.0
   },
   {
     "act_symbol": "AGI",
     "symbol": "AGI",
     "Name": "AGI",
-    "RevenueTTM": 3.44,
+    "RevenueTTM": 2.07,
     "SharesOutstanding": 425330000.0,
     "price": 0.0
   },
@@ -411,7 +539,7 @@
     "act_symbol": "AGII",
     "symbol": "AGII",
     "Name": "AGII",
-    "RevenueTTM": 2.86,
+    "RevenueTTM": 1.7,
     "SharesOutstanding": 31000000.0,
     "price": 0.0
   },
@@ -419,7 +547,7 @@
     "act_symbol": "AGIL",
     "symbol": "AGIL",
     "Name": "AGIL",
-    "RevenueTTM": 0.3,
+    "RevenueTTM": 0.17,
     "SharesOutstanding": 48820000.0,
     "price": 0.0
   },
@@ -427,7 +555,7 @@
     "act_symbol": "AGIO",
     "symbol": "AGIO",
     "Name": "AGIO",
-    "RevenueTTM": 0.11,
+    "RevenueTTM": 0.07,
     "SharesOutstanding": 58780000.0,
     "price": 0.0
   },
@@ -435,7 +563,7 @@
     "act_symbol": "AGL",
     "symbol": "AGL",
     "Name": "AGL",
-    "RevenueTTM": 10.36,
+    "RevenueTTM": 5.82,
     "SharesOutstanding": 16660000.0,
     "price": 0.0
   },
@@ -443,7 +571,7 @@
     "act_symbol": "AGM",
     "symbol": "AGM",
     "Name": "AGM",
-    "RevenueTTM": 2.89,
+    "RevenueTTM": 1.67,
     "SharesOutstanding": 10920000.0,
     "price": 0.0
   },
@@ -451,7 +579,7 @@
     "act_symbol": "AGMH",
     "symbol": "AGMH",
     "Name": "AGMH",
-    "RevenueTTM": 0.08,
+    "RevenueTTM": 0.09,
     "SharesOutstanding": 1370000.0,
     "price": 0.0
   },
@@ -467,23 +595,15 @@
     "act_symbol": "AGNC",
     "symbol": "AGNC",
     "Name": "AGNC",
-    "RevenueTTM": 6.42,
+    "RevenueTTM": 3.73,
     "SharesOutstanding": 1122600000.0,
-    "price": 0.0
-  },
-  {
-    "act_symbol": "AGNT",
-    "symbol": "AGNT",
-    "Name": "AGNT",
-    "RevenueTTM": 8.29,
-    "SharesOutstanding": 162020000.0,
     "price": 0.0
   },
   {
     "act_symbol": "AGO",
     "symbol": "AGO",
     "Name": "AGO",
-    "RevenueTTM": 1.85,
+    "RevenueTTM": 1.03,
     "SharesOutstanding": 45400000.0,
     "price": 0.0
   },
@@ -507,7 +627,7 @@
     "act_symbol": "AGRO",
     "symbol": "AGRO",
     "Name": "AGRO",
-    "RevenueTTM": 2.55,
+    "RevenueTTM": 1.5,
     "SharesOutstanding": 143350000.0,
     "price": 0.0
   },
@@ -515,7 +635,7 @@
     "act_symbol": "AGS",
     "symbol": "AGS",
     "Name": "AGS",
-    "RevenueTTM": 0.69,
+    "RevenueTTM": 0.39,
     "SharesOutstanding": 41340000.0,
     "price": 0.0
   },
@@ -523,7 +643,7 @@
     "act_symbol": "AGTI",
     "symbol": "AGTI",
     "Name": "AGTI",
-    "RevenueTTM": 2.05,
+    "RevenueTTM": 1.17,
     "SharesOutstanding": 135090000.0,
     "price": 0.0
   },
@@ -531,7 +651,7 @@
     "act_symbol": "AGU",
     "symbol": "AGU",
     "Name": "AGU",
-    "RevenueTTM": 24.98,
+    "RevenueTTM": 13.56,
     "SharesOutstanding": 138000000.0,
     "price": 0.0
   },
@@ -539,7 +659,7 @@
     "act_symbol": "AGX",
     "symbol": "AGX",
     "Name": "AGX",
-    "RevenueTTM": 1.75,
+    "RevenueTTM": 1.04,
     "SharesOutstanding": 14200000.0,
     "price": 0.0
   },
@@ -547,7 +667,7 @@
     "act_symbol": "AGYS",
     "symbol": "AGYS",
     "Name": "AGYS",
-    "RevenueTTM": 0.56,
+    "RevenueTTM": 0.32,
     "SharesOutstanding": 28420000.0,
     "price": 0.0
   },
@@ -563,7 +683,7 @@
     "act_symbol": "AHCO",
     "symbol": "AHCO",
     "Name": "AHCO",
-    "RevenueTTM": 5.73,
+    "RevenueTTM": 3.29,
     "SharesOutstanding": 135780000.0,
     "price": 0.0
   },
@@ -571,7 +691,7 @@
     "act_symbol": "AHGP",
     "symbol": "AHGP",
     "Name": "AHGP",
-    "RevenueTTM": 3.32,
+    "RevenueTTM": 1.94,
     "SharesOutstanding": 59860000.0,
     "price": 0.0
   },
@@ -592,18 +712,10 @@
     "price": 0.0
   },
   {
-    "act_symbol": "AHMA",
-    "symbol": "AHMA",
-    "Name": "AHMA",
-    "RevenueTTM": 0.05,
-    "SharesOutstanding": 27170000.0,
-    "price": 0.0
-  },
-  {
     "act_symbol": "AHP",
     "symbol": "AHP",
     "Name": "AHP",
-    "RevenueTTM": 0.71,
+    "RevenueTTM": 0.41,
     "SharesOutstanding": 31470000.0,
     "price": 0.0
   },
@@ -611,7 +723,7 @@
     "act_symbol": "AHR",
     "symbol": "AHR",
     "Name": "AHR",
-    "RevenueTTM": 4.09,
+    "RevenueTTM": 2.37,
     "SharesOutstanding": 187970000.0,
     "price": 0.0
   },
@@ -619,7 +731,7 @@
     "act_symbol": "AHRT",
     "symbol": "AHRT",
     "Name": "AHRT",
-    "RevenueTTM": 0.53,
+    "RevenueTTM": 0.36,
     "SharesOutstanding": 102030000.0,
     "price": 0.0
   },
@@ -627,7 +739,7 @@
     "act_symbol": "AHT",
     "symbol": "AHT",
     "Name": "AHT",
-    "RevenueTTM": 1.9,
+    "RevenueTTM": 1.09,
     "SharesOutstanding": 6440000.0,
     "price": 0.0
   },
@@ -635,23 +747,87 @@
     "act_symbol": "AI",
     "symbol": "AI",
     "Name": "AI",
-    "RevenueTTM": 0.43,
+    "RevenueTTM": 0.25,
     "SharesOutstanding": 146220000.0,
     "price": 0.0
   },
   {
-    "act_symbol": "ALAR",
-    "symbol": "ALAR",
-    "Name": "ALAR",
-    "RevenueTTM": 0.08,
-    "SharesOutstanding": 7410000.0,
+    "act_symbol": "AIG",
+    "symbol": "AIG",
+    "Name": "AIG",
+    "RevenueTTM": 26.64,
+    "SharesOutstanding": 542200000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AIH",
+    "symbol": "AIH",
+    "Name": "AIH",
+    "RevenueTTM": 0.14,
+    "SharesOutstanding": 45910000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AII",
+    "symbol": "AII",
+    "Name": "AII",
+    "RevenueTTM": 0.3,
+    "SharesOutstanding": 19580000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AIM",
+    "symbol": "AIM",
+    "Name": "AIM",
+    "RevenueTTM": 100000.0,
+    "SharesOutstanding": 4350000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AIMC",
+    "symbol": "AIMC",
+    "Name": "AIMC",
+    "RevenueTTM": 1.95,
+    "SharesOutstanding": 65600000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AIMD",
+    "symbol": "AIMD",
+    "Name": "AIMD",
+    "RevenueTTM": 160000.0,
+    "SharesOutstanding": 5240000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AIN",
+    "symbol": "AIN",
+    "Name": "AIN",
+    "RevenueTTM": 1.21,
+    "SharesOutstanding": 28550000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AINC",
+    "symbol": "AINC",
+    "Name": "AINC",
+    "RevenueTTM": 0.77,
+    "SharesOutstanding": 3160000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AINV",
+    "symbol": "AINV",
+    "Name": "AINV",
+    "RevenueTTM": 0.21,
+    "SharesOutstanding": 60540000.0,
     "price": 0.0
   },
   {
     "act_symbol": "ALB",
     "symbol": "ALB",
     "Name": "ALB",
-    "RevenueTTM": 9.31,
+    "RevenueTTM": 5.49,
     "SharesOutstanding": 118610000.0,
     "price": 0.0
   },
@@ -667,31 +843,15 @@
     "act_symbol": "ALC",
     "symbol": "ALC",
     "Name": "ALC",
-    "RevenueTTM": 18.44,
+    "RevenueTTM": 10.63,
     "SharesOutstanding": 490200000.0,
-    "price": 0.0
-  },
-  {
-    "act_symbol": "ALCO",
-    "symbol": "ALCO",
-    "Name": "ALCO",
-    "RevenueTTM": 0.05,
-    "SharesOutstanding": 7640000.0,
-    "price": 0.0
-  },
-  {
-    "act_symbol": "ALDR",
-    "symbol": "ALDR",
-    "Name": "ALDR",
-    "RevenueTTM": 0.06,
-    "SharesOutstanding": 67780000.0,
     "price": 0.0
   },
   {
     "act_symbol": "ALDW",
     "symbol": "ALDW",
     "Name": "ALDW",
-    "RevenueTTM": 3.38,
+    "RevenueTTM": 2.04,
     "SharesOutstanding": 62530000.0,
     "price": 0.0
   },
@@ -715,7 +875,7 @@
     "act_symbol": "ALG",
     "symbol": "ALG",
     "Name": "ALG",
-    "RevenueTTM": 2.81,
+    "RevenueTTM": 1.63,
     "SharesOutstanding": 12100000.0,
     "price": 0.0
   },
@@ -723,7 +883,7 @@
     "act_symbol": "ALGM",
     "symbol": "ALGM",
     "Name": "ALGM",
-    "RevenueTTM": 1.58,
+    "RevenueTTM": 0.89,
     "SharesOutstanding": 185310000.0,
     "price": 0.0
   },
@@ -731,7 +891,7 @@
     "act_symbol": "ALGN",
     "symbol": "ALGN",
     "Name": "ALGN",
-    "RevenueTTM": 7.12,
+    "RevenueTTM": 4.1,
     "SharesOutstanding": 71610000.0,
     "price": 0.0
   },
@@ -739,23 +899,15 @@
     "act_symbol": "ALGT",
     "symbol": "ALGT",
     "Name": "ALGT",
-    "RevenueTTM": 4.56,
+    "RevenueTTM": 2.64,
     "SharesOutstanding": 18220000.0,
-    "price": 0.0
-  },
-  {
-    "act_symbol": "ALH",
-    "symbol": "ALH",
-    "Name": "ALH",
-    "RevenueTTM": 3.01,
-    "SharesOutstanding": 203280000.0,
     "price": 0.0
   },
   {
     "act_symbol": "ALHC",
     "symbol": "ALHC",
     "Name": "ALHC",
-    "RevenueTTM": 7.19,
+    "RevenueTTM": 4.26,
     "SharesOutstanding": 213130000.0,
     "price": 0.0
   },
@@ -763,7 +915,7 @@
     "act_symbol": "ALIM",
     "symbol": "ALIM",
     "Name": "ALIM",
-    "RevenueTTM": 0.16,
+    "RevenueTTM": 0.1,
     "SharesOutstanding": 54380000.0,
     "price": 0.0
   },
@@ -771,7 +923,7 @@
     "act_symbol": "ALIT",
     "symbol": "ALIT",
     "Name": "ALIT",
-    "RevenueTTM": 3.98,
+    "RevenueTTM": 2.25,
     "SharesOutstanding": 524740000.0,
     "price": 0.0
   },
@@ -787,7 +939,7 @@
     "act_symbol": "ALK",
     "symbol": "ALK",
     "Name": "ALK",
-    "RevenueTTM": 24.94,
+    "RevenueTTM": 14.4,
     "SharesOutstanding": 114290000.0,
     "price": 0.0
   },
@@ -795,7 +947,7 @@
     "act_symbol": "ALKS",
     "symbol": "ALKS",
     "Name": "ALKS",
-    "RevenueTTM": 2.65,
+    "RevenueTTM": 1.56,
     "SharesOutstanding": 166200000.0,
     "price": 0.0
   },
@@ -803,7 +955,7 @@
     "act_symbol": "ALKT",
     "symbol": "ALKT",
     "Name": "ALKT",
-    "RevenueTTM": 0.8,
+    "RevenueTTM": 0.47,
     "SharesOutstanding": 106390000.0,
     "price": 0.0
   },
@@ -811,7 +963,7 @@
     "act_symbol": "ALL",
     "symbol": "ALL",
     "Name": "ALL",
-    "RevenueTTM": 119.23,
+    "RevenueTTM": 68.17,
     "SharesOutstanding": 262600000.0,
     "price": 0.0
   },
@@ -819,16 +971,8 @@
     "act_symbol": "ALLE",
     "symbol": "ALLE",
     "Name": "ALLE",
-    "RevenueTTM": 7.2,
+    "RevenueTTM": 4.16,
     "SharesOutstanding": 86600000.0,
-    "price": 0.0
-  },
-  {
-    "act_symbol": "ALLG",
-    "symbol": "ALLG",
-    "Name": "ALLG",
-    "RevenueTTM": 0.43,
-    "SharesOutstanding": 268220000.0,
     "price": 0.0
   },
   {
@@ -843,15 +987,95 @@
     "act_symbol": "ALLT",
     "symbol": "ALLT",
     "Name": "ALLT",
-    "RevenueTTM": 0.18,
+    "RevenueTTM": 0.11,
     "SharesOutstanding": 49890000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ALLY",
+    "symbol": "ALLY",
+    "Name": "ALLY",
+    "RevenueTTM": 15.69,
+    "SharesOutstanding": 313220000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ALNT",
+    "symbol": "ALNT",
+    "Name": "ALNT",
+    "RevenueTTM": 0.56,
+    "SharesOutstanding": 16880000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ALNY",
+    "symbol": "ALNY",
+    "Name": "ALNY",
+    "RevenueTTM": 4.29,
+    "SharesOutstanding": 138230000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ALO",
+    "symbol": "ALO",
+    "Name": "ALO",
+    "RevenueTTM": 0.11,
+    "SharesOutstanding": 84710000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ALOG",
+    "symbol": "ALOG",
+    "Name": "ALOG",
+    "RevenueTTM": 0.49,
+    "SharesOutstanding": 12450000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ALOT",
+    "symbol": "ALOT",
+    "Name": "ALOT",
+    "RevenueTTM": 0.15,
+    "SharesOutstanding": 7770000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ALPN",
+    "symbol": "ALPN",
+    "Name": "ALPN",
+    "RevenueTTM": 0.06,
+    "SharesOutstanding": 39730000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ALPP",
+    "symbol": "ALPP",
+    "Name": "ALPP",
+    "RevenueTTM": 0.1,
+    "SharesOutstanding": 27410000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ALR",
+    "symbol": "ALR",
+    "Name": "ALR",
+    "RevenueTTM": 0.71,
+    "SharesOutstanding": 31880000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ALRM",
+    "symbol": "ALRM",
+    "Name": "ALRM",
+    "RevenueTTM": 1.04,
+    "SharesOutstanding": 56320000.0,
     "price": 0.0
   },
   {
     "act_symbol": "AMOT",
     "symbol": "AMOT",
     "Name": "AMOT",
-    "RevenueTTM": 0.91,
+    "RevenueTTM": 0.53,
     "SharesOutstanding": 16140000.0,
     "price": 0.0
   },
@@ -859,7 +1083,7 @@
     "act_symbol": "AMP",
     "symbol": "AMP",
     "Name": "AMP",
-    "RevenueTTM": 33.04,
+    "RevenueTTM": 18.94,
     "SharesOutstanding": 94500000.0,
     "price": 0.0
   },
@@ -867,7 +1091,7 @@
     "act_symbol": "AMPH",
     "symbol": "AMPH",
     "Name": "AMPH",
-    "RevenueTTM": 1.27,
+    "RevenueTTM": 0.72,
     "SharesOutstanding": 46460000.0,
     "price": 0.0
   },
@@ -875,7 +1099,7 @@
     "act_symbol": "AMPL",
     "symbol": "AMPL",
     "Name": "AMPL",
-    "RevenueTTM": 0.62,
+    "RevenueTTM": 0.36,
     "SharesOutstanding": 133300000.0,
     "price": 0.0
   },
@@ -891,7 +1115,7 @@
     "act_symbol": "AMPX",
     "symbol": "AMPX",
     "Name": "AMPX",
-    "RevenueTTM": 0.15,
+    "RevenueTTM": 0.09,
     "SharesOutstanding": 136950000.0,
     "price": 0.0
   },
@@ -899,7 +1123,7 @@
     "act_symbol": "AMPY",
     "symbol": "AMPY",
     "Name": "AMPY",
-    "RevenueTTM": 0.42,
+    "RevenueTTM": 0.23,
     "SharesOutstanding": 40980000.0,
     "price": 0.0
   },
@@ -907,7 +1131,7 @@
     "act_symbol": "AMR",
     "symbol": "AMR",
     "Name": "AMR",
-    "RevenueTTM": 3.7,
+    "RevenueTTM": 2.12,
     "SharesOutstanding": 12800000.0,
     "price": 0.0
   },
@@ -915,23 +1139,15 @@
     "act_symbol": "AMRC",
     "symbol": "AMRC",
     "Name": "AMRC",
-    "RevenueTTM": 3.44,
+    "RevenueTTM": 1.98,
     "SharesOutstanding": 52890000.0,
-    "price": 0.0
-  },
-  {
-    "act_symbol": "AMRH",
-    "symbol": "AMRH",
-    "Name": "AMRH",
-    "RevenueTTM": 0.07,
-    "SharesOutstanding": 3520000.0,
     "price": 0.0
   },
   {
     "act_symbol": "AMRK",
     "symbol": "AMRK",
     "Name": "AMRK",
-    "RevenueTTM": 20.18,
+    "RevenueTTM": 11.94,
     "SharesOutstanding": 24700000.0,
     "price": 0.0
   },
@@ -939,7 +1155,7 @@
     "act_symbol": "AMRN",
     "symbol": "AMRN",
     "Name": "AMRN",
-    "RevenueTTM": 0.36,
+    "RevenueTTM": 0.22,
     "SharesOutstanding": 20950000.0,
     "price": 0.0
   },
@@ -947,7 +1163,7 @@
     "act_symbol": "AMRS",
     "symbol": "AMRS",
     "Name": "AMRS",
-    "RevenueTTM": 0.47,
+    "RevenueTTM": 0.27,
     "SharesOutstanding": 365600000.0,
     "price": 0.0
   },
@@ -955,7 +1171,7 @@
     "act_symbol": "AMRX",
     "symbol": "AMRX",
     "Name": "AMRX",
-    "RevenueTTM": 5.34,
+    "RevenueTTM": 3.05,
     "SharesOutstanding": 328930000.0,
     "price": 0.0
   },
@@ -963,7 +1179,7 @@
     "act_symbol": "AMRZ",
     "symbol": "AMRZ",
     "Name": "AMRZ",
-    "RevenueTTM": 20.51,
+    "RevenueTTM": 11.91,
     "SharesOutstanding": 553200000.0,
     "price": 0.0
   },
@@ -971,7 +1187,7 @@
     "act_symbol": "AMSC",
     "symbol": "AMSC",
     "Name": "AMSC",
-    "RevenueTTM": 0.53,
+    "RevenueTTM": 0.3,
     "SharesOutstanding": 46730000.0,
     "price": 0.0
   },
@@ -979,7 +1195,7 @@
     "act_symbol": "AMSF",
     "symbol": "AMSF",
     "Name": "AMSF",
-    "RevenueTTM": 0.56,
+    "RevenueTTM": 0.32,
     "SharesOutstanding": 18860000.0,
     "price": 0.0
   },
@@ -1003,7 +1219,7 @@
     "act_symbol": "AMT",
     "symbol": "AMT",
     "Name": "AMT",
-    "RevenueTTM": 18.84,
+    "RevenueTTM": 10.82,
     "SharesOutstanding": 466830000.0,
     "price": 0.0
   },
@@ -1011,7 +1227,7 @@
     "act_symbol": "AMTB",
     "symbol": "AMTB",
     "Name": "AMTB",
-    "RevenueTTM": 1.17,
+    "RevenueTTM": 0.66,
     "SharesOutstanding": 40510000.0,
     "price": 0.0
   },
@@ -1019,8 +1235,8 @@
     "act_symbol": "AMTD",
     "symbol": "AMTD",
     "Name": "AMTD",
-    "RevenueTTM": 0.16,
-    "SharesOutstanding": 541200000.0,
+    "RevenueTTM": 0.33,
+    "SharesOutstanding": 481370000.0,
     "price": 0.0
   },
   {
@@ -1035,15 +1251,95 @@
     "act_symbol": "AMTX",
     "symbol": "AMTX",
     "Name": "AMTX",
-    "RevenueTTM": 0.38,
+    "RevenueTTM": 0.22,
     "SharesOutstanding": 66800000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AMWD",
+    "symbol": "AMWD",
+    "Name": "AMWD",
+    "RevenueTTM": 1.52,
+    "SharesOutstanding": 14570000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AMWL",
+    "symbol": "AMWL",
+    "Name": "AMWL",
+    "RevenueTTM": 0.24,
+    "SharesOutstanding": 16590000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AMX",
+    "symbol": "AMX",
+    "Name": "AMX",
+    "RevenueTTM": 54.63,
+    "SharesOutstanding": 3010000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AMYT",
+    "symbol": "AMYT",
+    "Name": "AMYT",
+    "RevenueTTM": 0.24,
+    "SharesOutstanding": 320230000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AMZN",
+    "symbol": "AMZN",
+    "Name": "AMZN",
+    "RevenueTTM": 742.78,
+    "SharesOutstanding": 10874000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AN",
+    "symbol": "AN",
+    "Name": "AN",
+    "RevenueTTM": 27.49,
+    "SharesOutstanding": 35100000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ANAB",
+    "symbol": "ANAB",
+    "Name": "ANAB",
+    "RevenueTTM": 0.23,
+    "SharesOutstanding": 28690000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ANAT",
+    "symbol": "ANAT",
+    "Name": "ANAT",
+    "RevenueTTM": 3.32,
+    "SharesOutstanding": 26890000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ANCX",
+    "symbol": "ANCX",
+    "Name": "ANCX",
+    "RevenueTTM": 0.14,
+    "SharesOutstanding": 20930000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ANDE",
+    "symbol": "ANDE",
+    "Name": "ANDE",
+    "RevenueTTM": 10.98,
+    "SharesOutstanding": 34210000.0,
     "price": 0.0
   },
   {
     "act_symbol": "APOG",
     "symbol": "APOG",
     "Name": "APOG",
-    "RevenueTTM": 2.45,
+    "RevenueTTM": 1.4,
     "SharesOutstanding": 21310000.0,
     "price": 0.0
   },
@@ -1051,7 +1347,7 @@
     "act_symbol": "APP",
     "symbol": "APP",
     "Name": "APP",
-    "RevenueTTM": 10.06,
+    "RevenueTTM": 5.84,
     "SharesOutstanding": 338730000.0,
     "price": 0.0
   },
@@ -1059,7 +1355,7 @@
     "act_symbol": "APPF",
     "symbol": "APPF",
     "Name": "APPF",
-    "RevenueTTM": 1.71,
+    "RevenueTTM": 1.0,
     "SharesOutstanding": 35810000.0,
     "price": 0.0
   },
@@ -1067,7 +1363,7 @@
     "act_symbol": "APPN",
     "symbol": "APPN",
     "Name": "APPN",
-    "RevenueTTM": 1.32,
+    "RevenueTTM": 0.76,
     "SharesOutstanding": 73820000.0,
     "price": 0.0
   },
@@ -1075,7 +1371,7 @@
     "act_symbol": "APPS",
     "symbol": "APPS",
     "Name": "APPS",
-    "RevenueTTM": 1.0,
+    "RevenueTTM": 0.57,
     "SharesOutstanding": 120050000.0,
     "price": 0.0
   },
@@ -1083,15 +1379,23 @@
     "act_symbol": "APR",
     "symbol": "APR",
     "Name": "APR",
-    "RevenueTTM": 2.02,
+    "RevenueTTM": 1.16,
     "SharesOutstanding": 38210000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "APRE",
+    "symbol": "APRE",
+    "Name": "APRE",
+    "RevenueTTM": 840000.0,
+    "SharesOutstanding": 6080000.0,
     "price": 0.0
   },
   {
     "act_symbol": "APRN",
     "symbol": "APRN",
     "Name": "APRN",
-    "RevenueTTM": 0.78,
+    "RevenueTTM": 0.44,
     "SharesOutstanding": 6510000.0,
     "price": 0.0
   },
@@ -1099,7 +1403,7 @@
     "act_symbol": "APT",
     "symbol": "APT",
     "Name": "APT",
-    "RevenueTTM": 0.1,
+    "RevenueTTM": 0.06,
     "SharesOutstanding": 10330000.0,
     "price": 0.0
   },
@@ -1115,7 +1419,7 @@
     "act_symbol": "APTS",
     "symbol": "APTS",
     "Name": "APTS",
-    "RevenueTTM": 0.77,
+    "RevenueTTM": 0.44,
     "SharesOutstanding": 56260000.0,
     "price": 0.0
   },
@@ -1123,7 +1427,7 @@
     "act_symbol": "APTV",
     "symbol": "APTV",
     "Name": "APTV",
-    "RevenueTTM": 35.85,
+    "RevenueTTM": 20.66,
     "SharesOutstanding": 213800000.0,
     "price": 0.0
   },
@@ -1131,7 +1435,7 @@
     "act_symbol": "APU",
     "symbol": "APU",
     "Name": "APU",
-    "RevenueTTM": 4.86,
+    "RevenueTTM": 2.82,
     "SharesOutstanding": 93040000.0,
     "price": 0.0
   },
@@ -1139,7 +1443,7 @@
     "act_symbol": "APWC",
     "symbol": "APWC",
     "Name": "APWC",
-    "RevenueTTM": 0.88,
+    "RevenueTTM": 0.52,
     "SharesOutstanding": 28410000.0,
     "price": 0.0
   },
@@ -1147,7 +1451,7 @@
     "act_symbol": "APY",
     "symbol": "APY",
     "Name": "APY",
-    "RevenueTTM": 2.14,
+    "RevenueTTM": 1.23,
     "SharesOutstanding": 77630000.0,
     "price": 0.0
   },
@@ -1155,7 +1459,7 @@
     "act_symbol": "APYX",
     "symbol": "APYX",
     "Name": "APYX",
-    "RevenueTTM": 0.1,
+    "RevenueTTM": 0.06,
     "SharesOutstanding": 42160000.0,
     "price": 0.0
   },
@@ -1179,7 +1483,7 @@
     "act_symbol": "AQN",
     "symbol": "AQN",
     "Name": "AQN",
-    "RevenueTTM": 4.44,
+    "RevenueTTM": 2.53,
     "SharesOutstanding": 772910000.0,
     "price": 0.0
   },
@@ -1187,7 +1491,7 @@
     "act_symbol": "AQST",
     "symbol": "AQST",
     "Name": "AQST",
-    "RevenueTTM": 0.09,
+    "RevenueTTM": 0.05,
     "SharesOutstanding": 122610000.0,
     "price": 0.0
   },
@@ -1195,7 +1499,7 @@
     "act_symbol": "AQUA",
     "symbol": "AQUA",
     "Name": "AQUA",
-    "RevenueTTM": 3.12,
+    "RevenueTTM": 1.81,
     "SharesOutstanding": 132400000.0,
     "price": 0.0
   },
@@ -1203,8 +1507,1248 @@
     "act_symbol": "AR",
     "symbol": "AR",
     "Name": "AR",
-    "RevenueTTM": 9.85,
+    "RevenueTTM": 5.87,
     "SharesOutstanding": 311430000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARA",
+    "symbol": "ARA",
+    "Name": "ARA",
+    "RevenueTTM": 0.81,
+    "SharesOutstanding": 33470000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARAI",
+    "symbol": "ARAI",
+    "Name": "ARAI",
+    "RevenueTTM": 130000.0,
+    "SharesOutstanding": 36170000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARAY",
+    "symbol": "ARAY",
+    "Name": "ARAY",
+    "RevenueTTM": 0.43,
+    "SharesOutstanding": 124300000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARC",
+    "symbol": "ARC",
+    "Name": "ARC",
+    "RevenueTTM": 0.29,
+    "SharesOutstanding": 43070000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARCB",
+    "symbol": "ARCB",
+    "Name": "ARCB",
+    "RevenueTTM": 4.04,
+    "SharesOutstanding": 22340000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARCC",
+    "symbol": "ARCC",
+    "Name": "ARCC",
+    "RevenueTTM": 3.08,
+    "SharesOutstanding": 718000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARCE",
+    "symbol": "ARCE",
+    "Name": "ARCE",
+    "RevenueTTM": 0.38,
+    "SharesOutstanding": 71890000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARCH",
+    "symbol": "ARCH",
+    "Name": "ARCH",
+    "RevenueTTM": 2.68,
+    "SharesOutstanding": 18100000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARCI",
+    "symbol": "ARCI",
+    "Name": "ARCI",
+    "RevenueTTM": 0.07,
+    "SharesOutstanding": 6880000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARCO",
+    "symbol": "ARCO",
+    "Name": "ARCO",
+    "RevenueTTM": 4.82,
+    "SharesOutstanding": 210660000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARCT",
+    "symbol": "ARCT",
+    "Name": "ARCT",
+    "RevenueTTM": 0.05,
+    "SharesOutstanding": 28420000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARCW",
+    "symbol": "ARCW",
+    "Name": "ARCW",
+    "RevenueTTM": 0.08,
+    "SharesOutstanding": 23340000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARCX",
+    "symbol": "ARCX",
+    "Name": "ARCX",
+    "RevenueTTM": 0.11,
+    "SharesOutstanding": 21520000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARD",
+    "symbol": "ARD",
+    "Name": "ARD",
+    "RevenueTTM": 5.47,
+    "SharesOutstanding": 236360000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARDT",
+    "symbol": "ARDT",
+    "Name": "ARDT",
+    "RevenueTTM": 6.43,
+    "SharesOutstanding": 141780000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ARDX",
+    "symbol": "ARDX",
+    "Name": "ARDX",
+    "RevenueTTM": 0.43,
+    "SharesOutstanding": 245860000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASC",
+    "symbol": "ASC",
+    "Name": "ASC",
+    "RevenueTTM": 0.32,
+    "SharesOutstanding": 40860000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASCMA",
+    "symbol": "ASCMA",
+    "Name": "ASCMA",
+    "RevenueTTM": 0.54,
+    "SharesOutstanding": 12360000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASGN",
+    "symbol": "ASGN",
+    "Name": "ASGN",
+    "RevenueTTM": 3.99,
+    "SharesOutstanding": 43700000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASH",
+    "symbol": "ASH",
+    "Name": "ASH",
+    "RevenueTTM": 1.81,
+    "SharesOutstanding": 46000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASIC",
+    "symbol": "ASIC",
+    "Name": "ASIC",
+    "RevenueTTM": 0.47,
+    "SharesOutstanding": 49770000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASIX",
+    "symbol": "ASIX",
+    "Name": "ASIX",
+    "RevenueTTM": 1.55,
+    "SharesOutstanding": 26980000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASLE",
+    "symbol": "ASLE",
+    "Name": "ASLE",
+    "RevenueTTM": 0.34,
+    "SharesOutstanding": 47240000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASM",
+    "symbol": "ASM",
+    "Name": "ASM",
+    "RevenueTTM": 0.11,
+    "SharesOutstanding": 173630000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASMB",
+    "symbol": "ASMB",
+    "Name": "ASMB",
+    "RevenueTTM": 0.07,
+    "SharesOutstanding": 16900000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASML",
+    "symbol": "ASML",
+    "Name": "ASML",
+    "RevenueTTM": 39.06,
+    "SharesOutstanding": 385700000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASNA",
+    "symbol": "ASNA",
+    "Name": "ASNA",
+    "RevenueTTM": 5.49,
+    "SharesOutstanding": 198000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASND",
+    "symbol": "ASND",
+    "Name": "ASND",
+    "RevenueTTM": 1.0,
+    "SharesOutstanding": 64550000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASO",
+    "symbol": "ASO",
+    "Name": "ASO",
+    "RevenueTTM": 6.14,
+    "SharesOutstanding": 65950000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASPN",
+    "symbol": "ASPN",
+    "Name": "ASPN",
+    "RevenueTTM": 0.23,
+    "SharesOutstanding": 82740000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASPS",
+    "symbol": "ASPS",
+    "Name": "ASPS",
+    "RevenueTTM": 0.18,
+    "SharesOutstanding": 11110000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASPU",
+    "symbol": "ASPU",
+    "Name": "ASPU",
+    "RevenueTTM": 0.07,
+    "SharesOutstanding": 25280000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASR",
+    "symbol": "ASR",
+    "Name": "ASR",
+    "RevenueTTM": 2.02,
+    "SharesOutstanding": 30000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASRT",
+    "symbol": "ASRT",
+    "Name": "ASRT",
+    "RevenueTTM": 0.1,
+    "SharesOutstanding": 6430000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASRV",
+    "symbol": "ASRV",
+    "Name": "ASRV",
+    "RevenueTTM": 0.09,
+    "SharesOutstanding": 16930000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AST",
+    "symbol": "AST",
+    "Name": "AST",
+    "RevenueTTM": 740000.0,
+    "SharesOutstanding": 55530000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASTE",
+    "symbol": "ASTE",
+    "Name": "ASTE",
+    "RevenueTTM": 1.48,
+    "SharesOutstanding": 23250000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASTH",
+    "symbol": "ASTH",
+    "Name": "ASTH",
+    "RevenueTTM": 3.53,
+    "SharesOutstanding": 49050000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASTI",
+    "symbol": "ASTI",
+    "Name": "ASTI",
+    "RevenueTTM": 120000.0,
+    "SharesOutstanding": 7970000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASTL",
+    "symbol": "ASTL",
+    "Name": "ASTL",
+    "RevenueTTM": 1.35,
+    "SharesOutstanding": 109180000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASTS",
+    "symbol": "ASTS",
+    "Name": "ASTS",
+    "RevenueTTM": 0.08,
+    "SharesOutstanding": 290690000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASUR",
+    "symbol": "ASUR",
+    "Name": "ASUR",
+    "RevenueTTM": 0.15,
+    "SharesOutstanding": 28870000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASV",
+    "symbol": "ASV",
+    "Name": "ASV",
+    "RevenueTTM": 0.12,
+    "SharesOutstanding": 9830000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASX",
+    "symbol": "ASX",
+    "Name": "ASX",
+    "RevenueTTM": 21.75,
+    "SharesOutstanding": 2242590000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ASYS",
+    "symbol": "ASYS",
+    "Name": "ASYS",
+    "RevenueTTM": 0.08,
+    "SharesOutstanding": 14940000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AT",
+    "symbol": "AT",
+    "Name": "AT",
+    "RevenueTTM": 0.27,
+    "SharesOutstanding": 117800000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ATAT",
+    "symbol": "ATAT",
+    "Name": "ATAT",
+    "RevenueTTM": 1.54,
+    "SharesOutstanding": 138590000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ATAX",
+    "symbol": "ATAX",
+    "Name": "ATAX",
+    "RevenueTTM": 0.08,
+    "SharesOutstanding": 22250000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "ATC",
+    "symbol": "ATC",
+    "Name": "ATC",
+    "RevenueTTM": 1.5,
+    "SharesOutstanding": 194700000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AULT",
+    "symbol": "AULT",
+    "Name": "AULT",
+    "RevenueTTM": 0.17,
+    "SharesOutstanding": 32610000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AUNA",
+    "symbol": "AUNA",
+    "Name": "AUNA",
+    "RevenueTTM": 1.3,
+    "SharesOutstanding": 74200000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AUO",
+    "symbol": "AUO",
+    "Name": "AUO",
+    "RevenueTTM": 10.57,
+    "SharesOutstanding": 960000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AUPH",
+    "symbol": "AUPH",
+    "Name": "AUPH",
+    "RevenueTTM": 0.3,
+    "SharesOutstanding": 137640000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AUTL",
+    "symbol": "AUTL",
+    "Name": "AUTL",
+    "RevenueTTM": 0.09,
+    "SharesOutstanding": 266140000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AUTO",
+    "symbol": "AUTO",
+    "Name": "AUTO",
+    "RevenueTTM": 0.07,
+    "SharesOutstanding": 13480000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AUY",
+    "symbol": "AUY",
+    "Name": "AUY",
+    "RevenueTTM": 1.85,
+    "SharesOutstanding": 990000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVA",
+    "symbol": "AVA",
+    "Name": "AVA",
+    "RevenueTTM": 1.92,
+    "SharesOutstanding": 82350000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVAH",
+    "symbol": "AVAH",
+    "Name": "AVAH",
+    "RevenueTTM": 2.52,
+    "SharesOutstanding": 222100000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVAL",
+    "symbol": "AVAL",
+    "Name": "AVAL",
+    "RevenueTTM": 15.22,
+    "SharesOutstanding": 1185210000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVAV",
+    "symbol": "AVAV",
+    "Name": "AVAV",
+    "RevenueTTM": 1.98,
+    "SharesOutstanding": 50060000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVB",
+    "symbol": "AVB",
+    "Name": "AVB",
+    "RevenueTTM": 3.07,
+    "SharesOutstanding": 140810000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVD",
+    "symbol": "AVD",
+    "Name": "AVD",
+    "RevenueTTM": 0.52,
+    "SharesOutstanding": 28650000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVDL",
+    "symbol": "AVDL",
+    "Name": "AVDL",
+    "RevenueTTM": 0.25,
+    "SharesOutstanding": 101280000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVDX",
+    "symbol": "AVDX",
+    "Name": "AVDX",
+    "RevenueTTM": 0.45,
+    "SharesOutstanding": 206930000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVEO",
+    "symbol": "AVEO",
+    "Name": "AVEO",
+    "RevenueTTM": 0.09,
+    "SharesOutstanding": 34620000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVGO",
+    "symbol": "AVGO",
+    "Name": "AVGO",
+    "RevenueTTM": 83.0,
+    "SharesOutstanding": 4876000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVH",
+    "symbol": "AVH",
+    "Name": "AVH",
+    "RevenueTTM": 4.67,
+    "SharesOutstanding": 124400000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVHI",
+    "symbol": "AVHI",
+    "Name": "AVHI",
+    "RevenueTTM": 0.82,
+    "SharesOutstanding": 22800000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVID",
+    "symbol": "AVID",
+    "Name": "AVID",
+    "RevenueTTM": 0.43,
+    "SharesOutstanding": 44100000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVIR",
+    "symbol": "AVIR",
+    "Name": "AVIR",
+    "RevenueTTM": 0.35,
+    "SharesOutstanding": 87090000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVLR",
+    "symbol": "AVLR",
+    "Name": "AVLR",
+    "RevenueTTM": 0.79,
+    "SharesOutstanding": 87990000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVNS",
+    "symbol": "AVNS",
+    "Name": "AVNS",
+    "RevenueTTM": 0.72,
+    "SharesOutstanding": 47500000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVNT",
+    "symbol": "AVNT",
+    "Name": "AVNT",
+    "RevenueTTM": 3.28,
+    "SharesOutstanding": 91900000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVNW",
+    "symbol": "AVNW",
+    "Name": "AVNW",
+    "RevenueTTM": 0.42,
+    "SharesOutstanding": 12920000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVO",
+    "symbol": "AVO",
+    "Name": "AVO",
+    "RevenueTTM": 1.25,
+    "SharesOutstanding": 70780000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVP",
+    "symbol": "AVP",
+    "Name": "AVP",
+    "RevenueTTM": 4.95,
+    "SharesOutstanding": 442600000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVPT",
+    "symbol": "AVPT",
+    "Name": "AVPT",
+    "RevenueTTM": 0.44,
+    "SharesOutstanding": 226110000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVT",
+    "symbol": "AVT",
+    "Name": "AVT",
+    "RevenueTTM": 24.96,
+    "SharesOutstanding": 82930000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVTA",
+    "symbol": "AVTA",
+    "Name": "AVTA",
+    "RevenueTTM": 0.79,
+    "SharesOutstanding": 39200000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVTR",
+    "symbol": "AVTR",
+    "Name": "AVTR",
+    "RevenueTTM": 6.55,
+    "SharesOutstanding": 676800000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVY",
+    "symbol": "AVY",
+    "Name": "AVY",
+    "RevenueTTM": 9.01,
+    "SharesOutstanding": 77000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "AVYA",
+    "symbol": "AVYA",
+    "Name": "AVYA",
+    "RevenueTTM": 2.92,
+    "SharesOutstanding": 85600000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BAH",
+    "symbol": "BAH",
+    "Name": "BAH",
+    "RevenueTTM": 11.22,
+    "SharesOutstanding": 120740000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BAK",
+    "symbol": "BAK",
+    "Name": "BAK",
+    "RevenueTTM": 12.28,
+    "SharesOutstanding": 398550000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BALL",
+    "symbol": "BALL",
+    "Name": "BALL",
+    "RevenueTTM": 13.67,
+    "SharesOutstanding": 267410000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BALY",
+    "symbol": "BALY",
+    "Name": "BALY",
+    "RevenueTTM": 2.66,
+    "SharesOutstanding": 60250000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BAM",
+    "symbol": "BAM",
+    "Name": "BAM",
+    "RevenueTTM": 5.07,
+    "SharesOutstanding": 1623680000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BANC",
+    "symbol": "BANC",
+    "Name": "BANC",
+    "RevenueTTM": 1.82,
+    "SharesOutstanding": 160830000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BAND",
+    "symbol": "BAND",
+    "Name": "BAND",
+    "RevenueTTM": 0.79,
+    "SharesOutstanding": 32960000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BANF",
+    "symbol": "BANF",
+    "Name": "BANF",
+    "RevenueTTM": 0.97,
+    "SharesOutstanding": 34030000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BANL",
+    "symbol": "BANL",
+    "Name": "BANL",
+    "RevenueTTM": 1.13,
+    "SharesOutstanding": 27500000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BANR",
+    "symbol": "BANR",
+    "Name": "BANR",
+    "RevenueTTM": 0.88,
+    "SharesOutstanding": 34260000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BAP",
+    "symbol": "BAP",
+    "Name": "BAP",
+    "RevenueTTM": 7.93,
+    "SharesOutstanding": 79660000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BARK",
+    "symbol": "BARK",
+    "Name": "BARK",
+    "RevenueTTM": 0.39,
+    "SharesOutstanding": 8550000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BAS",
+    "symbol": "BAS",
+    "Name": "BAS",
+    "RevenueTTM": 0.8,
+    "SharesOutstanding": 25580000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BASE",
+    "symbol": "BASE",
+    "Name": "BASE",
+    "RevenueTTM": 0.21,
+    "SharesOutstanding": 53650000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BASI",
+    "symbol": "BASI",
+    "Name": "BASI",
+    "RevenueTTM": 0.06,
+    "SharesOutstanding": 10910000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BATL",
+    "symbol": "BATL",
+    "Name": "BATL",
+    "RevenueTTM": 0.16,
+    "SharesOutstanding": 17420000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BATRA",
+    "symbol": "BATRA",
+    "Name": "BATRA",
+    "RevenueTTM": 0.76,
+    "SharesOutstanding": 64260000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BATRK",
+    "symbol": "BATRK",
+    "Name": "BATRK",
+    "RevenueTTM": 0.76,
+    "SharesOutstanding": 64400000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BAX",
+    "symbol": "BAX",
+    "Name": "BAX",
+    "RevenueTTM": 11.32,
+    "SharesOutstanding": 515000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BB",
+    "symbol": "BB",
+    "Name": "BB",
+    "RevenueTTM": 0.58,
+    "SharesOutstanding": 593190000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBAI",
+    "symbol": "BBAI",
+    "Name": "BBAI",
+    "RevenueTTM": 0.13,
+    "SharesOutstanding": 473060000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBAR",
+    "symbol": "BBAR",
+    "Name": "BBAR",
+    "RevenueTTM": 4.75,
+    "SharesOutstanding": 204240000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBBY",
+    "symbol": "BBBY",
+    "Name": "BBBY",
+    "RevenueTTM": 1.06,
+    "SharesOutstanding": 69050000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBCP",
+    "symbol": "BBCP",
+    "Name": "BBCP",
+    "RevenueTTM": 0.41,
+    "SharesOutstanding": 51010000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBD",
+    "symbol": "BBD",
+    "Name": "BBD",
+    "RevenueTTM": 60.2,
+    "SharesOutstanding": 11016890000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBDC",
+    "symbol": "BBDC",
+    "Name": "BBDC",
+    "RevenueTTM": 0.28,
+    "SharesOutstanding": 104710000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBDO",
+    "symbol": "BBDO",
+    "Name": "BBDO",
+    "RevenueTTM": 60.2,
+    "SharesOutstanding": 11016890000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBG",
+    "symbol": "BBG",
+    "Name": "BBG",
+    "RevenueTTM": 0.2,
+    "SharesOutstanding": 74790000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBGI",
+    "symbol": "BBGI",
+    "Name": "BBGI",
+    "RevenueTTM": 0.2,
+    "SharesOutstanding": 1810000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBIO",
+    "symbol": "BBIO",
+    "Name": "BBIO",
+    "RevenueTTM": 0.58,
+    "SharesOutstanding": 194900000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBLN",
+    "symbol": "BBLN",
+    "Name": "BBLN",
+    "RevenueTTM": 1.15,
+    "SharesOutstanding": 25030000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBNX",
+    "symbol": "BBNX",
+    "Name": "BBNX",
+    "RevenueTTM": 0.11,
+    "SharesOutstanding": 44440000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBOX",
+    "symbol": "BBOX",
+    "Name": "BBOX",
+    "RevenueTTM": 0.74,
+    "SharesOutstanding": 15200000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBQ",
+    "symbol": "BBQ",
+    "Name": "BBQ",
+    "RevenueTTM": 0.27,
+    "SharesOutstanding": 10850000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBRG",
+    "symbol": "BBRG",
+    "Name": "BBRG",
+    "RevenueTTM": 0.41,
+    "SharesOutstanding": 15220000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBSI",
+    "symbol": "BBSI",
+    "Name": "BBSI",
+    "RevenueTTM": 1.25,
+    "SharesOutstanding": 25030000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBT",
+    "symbol": "BBT",
+    "Name": "BBT",
+    "RevenueTTM": 1.03,
+    "SharesOutstanding": 83900000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBU",
+    "symbol": "BBU",
+    "Name": "BBU",
+    "RevenueTTM": 27.79,
+    "SharesOutstanding": 88680000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BBUC",
+    "symbol": "BBUC",
+    "Name": "BBUC",
+    "RevenueTTM": 27.14,
+    "SharesOutstanding": 210530000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BEP",
+    "symbol": "BEP",
+    "Name": "BEP",
+    "RevenueTTM": 7.9,
+    "SharesOutstanding": 572500000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BEPC",
+    "symbol": "BEPC",
+    "Name": "BEPC",
+    "RevenueTTM": 3.7,
+    "SharesOutstanding": 182380000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BERY",
+    "symbol": "BERY",
+    "Name": "BERY",
+    "RevenueTTM": 11.79,
+    "SharesOutstanding": 118200000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BEST",
+    "symbol": "BEST",
+    "Name": "BEST",
+    "RevenueTTM": 1.19,
+    "SharesOutstanding": 18510000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BETR",
+    "symbol": "BETR",
+    "Name": "BETR",
+    "RevenueTTM": 0.22,
+    "SharesOutstanding": 16410000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BF.A",
+    "symbol": "BF.A",
+    "Name": "BF.A",
+    "RevenueTTM": 3.93,
+    "SharesOutstanding": 459310000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BF.B",
+    "symbol": "BF.B",
+    "Name": "BF.B",
+    "RevenueTTM": 3.93,
+    "SharesOutstanding": 459310000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFAM",
+    "symbol": "BFAM",
+    "Name": "BFAM",
+    "RevenueTTM": 2.98,
+    "SharesOutstanding": 54700000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFC",
+    "symbol": "BFC",
+    "Name": "BFC",
+    "RevenueTTM": 0.27,
+    "SharesOutstanding": 11220000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFH",
+    "symbol": "BFH",
+    "Name": "BFH",
+    "RevenueTTM": 4.71,
+    "SharesOutstanding": 43200000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFI",
+    "symbol": "BFI",
+    "Name": "BFI",
+    "RevenueTTM": 0.17,
+    "SharesOutstanding": 27020000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFIN",
+    "symbol": "BFIN",
+    "Name": "BFIN",
+    "RevenueTTM": 0.07,
+    "SharesOutstanding": 12460000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFLY",
+    "symbol": "BFLY",
+    "Name": "BFLY",
+    "RevenueTTM": 0.1,
+    "SharesOutstanding": 256520000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFR",
+    "symbol": "BFR",
+    "Name": "BFR",
+    "RevenueTTM": 1.67,
+    "SharesOutstanding": 204030000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFRG",
+    "symbol": "BFRG",
+    "Name": "BFRG",
+    "RevenueTTM": 190000.0,
+    "SharesOutstanding": 10380000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFS",
+    "symbol": "BFS",
+    "Name": "BFS",
+    "RevenueTTM": 0.3,
+    "SharesOutstanding": 24300000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFST",
+    "symbol": "BFST",
+    "Name": "BFST",
+    "RevenueTTM": 0.53,
+    "SharesOutstanding": 32790000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BFX",
+    "symbol": "BFX",
+    "Name": "BFX",
+    "RevenueTTM": 0.26,
+    "SharesOutstanding": 36010000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BG",
+    "symbol": "BG",
+    "Name": "BG",
+    "RevenueTTM": 80.55,
+    "SharesOutstanding": 196000000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BGC",
+    "symbol": "BGC",
+    "Name": "BGC",
+    "RevenueTTM": 3.23,
+    "SharesOutstanding": 479220000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BGCP",
+    "symbol": "BGCP",
+    "Name": "BGCP",
+    "RevenueTTM": 1.82,
+    "SharesOutstanding": 501070000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BGFV",
+    "symbol": "BGFV",
+    "Name": "BGFV",
+    "RevenueTTM": 0.76,
+    "SharesOutstanding": 22160000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BGG",
+    "symbol": "BGG",
+    "Name": "BGG",
+    "RevenueTTM": 1.87,
+    "SharesOutstanding": 41600000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BGM",
+    "symbol": "BGM",
+    "Name": "BGM",
+    "RevenueTTM": 0.06,
+    "SharesOutstanding": 31620000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BGNE",
+    "symbol": "BGNE",
+    "Name": "BGNE",
+    "RevenueTTM": 3.32,
+    "SharesOutstanding": 105900000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BGRY",
+    "symbol": "BGRY",
+    "Name": "BGRY",
+    "RevenueTTM": 0.07,
+    "SharesOutstanding": 241600000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BGS",
+    "symbol": "BGS",
+    "Name": "BGS",
+    "RevenueTTM": 1.81,
+    "SharesOutstanding": 80200000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BGSF",
+    "symbol": "BGSF",
+    "Name": "BGSF",
+    "RevenueTTM": 0.13,
+    "SharesOutstanding": 10680000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BGSI",
+    "symbol": "BGSI",
+    "Name": "BGSI",
+    "RevenueTTM": 3.36,
+    "SharesOutstanding": 27830000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BH",
+    "symbol": "BH",
+    "Name": "BH",
+    "RevenueTTM": 0.4,
+    "SharesOutstanding": 260000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BHB",
+    "symbol": "BHB",
+    "Name": "BHB",
+    "RevenueTTM": 0.25,
+    "SharesOutstanding": 16800000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BHBK",
+    "symbol": "BHBK",
+    "Name": "BHBK",
+    "RevenueTTM": 0.11,
+    "SharesOutstanding": 25240000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BHC",
+    "symbol": "BHC",
+    "Name": "BHC",
+    "RevenueTTM": 10.53,
+    "SharesOutstanding": 378900000.0,
+    "price": 0.0
+  },
+  {
+    "act_symbol": "BHE",
+    "symbol": "BHE",
+    "Name": "BHE",
+    "RevenueTTM": 2.7,
+    "SharesOutstanding": 36280000.0,
     "price": 0.0
   }
 ]
