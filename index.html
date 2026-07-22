@@ -745,76 +745,38 @@
     }
   }
 
-  // Live On-Demand SQL API Stock Data Fetcher via CORS Proxy
+  // Local JSON Stock Data Fetcher (Populated by GitHub Actions)
   async function fetchStockData() {
     const tickerInput = document.getElementById('tickerInput');
     const statusElem = document.getElementById('apiStatus');
     const ticker = tickerInput.value.trim().toUpperCase();
 
     if (!ticker) {
-      alert('Please enter a stock ticker symbol (e.g., AAPL, MSFT, NVDA).');
+      alert('Please enter a stock ticker symbol (e.g., AAPL, MSFT, GOOGL).');
       return;
     }
 
-    statusElem.innerText = 'Fetching live data...';
+    statusElem.innerText = 'Searching data...';
     statusElem.style.color = 'var(--muted)';
 
-    const query = `
-      SELECT 
-        i.act_symbol, 
-        i.date, 
-        i.period, 
-        i.sales, 
-        e.shares_outstanding 
-      FROM income_statement i
-      LEFT JOIN balance_sheet_equity e 
-        ON i.act_symbol = e.act_symbol AND i.date = e.date AND i.period = e.period
-      WHERE i.act_symbol = '${ticker}'
-        AND UPPER(i.period) NOT IN ('FY', 'ANNUAL', 'A', '12M', 'Y', 'YEAR')
-        AND UPPER(i.period) NOT LIKE '%YEAR%'
-        AND UPPER(i.period) NOT LIKE '%ANNUAL%'
-      ORDER BY i.date DESC
-      LIMIT 4
-    `;
-
-    const owner = "post-no-preference";
-    const repo = "earnings";
-    const branch = "master";
-    const targetUrl = `https://www.dolthub.com/api/v1alpha1/${owner}/${repo}/${branch}?q=${encodeURIComponent(query)}`;
-    const url = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
-
     try {
-      const response = await fetch(url);
+      const response = await fetch('data.json');
       
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Data file not found');
       }
 
-      const data = await response.json();
-      const rows = data.rows || [];
+      const allData = await response.json();
 
-      if (rows.length < 4) {
-        statusElem.innerText = `Ticker ${ticker} not found or insufficient quarterly data!`;
+      const stockData = Array.isArray(allData) 
+        ? allData.find(item => (item.act_symbol && item.act_symbol.toUpperCase() === ticker) || (item.symbol && item.symbol.toUpperCase() === ticker))
+        : allData[ticker];
+
+      if (!stockData) {
+        statusElem.innerText = `Ticker ${ticker} not found in local data file!`;
         statusElem.style.color = 'var(--em-red)';
         return;
       }
-
-      let rawSalesSum = 0;
-      rows.forEach(q => {
-        rawSalesSum += parseFloat(q.sales || 0);
-      });
-      const revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
-
-      const mostRecent = rows[0];
-      const sharesRaw = parseFloat(mostRecent.shares_outstanding || 0);
-      const sharesInBillions = sharesRaw > 1e6 ? sharesRaw / 1e9 : sharesRaw;
-
-      const stockData = {
-        Name: ticker,
-        RevenueTTM: revInBillions,
-        SharesOutstanding: sharesInBillions,
-        price: 0.0
-      };
 
       statusElem.innerText = `Loaded ${ticker} successfully!`;
       statusElem.style.color = 'var(--em-green)';
@@ -823,19 +785,19 @@
 
     } catch (error) {
       console.error('Fetch Error:', error);
-      statusElem.innerText = 'Failed to fetch live data from DoltHub!';
+      statusElem.innerText = 'Failed to load data.json!';
       statusElem.style.color = 'var(--em-red)';
     }
   }
 
   // Populate UI with retrieved stock data
   function populateStockUI(ticker, overview) {
-    const price = parseFloat(overview.price || 0);
-    const sharesOut = parseFloat(overview.SharesOutstanding || 0);
-    const revenueTTM = parseFloat(overview.RevenueTTM || 0);
+    const price = parseFloat(overview.price || overview.close || overview['05. price'] || 0);
+    const sharesOut = parseFloat(overview.SharesOutstanding || overview.weighted_average_shares_diluted || overview.shares_outstanding || 0);
+    const revenueTTM = parseFloat(overview.RevenueTTM || overview.total_revenue || overview.revenue || 0);
 
     const nameElem = document.getElementById('companyName');
-    nameElem.innerText = overview.Name || ticker;
+    nameElem.innerText = overview.Name || overview.company_name || ticker;
     nameElem.classList.remove('is-placeholder');
 
     const tickerElem = document.getElementById('companyTickerDisplay');
@@ -864,13 +826,15 @@
     }
 
     if (sharesOut > 0) {
-      document.getElementById('sharesOut').value = sharesOut.toFixed(3);
+      const sharesInUnit = sharesOut > 1e6 ? sharesOut / 1e9 : sharesOut;
+      document.getElementById('sharesOut').value = sharesInUnit.toFixed(3);
     } else {
       document.getElementById('sharesOut').value = '';
     }
 
     if (revenueTTM > 0) {
-      document.getElementById('ttmRevenue').value = revenueTTM.toFixed(2);
+      const revInUnit = revenueTTM > 1e6 ? revenueTTM / 1e9 : revenueTTM;
+      document.getElementById('ttmRevenue').value = revInUnit.toFixed(2);
     } else {
       document.getElementById('ttmRevenue').value = '';
     }
