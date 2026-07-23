@@ -745,7 +745,7 @@
     }
   }
 
-  // Local JSON Stock Data Fetcher (Populated by GitHub Actions)
+  // Fetch Stock Data Live via Cloudflare Worker Proxy targeting DoltHub SQL Database
   async function fetchStockData() {
     const tickerInput = document.getElementById('tickerInput');
     const statusElem = document.getElementById('apiStatus');
@@ -756,27 +756,48 @@
       return;
     }
 
-    statusElem.innerText = 'Searching data...';
+    statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
+    const query = `
+      SELECT sales, date, period 
+      FROM _income_statement 
+      WHERE act_symbol = '${ticker}' 
+      ORDER BY date DESC 
+      LIMIT 4
+    `;
+
+    const workerUrl = 'https://plain-cake-183d.jpuurins.workers.dev';
+    const url = `${workerUrl}?q=${encodeURIComponent(query)}`;
+
     try {
-      const response = await fetch('data.json');
+      const response = await fetch(url);
       
       if (!response.ok) {
-        throw new Error('Data file not found');
+        throw new Error('Network response was not ok');
       }
 
-      const allData = await response.json();
+      const data = await response.json();
+      const rows = data.rows || [];
 
-      const stockData = Array.isArray(allData) 
-        ? allData.find(item => (item.act_symbol && item.act_symbol.toUpperCase() === ticker) || (item.symbol && item.symbol.toUpperCase() === ticker))
-        : allData[ticker];
-
-      if (!stockData) {
-        statusElem.innerText = `Ticker ${ticker} not found in local data file!`;
+      if (rows.length === 0) {
+        statusElem.innerText = `Ticker ${ticker} not found!`;
         statusElem.style.color = 'var(--em-red)';
         return;
       }
+
+      let rawSalesSum = 0;
+      rows.forEach(q => {
+        rawSalesSum += parseFloat(q.sales || 0);
+      });
+      const revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
+
+      const stockData = {
+        Name: ticker,
+        RevenueTTM: revInBillions,
+        SharesOutstanding: 0, 
+        price: 0.0
+      };
 
       statusElem.innerText = `Loaded ${ticker} successfully!`;
       statusElem.style.color = 'var(--em-green)';
@@ -785,7 +806,7 @@
 
     } catch (error) {
       console.error('Fetch Error:', error);
-      statusElem.innerText = 'Failed to load data.json!';
+      statusElem.innerText = 'Failed to fetch live data!';
       statusElem.style.color = 'var(--em-red)';
     }
   }
