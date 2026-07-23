@@ -759,8 +759,8 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Query recent records without restrictive period checks so DoltHub executes safely
-    const query = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 10`;
+    // Specifically request period = 'Quarter' to filter out annual sum rows ('Year')
+    const query = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
 
     const workerUrl = 'https://plain-cake-183d.jpuurins.workers.dev';
     const url = `${workerUrl}?q=${encodeURIComponent(query)}`;
@@ -789,13 +789,8 @@
         return;
       }
 
-      // Filter out annual summaries ('FY', 'Y', 'Annual') dynamically in JS
-      const quarterlyRows = rows.filter(r => {
-        const p = (r.period || '').toString().toUpperCase();
-        return !p.includes('FY') && !p.includes('ANNUAL') && p !== 'Y';
-      }).slice(0, 4);
-
-      // Fallback to taking the top 4 if no period label matched
+      // Explicit JS safeguard: strip away any record where period is 'Year'
+      const quarterlyRows = rows.filter(r => (r.period || '').toString().toLowerCase() === 'quarter').slice(0, 4);
       const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
 
       let rawSalesSum = 0;
