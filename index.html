@@ -759,29 +759,35 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Specifically request period = 'Quarter' to filter out annual sum rows ('Year')
-    const query = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
+    // Queries for Income Statement (Revenue) and Balance Sheet Equity (Shares Outstanding)
+    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
+    const balanceQuery = `SELECT common_stock_shares_outstanding, date, period FROM balance_sheet_equity WHERE act_symbol = '${ticker}' AND common_stock_shares_outstanding IS NOT NULL ORDER BY date DESC LIMIT 1`;
 
     const workerUrl = 'https://plain-cake-183d.jpuurins.workers.dev';
-    const url = `${workerUrl}?q=${encodeURIComponent(query)}`;
+    const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
+    const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
 
     try {
-      const response = await fetch(url);
+      const [incomeResponse, balanceResponse] = await Promise.all([
+        fetch(incomeUrl),
+        fetch(balanceUrl)
+      ]);
       
-      if (!response.ok) {
+      if (!incomeResponse.ok || !balanceResponse.ok) {
         throw new Error('Network response was not ok');
       }
 
-      const data = await response.json();
+      const incomeData = await incomeResponse.json();
+      const balanceData = await balanceResponse.json();
 
-      if (data.query_execution_status === 'Error') {
-        console.error('DoltHub SQL Error:', data.query_execution_message);
+      if (incomeData.query_execution_status === 'Error') {
+        console.error('DoltHub Income SQL Error:', incomeData.query_execution_message);
         statusElem.innerText = `Database Error for ${ticker}`;
         statusElem.style.color = 'var(--em-red)';
         return;
       }
 
-      const rows = data.rows || [];
+      const rows = incomeData.rows || [];
 
       if (rows.length === 0) {
         statusElem.innerText = `Ticker ${ticker} not found!`;
@@ -799,10 +805,17 @@
       });
       const revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
 
+      // Extract shares outstanding from balance sheet equity result
+      let sharesOutBillions = 0;
+      if (balanceData.rows && balanceData.rows.length > 0) {
+        const rawShares = parseFloat(balanceData.rows[0].common_stock_shares_outstanding || 0);
+        sharesOutBillions = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
+      }
+
       const stockData = {
         Name: ticker,
         RevenueTTM: revInBillions,
-        SharesOutstanding: 0, 
+        SharesOutstanding: sharesOutBillions, 
         price: 0.0
       };
 
@@ -821,7 +834,7 @@
   // Populate UI with retrieved stock data
   function populateStockUI(ticker, overview) {
     const price = parseFloat(overview.price || overview.close || overview['05. price'] || 0);
-    const sharesOut = parseFloat(overview.SharesOutstanding || overview.weighted_average_shares_diluted || overview.shares_outstanding || 0);
+    const sharesOut = parseFloat(overview.SharesOutstanding || 0);
     const revenueTTM = parseFloat(overview.RevenueTTM || overview.total_revenue || overview.revenue || 0);
 
     const nameElem = document.getElementById('companyName');
@@ -854,8 +867,7 @@
     }
 
     if (sharesOut > 0) {
-      const sharesInUnit = sharesOut > 1e6 ? sharesOut / 1e9 : sharesOut;
-      document.getElementById('sharesOut').value = sharesInUnit.toFixed(3);
+      document.getElementById('sharesOut').value = sharesOut.toFixed(3);
     } else {
       document.getElementById('sharesOut').value = '';
     }
