@@ -759,9 +759,9 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Queries for Income Statement (Revenue) and Balance Sheet Equity (Shares Outstanding)
+    // Queries: Income Statement & Balance Sheet Equity (utilizing shares_outstanding)
     const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
-    const balanceQuery = `SELECT common_stock_shares_outstanding, date, period FROM balance_sheet_equity WHERE act_symbol = '${ticker}' AND common_stock_shares_outstanding IS NOT NULL ORDER BY date DESC LIMIT 1`;
+    const balanceQuery = `SELECT shares_outstanding, date, period FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
 
     const workerUrl = 'https://plain-cake-183d.jpuurins.workers.dev';
     const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
@@ -781,7 +781,7 @@
       const balanceData = await balanceResponse.json();
 
       if (incomeData.query_execution_status === 'Error') {
-        console.error('DoltHub Income SQL Error:', incomeData.query_execution_message);
+        console.error('DoltHub SQL Error:', incomeData.query_execution_message);
         statusElem.innerText = `Database Error for ${ticker}`;
         statusElem.style.color = 'var(--em-red)';
         return;
@@ -795,7 +795,7 @@
         return;
       }
 
-      // Explicit JS safeguard: strip away any record where period is 'Year'
+      // Filter for quarterly rows
       const quarterlyRows = rows.filter(r => (r.period || '').toString().toLowerCase() === 'quarter').slice(0, 4);
       const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
 
@@ -805,11 +805,18 @@
       });
       const revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
 
-      // Extract shares outstanding from balance sheet equity result
+      // Extract shares outstanding using shares_outstanding with fallback checks
       let sharesOutBillions = 0;
       if (balanceData.rows && balanceData.rows.length > 0) {
-        const rawShares = parseFloat(balanceData.rows[0].common_stock_shares_outstanding || 0);
-        sharesOutBillions = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
+        const validRow = balanceData.rows.find(r => {
+          const val = parseFloat(r.shares_outstanding ?? r.common_stock_shares_outstanding ?? r.weighted_average_shares_diluted ?? 0);
+          return val > 0;
+        });
+
+        if (validRow) {
+          const rawShares = parseFloat(validRow.shares_outstanding ?? validRow.common_stock_shares_outstanding ?? validRow.weighted_average_shares_diluted);
+          sharesOutBillions = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
+        }
       }
 
       const stockData = {
@@ -834,7 +841,7 @@
   // Populate UI with retrieved stock data
   function populateStockUI(ticker, overview) {
     const price = parseFloat(overview.price || overview.close || overview['05. price'] || 0);
-    const sharesOut = parseFloat(overview.SharesOutstanding || 0);
+    const sharesOut = parseFloat(overview.SharesOutstanding || overview.shares_outstanding || overview.common_stock_shares_outstanding || overview.weighted_average_shares_diluted || 0);
     const revenueTTM = parseFloat(overview.RevenueTTM || overview.total_revenue || overview.revenue || 0);
 
     const nameElem = document.getElementById('companyName');
@@ -867,7 +874,8 @@
     }
 
     if (sharesOut > 0) {
-      document.getElementById('sharesOut').value = sharesOut.toFixed(3);
+      const sharesInUnit = sharesOut > 1e6 ? sharesOut / 1e9 : sharesOut;
+      document.getElementById('sharesOut').value = sharesInUnit.toFixed(3);
     } else {
       document.getElementById('sharesOut').value = '';
     }
