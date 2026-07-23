@@ -759,13 +759,8 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    const query = `
-      SELECT sales, date, period 
-      FROM _income_statement 
-      WHERE act_symbol = '${ticker}' 
-      ORDER BY date DESC 
-      LIMIT 4
-    `;
+    // Clean SQL string without extraneous characters or URL syntax:
+    const query = `SELECT sales, date, period FROM _income_statement WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 4`;
 
     const workerUrl = 'https://plain-cake-183d.jpuurins.workers.dev';
     const url = `${workerUrl}?q=${encodeURIComponent(query)}`;
@@ -778,6 +773,15 @@
       }
 
       const data = await response.json();
+
+      // Check if DoltHub returned a SQL execution error
+      if (data.query_execution_status === 'Error') {
+        console.error('DoltHub SQL Error:', data.query_execution_message);
+        statusElem.innerText = `Database Error for ${ticker}`;
+        statusElem.style.color = 'var(--em-red)';
+        return;
+      }
+
       const rows = data.rows || [];
 
       if (rows.length === 0) {
