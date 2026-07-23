@@ -759,8 +759,8 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Restrict SQL query specifically to quarterly entries ('Q1', 'Q2', 'Q3', 'Q4') to properly derive TTM:
-    const query = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period IN ('Q1', 'Q2', 'Q3', 'Q4') ORDER BY date DESC LIMIT 4`;
+    // Query recent records without restrictive period checks so DoltHub executes safely
+    const query = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 10`;
 
     const workerUrl = 'https://plain-cake-183d.jpuurins.workers.dev';
     const url = `${workerUrl}?q=${encodeURIComponent(query)}`;
@@ -774,7 +774,6 @@
 
       const data = await response.json();
 
-      // Check if DoltHub returned a SQL execution error
       if (data.query_execution_status === 'Error') {
         console.error('DoltHub SQL Error:', data.query_execution_message);
         statusElem.innerText = `Database Error for ${ticker}`;
@@ -790,8 +789,17 @@
         return;
       }
 
+      // Filter out annual summaries ('FY', 'Y', 'Annual') dynamically in JS
+      const quarterlyRows = rows.filter(r => {
+        const p = (r.period || '').toString().toUpperCase();
+        return !p.includes('FY') && !p.includes('ANNUAL') && p !== 'Y';
+      }).slice(0, 4);
+
+      // Fallback to taking the top 4 if no period label matched
+      const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
+
       let rawSalesSum = 0;
-      rows.forEach(q => {
+      targetRows.forEach(q => {
         rawSalesSum += parseFloat(q.sales || 0);
       });
       const revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
