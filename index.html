@@ -134,9 +134,9 @@
     }
 
     .company-ticker { 
-      font-size: 0.8rem; 
+      font-size: 0.85rem; 
       color: var(--muted); 
-      font-weight: 900; 
+      font-weight: 800; 
       text-transform: uppercase; 
       transition: color 0.3s ease;
     }
@@ -566,7 +566,7 @@
   <!-- Ticker Auto-Fill Search Card -->
   <div class="search-card">
     <div class="search-input-group">
-      <input type="text" id="tickerInput" placeholder="Enter Ticker (e.g., AAPL, MSFT)">
+      <input type="text" id="tickerInput" placeholder="Enter Ticker (e.g., AAPL, MSFT, BE)">
       <button class="search-btn" onclick="fetchStockData()">Search</button>
     </div>
     <span class="api-status" id="apiStatus"></span>
@@ -580,7 +580,7 @@
         <div id="companyLogoFallback" class="company-logo-fallback">📈</div>
       </div>
       <div>
-        <h2 id="companyName" class="company-name is-placeholder">Company Name (e.g. Apple)</h2>
+        <h2 id="companyName" class="company-name is-placeholder">Company Name (e.g. Bloom Energy)</h2>
         <div id="companyTickerDisplay" class="company-ticker is-placeholder">_______</div>
       </div>
     </div>
@@ -745,6 +745,24 @@
     }
   }
 
+  // Auxiliary Fetch for Full Company Name
+  async function fetchCompanyName(ticker) {
+    try {
+      const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}`;
+      const res = await fetch(yahooUrl);
+      if (res.ok) {
+        const data = await res.json();
+        const meta = data?.chart?.result?.[0]?.meta;
+        if (meta?.longName || meta?.shortName) {
+          return meta.longName || meta.shortName;
+        }
+      }
+    } catch (e) {
+      // Fallback silently if CORS/Network restricts Yahoo endpoint
+    }
+    return null;
+  }
+
   // Fetch Stock Data Live via Cloudflare Worker Proxy targeting DoltHub SQL Database
   async function fetchStockData() {
     const tickerInput = document.getElementById('tickerInput');
@@ -752,14 +770,14 @@
     const ticker = tickerInput.value.trim().toUpperCase();
 
     if (!ticker) {
-      alert('Please enter a stock ticker symbol (e.g., AAPL, MSFT, GOOGL).');
+      alert('Please enter a stock ticker symbol (e.g., AAPL, MSFT, BE).');
       return;
     }
 
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Queries: Income Statement & Balance Sheet Equity (utilizing shares_outstanding)
+    // Queries: Income Statement & Balance Sheet Equity
     const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
     const balanceQuery = `SELECT shares_outstanding, date, period FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
 
@@ -768,9 +786,10 @@
     const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
 
     try {
-      const [incomeResponse, balanceResponse] = await Promise.all([
+      const [incomeResponse, balanceResponse, resolvedName] = await Promise.all([
         fetch(incomeUrl),
-        fetch(balanceUrl)
+        fetch(balanceUrl),
+        fetchCompanyName(ticker)
       ]);
       
       if (!incomeResponse.ok || !balanceResponse.ok) {
@@ -820,7 +839,8 @@
       }
 
       const stockData = {
-        Name: ticker,
+        CompanyName: resolvedName || ticker,
+        Ticker: ticker,
         RevenueTTM: revInBillions,
         SharesOutstanding: sharesOutBillions, 
         price: 0.0
@@ -841,11 +861,11 @@
   // Populate UI with retrieved stock data
   function populateStockUI(ticker, overview) {
     const price = parseFloat(overview.price || overview.close || overview['05. price'] || 0);
-    const sharesOut = parseFloat(overview.SharesOutstanding || overview.shares_outstanding || overview.common_stock_shares_outstanding || overview.weighted_average_shares_diluted || 0);
+    const sharesOut = parseFloat(overview.SharesOutstanding || overview.shares_outstanding || 0);
     const revenueTTM = parseFloat(overview.RevenueTTM || overview.total_revenue || overview.revenue || 0);
 
     const nameElem = document.getElementById('companyName');
-    nameElem.innerText = overview.Name || overview.company_name || ticker;
+    nameElem.innerText = overview.CompanyName || ticker;
     nameElem.classList.remove('is-placeholder');
 
     const tickerElem = document.getElementById('companyTickerDisplay');
