@@ -759,8 +759,8 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Clean SQL string without extraneous characters or URL syntax:
-    const query = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 4`;
+    // Restrict SQL query specifically to quarterly entries ('Q1', 'Q2', 'Q3', 'Q4') to properly derive TTM:
+    const query = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period IN ('Q1', 'Q2', 'Q3', 'Q4') ORDER BY date DESC LIMIT 4`;
 
     const workerUrl = 'https://plain-cake-183d.jpuurins.workers.dev';
     const url = `${workerUrl}?q=${encodeURIComponent(query)}`;
