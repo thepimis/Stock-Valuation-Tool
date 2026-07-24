@@ -888,9 +888,9 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Flexible query checking both act_symbol and symbol to avoid missing data for ADBE/MSFT
-    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE (act_symbol = '${rawTicker}' OR symbol = '${rawTicker}') ORDER BY date DESC LIMIT 8`;
-    const balanceQuery = `SELECT shares_outstanding, common_stock_shares_outstanding, weighted_average_shares_diluted, date FROM balance_sheet_equity WHERE (act_symbol = '${rawTicker}' OR symbol = '${rawTicker}') ORDER BY date DESC LIMIT 5`;
+    // Updated valid SQL targeting act_symbol in Dolt schema
+    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${rawTicker}' ORDER BY date DESC LIMIT 8`;
+    const balanceQuery = `SELECT shares_outstanding, common_stock_shares_outstanding, weighted_average_shares_diluted, date FROM balance_sheet_equity WHERE act_symbol = '${rawTicker}' ORDER BY date DESC LIMIT 5`;
 
     const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
     const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
