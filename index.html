@@ -901,6 +901,7 @@
   let currentSearchResults = [];
   let activeSearchIndex = -1;
   let selectedSearchTicker = '';
+  let searchInProgress = false;
 
   function updateHeaderPrice() {
     const p = parseFloat(document.getElementById('currentPrice').value) || 0;
@@ -1388,6 +1389,10 @@
   // Yahoo and DoltHub are independent. A Yahoo failure cannot erase a
   // successful DoltHub response, and a DoltHub failure cannot erase Yahoo data.
   async function fetchStockData() {
+
+    if (searchInProgress) return;
+    searchInProgress = true;
+
     const rawValue = tickerInput.value;
     hideSearchDropdown();
     setStatus('');
@@ -1461,8 +1466,11 @@
       console.error('Stock load error:', error);
       setStatus(error.message || 'Failed to fetch stock data.', 'error');
     } finally {
+      searchInProgress = false;
       searchWrapper.classList.remove('is-loading');
       searchButton.disabled = false;
+      hideSearchDropdown();
+      setStatus('');
     }
   }
 
