@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stock Valuation Tool</title>
-  
+
   <!-- Browser Tab Favicon -->
   <link rel="icon" type="image/png" href="logo.png">
 
@@ -93,7 +93,6 @@
     
     .company-profile { display: flex; align-items: center; gap: 12px; }
 
-    /* Logo Container & Placeholder Styling */
     .company-logo-container {
       width: 40px;
       height: 40px;
@@ -141,7 +140,6 @@
       transition: color 0.3s ease;
     }
 
-    /* Bolder greyed-out state for placeholders */
     .company-name.is-placeholder,
     .company-ticker.is-placeholder {
       color: var(--muted);
@@ -186,7 +184,7 @@
       cursor: pointer;
     }
 
-    /* Ticker Search Section */
+    /* Search Section */
     .search-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -201,15 +199,13 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
-    .search-input-group {
-      display: flex;
-      gap: 10px;
+    .search-wrapper {
+      position: relative;
       flex: 1;
       min-width: 250px;
     }
 
-    .search-input-group input {
-      text-transform: uppercase;
+    .search-wrapper input {
       padding: 8px 12px;
       border-radius: 6px;
       border: 1px solid var(--border-color);
@@ -220,8 +216,50 @@
       outline: none;
     }
 
-    .search-input-group input:focus {
+    .search-wrapper input:focus {
       border-color: var(--em-green);
+    }
+
+    .search-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 0 0 8px 8px;
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+
+    .search-item {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .search-item:hover {
+      background: var(--input-bg);
+    }
+
+    .search-item-ticker {
+      font-weight: 800;
+      color: var(--em-green);
+    }
+
+    .search-item-name {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-left: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .search-btn {
@@ -389,7 +427,6 @@
       opacity: 1;
     }
 
-    /* Distinct Return Row Styling */
     .return-row-bg {
       background-color: var(--card-inner);
       border-top: 2px solid var(--border-color);
@@ -402,7 +439,6 @@
       letter-spacing: normal;
     }
 
-    /* Clean Return Value Text (No Boxes) */
     .ret-val-text {
       text-align: center;
       font-weight: 800;
@@ -410,7 +446,6 @@
       transition: color 0.2s ease;
     }
 
-    /* Dynamic Flex Layout for Entries */
     .inputs-flex {
       display: grid;
       gap: 7px;
@@ -452,7 +487,6 @@
       pointer-events: none;
     }
 
-    /* Hide Chevrons / Number Arrows globally on number inputs */
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
       -webkit-appearance: none; 
@@ -462,7 +496,6 @@
       -moz-appearance: textfield;
     }
 
-    /* Actions Row */
     .action-row {
       display: flex;
       justify-content: flex-end;
@@ -470,7 +503,6 @@
       margin-bottom: 12px;
     }
 
-    /* Standout Analyze Button */
     .analyze-btn {
       background: linear-gradient(135deg, #73be43 0%, #51902d 100%);
       color: #0d0f12;
@@ -496,14 +528,12 @@
       transform: translateY(1px);
     }
 
-    /* Results Outputs */
     .val-price {
       font-weight: 800;
       font-size: 1.05rem;
       text-align: center;
     }
 
-    /* Responsive Mobile Layout Adjustments */
     @media (max-width: 650px) {
       body { padding: 8px; }
 
@@ -557,22 +587,20 @@
 
 <div class="container" id="appContainer">
 
-  <!-- Header with Logo & Title -->
   <header class="app-header">
     <img src="logo.png" alt="Stock Valuation Tool Logo" class="app-logo">
     <h1 class="app-title">Stock Valuation Tool</h1>
   </header>
 
-  <!-- Ticker Search Card -->
   <div class="search-card">
-    <div class="search-input-group">
-      <input type="text" id="tickerInput" placeholder="Enter Ticker (e.g., AAPL, MSFT, BE)">
-      <button class="search-btn" onclick="fetchStockData()">Search</button>
+    <div class="search-wrapper">
+      <input type="text" id="tickerInput" placeholder="Search Ticker or Company Name (e.g., Apple, ADBE, BE)" autocomplete="off">
+      <div id="searchDropdown" class="search-dropdown"></div>
     </div>
+    <button class="search-btn" onclick="fetchStockData()">Search</button>
     <span class="api-status" id="apiStatus"></span>
   </div>
 
-  <!-- Always-Visible Company Header Box -->
   <div id="companyHeader" class="company-header">
     <div class="company-profile">
       <div class="company-logo-container">
@@ -587,7 +615,6 @@
     <div id="headerPrice" class="company-price">$0.00</div>
   </div>
 
-  <!-- Visible Baseline Inputs Section -->
   <div class="baseline-box">
     <div class="baseline-grid">
       <div class="baseline-field">
@@ -605,7 +632,6 @@
     </div>
   </div>
 
-  <!-- Top Controls -->
   <div class="top-controls">
     <div style="display: flex; gap: 16px;">
       <div class="dropdown-group">
@@ -627,7 +653,6 @@
     </div>
   </div>
 
-  <!-- Assumptions Table -->
   <div class="table-box">
     <table>
       <thead>
@@ -676,12 +701,10 @@
     </table>
   </div>
 
-  <!-- Action Row -->
   <div class="action-row">
     <button class="analyze-btn" onclick="calculateValuation()">Analyze</button>
   </div>
 
-  <!-- Results Table -->
   <div class="table-box">
     <table>
       <thead>
@@ -725,12 +748,14 @@
 </div>
 
 <script>
+  const workerUrl = 'https://plain-cake-183d.jpuurins.workers.dev';
+  let debounceTimer;
+
   function updateHeaderPrice() {
     const p = parseFloat(document.getElementById('currentPrice').value) || 0;
     document.getElementById('headerPrice').innerText = `$${p.toFixed(2)}`;
   }
 
-  // Automatic Screen Fit Scale Adjuster
   function fitToScreen() {
     const container = document.getElementById('appContainer');
     container.style.transform = 'none';
@@ -745,103 +770,184 @@
     }
   }
 
-  // Fetch Stock Data Live via Cloudflare Worker Proxy targeting DoltHub SQL Database + Yahoo Price
-  async function fetchStockData() {
-    const tickerInput = document.getElementById('tickerInput');
-    const statusElem = document.getElementById('apiStatus');
-    const ticker = tickerInput.value.trim().toUpperCase();
+  const tickerInput = document.getElementById('tickerInput');
+  const dropdown = document.getElementById('searchDropdown');
 
-    if (!ticker) {
-      alert('Please enter a stock ticker symbol (e.g., AAPL, MSFT, BE).');
+  tickerInput.addEventListener('input', function() {
+    const query = this.value.trim();
+    clearTimeout(debounceTimer);
+
+    if (query.length < 1) {
+      dropdown.style.display = 'none';
       return;
     }
 
+    debounceTimer = setTimeout(async () => {
+      try {
+        const res = await safeFetchJson(`${workerUrl}?search=${encodeURIComponent(query)}`);
+        if (res && res.quotes && res.quotes.length > 0) {
+          renderDropdown(res.quotes);
+        } else {
+          dropdown.style.display = 'none';
+        }
+      } catch (e) {
+        console.error('Search Autocomplete Error:', e);
+      }
+    }, 250);
+  });
+
+  function renderDropdown(quotes) {
+    dropdown.innerHTML = '';
+
+    const matches = quotes.filter(q => {
+      const isEquity = q.quoteType === 'EQUITY';
+      const hasCleanSymbol = q.symbol && !q.symbol.includes('.') && !q.symbol.includes('-') && !q.symbol.includes('=');
+      const isNotOption = q.quoteType !== 'OPTION' && q.quoteType !== 'ETF' && q.quoteType !== 'MUTUALFUND';
+      return isEquity && hasCleanSymbol && isNotOption;
+    });
+
+    if (matches.length === 0) {
+      dropdown.style.display = 'none';
+      return;
+    }
+
+    matches.forEach(q => {
+      const item = document.createElement('div');
+      item.className = 'search-item';
+      item.innerHTML = `
+        <span class="search-item-ticker">${q.symbol}</span>
+        <span class="search-item-name">${q.longname || q.shortname || ''}</span>
+      `;
+
+      item.addEventListener('click', () => {
+        tickerInput.value = q.symbol;
+        dropdown.style.display = 'none';
+        fetchStockData();
+      });
+
+      dropdown.appendChild(item);
+    });
+
+    dropdown.style.display = 'block';
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!tickerInput.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.style.display = 'none';
+    }
+  });
+
+  async function safeFetchJson(url) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        const errText = await res.text();
+        console.warn(`Fetch returned status ${res.status}:`, errText);
+        return null;
+      }
+      return await res.json();
+    } catch (e) {
+      console.warn(`Fetch failed for ${url}:`, e);
+      return null;
+    }
+  }
+
+  async function fetchYahooPriceAndName(ticker) {
+    const priceUrl = `${workerUrl}?priceTicker=${encodeURIComponent(ticker)}`;
+    const yahooData = await safeFetchJson(priceUrl);
+
+    let price = 0;
+    let companyName = ticker;
+
+    if (yahooData && yahooData.chart && yahooData.chart.result && yahooData.chart.result.length > 0) {
+      const meta = yahooData.chart.result[0].meta;
+      price = meta.regularMarketPrice || 0;
+      companyName = meta.longName || meta.shortName || ticker;
+    }
+
+    return { price, companyName };
+  }
+
+  async function fetchDoltFinancials(ticker) {
+    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
+    const balanceQuery = `SELECT shares_outstanding, date FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 1`;
+
+    const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
+    const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
+
+    const [incomeData, balanceData] = await Promise.all([
+      safeFetchJson(incomeUrl),
+      safeFetchJson(balanceUrl)
+    ]);
+
+    let revInBillions = 0;
+    let sharesOutBillions = 0;
+    const hasIncomeRows = Boolean(incomeData && incomeData.rows && incomeData.rows.length > 0);
+
+    if (hasIncomeRows) {
+      const rows = incomeData.rows;
+      let rawSalesSum = 0;
+      rows.forEach(q => {
+        rawSalesSum += parseFloat(q.sales || 0);
+      });
+      revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
+    }
+
+    if (balanceData && balanceData.rows && balanceData.rows.length > 0) {
+      const validRow = balanceData.rows.find(r => {
+        const val = parseFloat(r.shares_outstanding || 0);
+        return val > 0;
+      });
+
+      if (validRow) {
+        const rawShares = parseFloat(validRow.shares_outstanding);
+        sharesOutBillions = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
+      }
+    }
+
+    return {
+      RevenueTTM: revInBillions,
+      SharesOutstanding: sharesOutBillions,
+      hasFinancials: hasIncomeRows
+    };
+  }
+
+  async function fetchStockData() {
+    const statusElem = document.getElementById('apiStatus');
+    const rawTicker = tickerInput.value.trim().toUpperCase();
+
+    if (!rawTicker) {
+      alert('Please enter a stock ticker symbol or company name.');
+      return;
+    }
+
+    dropdown.style.display = 'none';
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Exact queries matching your original code structure
-    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
-    const balanceQuery = `SELECT shares_outstanding, date, period FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
-
-    const workerUrl = 'https://plain-cake-183d.jpuurins.workers.dev';
-    const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
-    const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
-    const priceUrl = `${workerUrl}?priceTicker=${encodeURIComponent(ticker)}`;
-
     try {
-      const [incomeResponse, balanceResponse, priceResponse] = await Promise.all([
-        fetch(incomeUrl),
-        fetch(balanceUrl),
-        fetch(priceUrl)
+      const [yahooResult, doltResult] = await Promise.all([
+        fetchYahooPriceAndName(rawTicker),
+        fetchDoltFinancials(rawTicker)
       ]);
 
-      if (!incomeResponse.ok || !balanceResponse.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const incomeData = await incomeResponse.json();
-      const balanceData = await balanceResponse.json();
-      const priceData = priceResponse.ok ? await priceResponse.json() : null;
-
-      if (incomeData.query_execution_status === 'Error') {
-        console.error('DoltHub SQL Error:', incomeData.query_execution_message);
-        statusElem.innerText = `Database Error for ${ticker}`;
-        statusElem.style.color = 'var(--em-red)';
-        return;
-      }
-
-      const rows = incomeData.rows || [];
-
-      if (rows.length === 0) {
-        statusElem.innerText = `Ticker ${ticker} not found in database!`;
-        statusElem.style.color = 'var(--em-red)';
-        return;
-      }
-
-      // Filter for quarterly rows
-      const quarterlyRows = rows.filter(r => (r.period || '').toString().toLowerCase() === 'quarter').slice(0, 4);
-      const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
-
-      let rawSalesSum = 0;
-      targetRows.forEach(q => {
-        rawSalesSum += parseFloat(q.sales || 0);
-      });
-      const revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
-
-      // Extract shares outstanding using shares_outstanding
-      let sharesOutBillions = 0;
-      if (balanceData.rows && balanceData.rows.length > 0) {
-        const validRow = balanceData.rows.find(r => {
-          const val = parseFloat(r.shares_outstanding || 0);
-          return val > 0;
-        });
-
-        if (validRow) {
-          const rawShares = parseFloat(validRow.shares_outstanding);
-          sharesOutBillions = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
-        }
-      }
-
-      let price = 0;
-      let companyName = ticker;
-      if (priceData && priceData.chart && priceData.chart.result && priceData.chart.result.length > 0) {
-        const meta = priceData.chart.result[0].meta;
-        price = meta.regularMarketPrice || 0;
-        companyName = meta.longName || meta.shortName || ticker;
-      }
-
       const stockData = {
-        CompanyName: companyName,
-        Ticker: ticker,
-        RevenueTTM: revInBillions,
-        SharesOutstanding: sharesOutBillions, 
-        price: price
+        CompanyName: yahooResult.companyName,
+        Ticker: rawTicker,
+        RevenueTTM: doltResult.RevenueTTM,
+        SharesOutstanding: doltResult.SharesOutstanding, 
+        price: yahooResult.price
       };
 
-      statusElem.innerText = `Loaded ${ticker} successfully!`;
-      statusElem.style.color = 'var(--em-green)';
+      if (!doltResult.hasFinancials) {
+        statusElem.innerText = `Loaded price for ${rawTicker} (Financials missing in DB)`;
+        statusElem.style.color = '#e2a03f';
+      } else {
+        statusElem.innerText = `Loaded ${rawTicker} successfully!`;
+        statusElem.style.color = 'var(--em-green)';
+      }
 
-      populateStockUI(ticker, stockData);
+      populateStockUI(rawTicker, stockData);
 
     } catch (error) {
       console.error('Fetch Error:', error);
@@ -850,7 +956,6 @@
     }
   }
 
-  // Populate UI with retrieved stock data
   function populateStockUI(ticker, overview) {
     const price = parseFloat(overview.price || 0);
     const sharesOut = parseFloat(overview.SharesOutstanding || 0);
@@ -865,10 +970,10 @@
     tickerElem.classList.remove('is-placeholder');
 
     document.getElementById('headerPrice').innerText = `$${price ? price.toFixed(2) : '0.00'}`;
-    
+
     const logoImg = document.getElementById('companyLogo');
     const logoFallback = document.getElementById('companyLogoFallback');
-    
+
     logoImg.src = `https://financialmodelingprep.com/image-stock/${ticker}.png`;
     logoImg.onload = function() {
       logoImg.style.display = 'block';
@@ -966,7 +1071,7 @@
   function calculateValuation() {
     const rawPrice = document.getElementById('currentPrice').value;
     const price = parseFloat(rawPrice) || 0;
-    
+
     const rawRev = parseFloat(document.getElementById('ttmRevenue').value) || 0;
     const rawShares = parseFloat(document.getElementById('sharesOut').value) || 0;
     const years = parseInt(document.getElementById('yearsSelect').value) || 10;
@@ -1006,7 +1111,7 @@
 
       for (let yr = 1; yr <= years; yr++) {
         currentRev *= (1 + g);
-        
+
         const annualEPS = currentRev * pm;
         pvEarningsCashFlows += annualEPS / Math.pow(1 + r, yr);
 
@@ -1053,12 +1158,12 @@
 
       renderPriceCell(`moe_${c}`, pvMOE, price, peInput && pmInput);
       renderPriceCell(`dcf_${c}`, pvDCF, price, pfcfInput && fcfmInput);
-      
+
       const retElem = document.getElementById(`ret_${c}`);
       if (retElem) {
         if (pfcfInput && fcfmInput) {
           retElem.innerText = `${calculatedReturn.toFixed(2)}%`;
-          
+
           if (calculatedReturn < 0) {
             retElem.style.color = 'var(--em-red)';
           } else if (calculatedReturn >= (r * 100)) {
