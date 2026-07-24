@@ -215,6 +215,34 @@
       min-width: 0;
     }
 
+    .search-loading-spinner {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      width: 18px;
+      height: 18px;
+      margin-top: -9px;
+      border: 2px solid rgba(157, 166, 180, 0.35);
+      border-top-color: var(--em-green);
+      border-radius: 50%;
+      animation: search-spin 0.7s linear infinite;
+      display: none;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .search-wrapper.is-loading .search-loading-spinner {
+      display: block;
+    }
+
+    .search-wrapper.is-loading input {
+      padding-right: 42px;
+    }
+
+    @keyframes search-spin {
+      to { transform: rotate(360deg); }
+    }
+
     .search-wrapper input {
       padding: 8px 12px;
       border-radius: 6px;
@@ -666,6 +694,7 @@
           aria-controls="searchDropdown"
           aria-expanded="false"
         >
+        <span class="search-loading-spinner" aria-hidden="true"></span>
         <div id="searchDropdown" class="search-dropdown" role="listbox"></div>
       </div>
       <button id="searchButton" class="search-btn" type="button" onclick="fetchStockData()">Search</button>
@@ -862,6 +891,7 @@
   const US_EXCHANGE_CODES = new Set(Object.keys(US_EXCHANGE_LABELS));
 
   const tickerInput = document.getElementById('tickerInput');
+  const searchWrapper = document.querySelector('.search-wrapper');
   const searchDropdown = document.getElementById('searchDropdown');
   const searchButton = document.getElementById('searchButton');
   const statusElem = document.getElementById('apiStatus');
@@ -1360,7 +1390,8 @@
   async function fetchStockData() {
     const rawValue = tickerInput.value;
     hideSearchDropdown();
-    setStatus('Fetching Yahoo quote and DoltHub financials...', 'muted');
+    setStatus('');
+    searchWrapper.classList.add('is-loading');
     searchButton.disabled = true;
 
     try {
@@ -1417,10 +1448,8 @@
 
       populateStockUI(ticker, stockData);
 
-      if (yahooLoaded && financialsComplete) {
-        setStatus(`Loaded ${ticker} successfully.`, 'success');
-      } else if (yahooLoaded || doltLoaded) {
-        setStatus(`Loaded available data for ${ticker}.`, 'warning', errors.join('\n'));
+      if (yahooLoaded || doltLoaded) {
+        setStatus('');
       } else {
         setStatus(`Could not load ${ticker}.`, 'error', errors.join('\n'));
       }
@@ -1432,6 +1461,7 @@
       console.error('Stock load error:', error);
       setStatus(error.message || 'Failed to fetch stock data.', 'error');
     } finally {
+      searchWrapper.classList.remove('is-loading');
       searchButton.disabled = false;
     }
   }
