@@ -693,15 +693,15 @@
     <div class="baseline-grid">
       <div class="baseline-field">
         <label for="currentPrice">Current Stock Price ($)</label>
-        <input type="number" id="currentPrice" placeholder="0.00" oninput="updateHeaderPrice()">
+        <input type="number" id="currentPrice" placeholder="0.00" oninput="updateHeaderPrice(); markResultsPending();">
       </div>
       <div class="baseline-field">
         <label for="ttmRevenue">TTM Revenue ($ Billion)</label>
-        <input type="number" id="ttmRevenue" placeholder="0.00">
+        <input type="number" id="ttmRevenue" placeholder="0.00" oninput="markResultsPending()">
       </div>
       <div class="baseline-field">
         <label for="sharesOut">Shares Outstanding (Billion)</label>
-        <input type="number" id="sharesOut" placeholder="0.00">
+        <input type="number" id="sharesOut" placeholder="0.00" oninput="markResultsPending()">
       </div>
     </div>
   </div>
@@ -711,7 +711,7 @@
     <div style="display: flex; gap: 16px;">
       <div class="dropdown-group">
         <label for="yearsSelect">Years of Analysis</label>
-        <select id="yearsSelect">
+        <select id="yearsSelect" onchange="markResultsPending()">
           <option value="3">3</option>
           <option value="5">5</option>
           <option value="10" selected>10</option>
@@ -908,6 +908,9 @@
   function normalizeTicker(value) {
     const ticker = String(value || '').trim().toUpperCase();
 
+    // Yahoo uses a hyphen for US class shares such as BRK-B. A dot usually
+    // denotes a foreign exchange suffix (for example .SA or .BK), so this
+    // calculator rejects dotted symbols.
     if (!/^[A-Z0-9][A-Z0-9-]{0,14}$/.test(ticker)) {
       throw new Error('Enter a valid US ticker, for example AAPL or BRK-B.');
     }
@@ -990,6 +993,8 @@
     const url = `${workerUrl}?search=${encodeURIComponent(query)}`;
     const data = await fetchJson(url, 'Yahoo US-equity search', { signal });
 
+    // Accept both the new normalized response and Gemini's older `quotes`
+    // response, then apply the strict filter again in the browser.
     const rawResults = Array.isArray(data.results)
       ? data.results
       : (Array.isArray(data.quotes) ? data.quotes : []);
@@ -1117,6 +1122,7 @@
     try {
       const results = await fetchEquitySearch(query, searchAbortController.signal);
 
+      // Ignore a response if the user has already typed something else.
       if (tickerInput.value.trim() !== requestedQuery) return;
       renderSearchDropdown(results);
     } catch (error) {
@@ -1139,6 +1145,9 @@
     const rawUpper = raw.toUpperCase();
     const canBeTicker = /^[A-Za-z0-9-]{1,15}$/.test(raw);
 
+    // Uppercase symbols go directly to Yahoo/Dolt. Lowercase symbols are first
+    // checked through search, but fall back to their uppercase form if the
+    // autocomplete route is unavailable. This fixes inputs such as "aapl".
     if (/^[A-Z0-9-]{1,15}$/.test(raw)) {
       return normalizeTicker(raw);
     }
@@ -1168,9 +1177,14 @@
     throw new Error(`No equity ticker was found for "${raw}".`);
   }
 
+  // This is intentionally the same pair of DoltHub SQL queries that worked
+  // before the Yahoo integration was added.
   async function fetchDoltFinancials(ticker) {
     let normalizedRouteError = null;
 
+    // Preferred route: the Worker owns the Dolt queries and returns a stable
+    // shape. This is also where future metrics such as revenue growth and ROIC
+    // can be added without rewriting the page.
     try {
       const data = await fetchJson(
         `${workerUrl}?financials=${encodeURIComponent(ticker)}`,
@@ -1206,6 +1220,8 @@
       console.warn('Normalized Dolt route failed; trying the original SQL route:', error);
     }
 
+    // Compatibility fallback: these are exactly the two SQL statements from
+    // the original file that worked before Yahoo was added.
     const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
     const balanceQuery = `SELECT shares_outstanding, date, period FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
 
@@ -1335,8 +1351,12 @@
     const logoFallback = document.getElementById('companyLogoFallback');
     logoImg.style.display = 'none';
     logoFallback.style.display = 'flex';
+
+    markResultsPending();
   }
 
+  // Yahoo and DoltHub are independent. A Yahoo failure cannot erase a
+  // successful DoltHub response, and a DoltHub failure cannot erase Yahoo data.
   async function fetchStockData() {
     const rawValue = tickerInput.value;
     hideSearchDropdown();
@@ -1356,6 +1376,8 @@
         ? String(yahooResult.reason?.message || '')
         : '';
 
+      // A manually entered ETF, option, index, crypto, or other non-equity
+      // is rejected even if the Dolt database happens to contain a row for it.
       if (/not an equity|not a stock\/equity|not a stock listed|not a us-listed/i.test(yahooFailureMessage)) {
         setStatus(`${ticker} is not a supported US-listed equity.`, 'error', yahooFailureMessage);
         return;
@@ -1414,6 +1436,7 @@
     }
   }
 
+  // Populate UI with retrieved stock data
   function populateStockUI(ticker, overview) {
     const price = toNumber(overview.price);
     const sharesOut = toNumber(overview.SharesOutstanding);
@@ -1446,6 +1469,7 @@
     document.getElementById('sharesOut').value = sharesOut > 0 ? sharesOut.toFixed(3) : '';
     document.getElementById('ttmRevenue').value = revenueTTM > 0 ? revenueTTM.toFixed(2) : '';
 
+    markResultsPending();
     fitToScreen();
   }
 
@@ -1535,7 +1559,7 @@
         const symbolHTML = m.hasSymbol ? '<span class="symbol">%</span>' : '';
         html += `
           <div class="input-wrapper">
-            <input type="number" id="${m.id}_${c}" value="" placeholder="0">
+            <input type="number" id="${m.id}_${c}" value="" placeholder="0" oninput="markResultsPending()">
             ${symbolHTML}
           </div>`;
       });
@@ -1557,7 +1581,19 @@
       rowContainer.innerHTML = html;
     });
 
+    markResultsPending();
     fitToScreen();
+  }
+
+  function markResultsPending() {
+    const numEntries = parseInt(document.getElementById('entriesSelect').value) || 3;
+    const cases = scenariosMap[numEntries] || [];
+
+    cases.forEach(c => {
+      resetOutputCell(`moe_${c}`);
+      resetOutputCell(`dcf_${c}`);
+      resetRetCell(`ret_${c}`);
+    });
   }
 
   function calculateValuation() {
