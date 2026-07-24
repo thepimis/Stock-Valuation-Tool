@@ -93,7 +93,6 @@
     
     .company-profile { display: flex; align-items: center; gap: 12px; }
 
-    /* Logo Container & Placeholder Styling */
     .company-logo-container {
       width: 40px;
       height: 40px;
@@ -141,7 +140,6 @@
       transition: color 0.3s ease;
     }
 
-    /* Bolder greyed-out state for placeholders */
     .company-name.is-placeholder,
     .company-ticker.is-placeholder {
       color: var(--muted);
@@ -186,7 +184,7 @@
       cursor: pointer;
     }
 
-    /* Ticker & Name Search Section */
+    /* Search Section */
     .search-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -429,7 +427,6 @@
       opacity: 1;
     }
 
-    /* Distinct Return Row Styling */
     .return-row-bg {
       background-color: var(--card-inner);
       border-top: 2px solid var(--border-color);
@@ -442,7 +439,6 @@
       letter-spacing: normal;
     }
 
-    /* Clean Return Value Text (No Boxes) */
     .ret-val-text {
       text-align: center;
       font-weight: 800;
@@ -450,7 +446,6 @@
       transition: color 0.2s ease;
     }
 
-    /* Dynamic Flex Layout for Entries */
     .inputs-flex {
       display: grid;
       gap: 7px;
@@ -492,7 +487,6 @@
       pointer-events: none;
     }
 
-    /* Hide Chevrons / Number Arrows globally on number inputs */
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
       -webkit-appearance: none; 
@@ -502,7 +496,6 @@
       -moz-appearance: textfield;
     }
 
-    /* Actions Row */
     .action-row {
       display: flex;
       justify-content: flex-end;
@@ -510,7 +503,6 @@
       margin-bottom: 12px;
     }
 
-    /* Standout Analyze Button */
     .analyze-btn {
       background: linear-gradient(135deg, #73be43 0%, #51902d 100%);
       color: #0d0f12;
@@ -536,14 +528,12 @@
       transform: translateY(1px);
     }
 
-    /* Results Outputs */
     .val-price {
       font-weight: 800;
       font-size: 1.05rem;
       text-align: center;
     }
 
-    /* Responsive Mobile Layout Adjustments */
     @media (max-width: 650px) {
       body { padding: 8px; }
 
@@ -597,13 +587,11 @@
 
 <div class="container" id="appContainer">
 
-  <!-- Header with Logo & Title -->
   <header class="app-header">
     <img src="logo.png" alt="Stock Valuation Tool Logo" class="app-logo">
     <h1 class="app-title">Stock Valuation Tool</h1>
   </header>
 
-  <!-- Ticker / Name Search Card with Dropdown -->
   <div class="search-card">
     <div class="search-wrapper">
       <input type="text" id="tickerInput" placeholder="Search Ticker or Company Name (e.g., Apple, ADBE, BE)" autocomplete="off">
@@ -613,7 +601,6 @@
     <span class="api-status" id="apiStatus"></span>
   </div>
 
-  <!-- Always-Visible Company Header Box -->
   <div id="companyHeader" class="company-header">
     <div class="company-profile">
       <div class="company-logo-container">
@@ -628,7 +615,6 @@
     <div id="headerPrice" class="company-price">$0.00</div>
   </div>
 
-  <!-- Visible Baseline Inputs Section -->
   <div class="baseline-box">
     <div class="baseline-grid">
       <div class="baseline-field">
@@ -646,7 +632,6 @@
     </div>
   </div>
 
-  <!-- Top Controls -->
   <div class="top-controls">
     <div style="display: flex; gap: 16px;">
       <div class="dropdown-group">
@@ -668,7 +653,6 @@
     </div>
   </div>
 
-  <!-- Assumptions Table -->
   <div class="table-box">
     <table>
       <thead>
@@ -717,12 +701,10 @@
     </table>
   </div>
 
-  <!-- Action Row -->
   <div class="action-row">
     <button class="analyze-btn" onclick="calculateValuation()">Analyze</button>
   </div>
 
-  <!-- Results Table -->
   <div class="table-box">
     <table>
       <thead>
@@ -774,7 +756,6 @@
     document.getElementById('headerPrice').innerText = `$${p.toFixed(2)}`;
   }
 
-  // Screen Scale Fit Adjuster
   function fitToScreen() {
     const container = document.getElementById('appContainer');
     container.style.transform = 'none';
@@ -789,7 +770,6 @@
     }
   }
 
-  // Live Autocomplete Handler via Worker
   const tickerInput = document.getElementById('tickerInput');
   const dropdown = document.getElementById('searchDropdown');
 
@@ -819,7 +799,6 @@
     }, 250);
   });
 
-  // Filtered dropdown rendering to discard leveraged ETFs, foreign symbols, and option tickers
   function renderDropdown(quotes) {
     dropdown.innerHTML = '';
     
@@ -855,14 +834,12 @@
     dropdown.style.display = 'block';
   }
 
-  // Close dropdown when clicking outside
   document.addEventListener('click', (e) => {
     if (!tickerInput.contains(e.target) && !dropdown.contains(e.target)) {
       dropdown.style.display = 'none';
     }
   });
 
-  // Safe fetch helper to handle errors without throwing JSON parse exceptions
   async function safeFetchJson(url) {
     try {
       const res = await fetch(url);
@@ -874,7 +851,72 @@
     }
   }
 
-  // Fetch Stock Financial Data & Live Price through Worker Proxy
+  // 1. Dedicated Function to Fetch Price and Name from Yahoo
+  async function fetchYahooPriceAndName(ticker) {
+    const priceUrl = `${workerUrl}?priceTicker=${encodeURIComponent(ticker)}`;
+    const yahooData = await safeFetchJson(priceUrl);
+
+    let price = 0;
+    let companyName = ticker;
+
+    if (yahooData && yahooData.chart && yahooData.chart.result && yahooData.chart.result.length > 0) {
+      const meta = yahooData.chart.result[0].meta;
+      price = meta.regularMarketPrice || 0;
+      companyName = meta.longName || meta.shortName || ticker;
+    }
+
+    return { price, companyName };
+  }
+
+  // 2. Dedicated Function to Fetch Financial Statements from Dolt Database
+  async function fetchDoltFinancials(ticker) {
+    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 8`;
+    const balanceQuery = `SELECT shares_outstanding, common_stock_shares_outstanding, weighted_average_shares_diluted, date FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
+
+    const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
+    const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
+
+    const [incomeData, balanceData] = await Promise.all([
+      safeFetchJson(incomeUrl),
+      safeFetchJson(balanceUrl)
+    ]);
+
+    let revInBillions = 0;
+    let sharesOutBillions = 0;
+    const hasIncomeRows = Boolean(incomeData && incomeData.rows && incomeData.rows.length > 0);
+
+    if (hasIncomeRows) {
+      const rows = incomeData.rows;
+      const quarterlyRows = rows.filter(r => (r.period || '').toString().toLowerCase().includes('quarter') || (r.period || '').toString().toLowerCase().includes('q')).slice(0, 4);
+      const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
+
+      let rawSalesSum = 0;
+      targetRows.forEach(q => {
+        rawSalesSum += parseFloat(q.sales || 0);
+      });
+      revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
+    }
+
+    if (balanceData && balanceData.rows && balanceData.rows.length > 0) {
+      const validRow = balanceData.rows.find(r => {
+        const val = parseFloat(r.shares_outstanding ?? r.common_stock_shares_outstanding ?? r.weighted_average_shares_diluted ?? 0);
+        return val > 0;
+      });
+
+      if (validRow) {
+        const rawShares = parseFloat(validRow.shares_outstanding ?? validRow.common_stock_shares_outstanding ?? validRow.weighted_average_shares_diluted);
+        sharesOutBillions = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
+      }
+    }
+
+    return {
+      RevenueTTM: revInBillions,
+      SharesOutstanding: sharesOutBillions,
+      hasFinancials: hasIncomeRows
+    };
+  }
+
+  // Main Orchestrator Function
   async function fetchStockData() {
     const statusElem = document.getElementById('apiStatus');
     const rawTicker = tickerInput.value.trim().toUpperCase();
@@ -888,63 +930,22 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Filter explicitly by period = 'Quarter' in the Dolt SQL query directly
-    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${rawTicker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
-    const balanceQuery = `SELECT shares_outstanding, common_stock_shares_outstanding, weighted_average_shares_diluted, date FROM balance_sheet_equity WHERE act_symbol = '${rawTicker}' ORDER BY date DESC LIMIT 5`;
-
-    const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
-    const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
-    const priceUrl = `${workerUrl}?priceTicker=${encodeURIComponent(rawTicker)}`;
-
     try {
-      const [incomeData, balanceData, yahooData] = await Promise.all([
-        safeFetchJson(incomeUrl),
-        safeFetchJson(balanceUrl),
-        safeFetchJson(priceUrl)
+      // Execute Yahoo & Dolt fetches in parallel
+      const [yahooResult, doltResult] = await Promise.all([
+        fetchYahooPriceAndName(rawTicker),
+        fetchDoltFinancials(rawTicker)
       ]);
 
-      let livePrice = 0;
-      let resolvedName = rawTicker;
-
-      if (yahooData && yahooData.chart && yahooData.chart.result && yahooData.chart.result.length > 0) {
-        const meta = yahooData.chart.result[0].meta;
-        livePrice = meta.regularMarketPrice || 0;
-        resolvedName = meta.longName || meta.shortName || rawTicker;
-      }
-
-      let revInBillions = 0;
-      let sharesOutBillions = 0;
-      const hasIncomeRows = incomeData && incomeData.rows && incomeData.rows.length > 0;
-
-      if (hasIncomeRows) {
-        let rawSalesSum = 0;
-        incomeData.rows.forEach(q => {
-          rawSalesSum += parseFloat(q.sales || 0);
-        });
-        revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
-      }
-
-      if (balanceData && balanceData.rows && balanceData.rows.length > 0) {
-        const validRow = balanceData.rows.find(r => {
-          const val = parseFloat(r.shares_outstanding ?? r.common_stock_shares_outstanding ?? r.weighted_average_shares_diluted ?? 0);
-          return val > 0;
-        });
-
-        if (validRow) {
-          const rawShares = parseFloat(validRow.shares_outstanding ?? validRow.common_stock_shares_outstanding ?? validRow.weighted_average_shares_diluted);
-          sharesOutBillions = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
-        }
-      }
-
       const stockData = {
-        CompanyName: resolvedName,
+        CompanyName: yahooResult.companyName,
         Ticker: rawTicker,
-        RevenueTTM: revInBillions,
-        SharesOutstanding: sharesOutBillions, 
-        price: livePrice
+        RevenueTTM: doltResult.RevenueTTM,
+        SharesOutstanding: doltResult.SharesOutstanding, 
+        price: yahooResult.price
       };
 
-      if (!hasIncomeRows) {
+      if (!doltResult.hasFinancials) {
         statusElem.innerText = `Loaded price for ${rawTicker} (Financials missing in DB)`;
         statusElem.style.color = '#e2a03f';
       } else {
@@ -961,7 +962,6 @@
     }
   }
 
-  // Populate UI with retrieved stock data
   function populateStockUI(ticker, overview) {
     const price = parseFloat(overview.price || 0);
     const sharesOut = parseFloat(overview.SharesOutstanding || 0);
