@@ -93,6 +93,7 @@
     
     .company-profile { display: flex; align-items: center; gap: 12px; }
 
+    /* Logo Container & Placeholder Styling */
     .company-logo-container {
       width: 40px;
       height: 40px;
@@ -140,6 +141,7 @@
       transition: color 0.3s ease;
     }
 
+    /* Bolder greyed-out state for placeholders */
     .company-name.is-placeholder,
     .company-ticker.is-placeholder {
       color: var(--muted);
@@ -184,7 +186,7 @@
       cursor: pointer;
     }
 
-    /* Search Section */
+    /* Ticker Search Section */
     .search-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -199,10 +201,18 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
+    .search-input-group {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      min-width: 250px;
+      align-items: flex-start;
+    }
+
     .search-wrapper {
       position: relative;
       flex: 1;
-      min-width: 250px;
+      min-width: 0;
     }
 
     .search-wrapper input {
@@ -222,44 +232,81 @@
 
     .search-dropdown {
       position: absolute;
-      top: 100%;
+      top: calc(100% + 5px);
       left: 0;
       right: 0;
+      display: none;
+      max-height: 280px;
+      overflow-y: auto;
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      border-radius: 0 0 8px 8px;
-      max-height: 220px;
-      overflow-y: auto;
+      border-radius: 8px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
       z-index: 1000;
-      display: none;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+
+    .search-dropdown.is-open {
+      display: block;
     }
 
     .search-item {
-      padding: 10px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
+      width: 100%;
+      border: 0;
       border-bottom: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--text);
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+      cursor: pointer;
     }
 
-    .search-item:hover {
+    .search-item:last-child {
+      border-bottom: 0;
+    }
+
+    .search-item:hover,
+    .search-item.is-active {
       background: var(--input-bg);
     }
 
+    .search-item-identity {
+      min-width: 0;
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+    }
+
     .search-item-ticker {
-      font-weight: 800;
       color: var(--em-green);
+      font-weight: 800;
+      flex-shrink: 0;
     }
 
     .search-item-name {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-left: 10px;
-      white-space: nowrap;
+      min-width: 0;
       overflow: hidden;
+      white-space: nowrap;
       text-overflow: ellipsis;
+      color: var(--text);
+      font-size: 0.88rem;
+    }
+
+    .search-item-exchange {
+      color: var(--muted);
+      font-size: 0.72rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .search-message {
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 600;
     }
 
     .search-btn {
@@ -280,6 +327,11 @@
 
     .search-btn:active {
       transform: scale(0.98);
+    }
+
+    .search-btn:disabled {
+      opacity: 0.65;
+      cursor: wait;
     }
 
     .api-status {
@@ -427,6 +479,7 @@
       opacity: 1;
     }
 
+    /* Distinct Return Row Styling */
     .return-row-bg {
       background-color: var(--card-inner);
       border-top: 2px solid var(--border-color);
@@ -439,6 +492,7 @@
       letter-spacing: normal;
     }
 
+    /* Clean Return Value Text (No Boxes) */
     .ret-val-text {
       text-align: center;
       font-weight: 800;
@@ -446,6 +500,7 @@
       transition: color 0.2s ease;
     }
 
+    /* Dynamic Flex Layout for Entries */
     .inputs-flex {
       display: grid;
       gap: 7px;
@@ -487,6 +542,7 @@
       pointer-events: none;
     }
 
+    /* Hide Chevrons / Number Arrows globally on number inputs */
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
       -webkit-appearance: none; 
@@ -496,6 +552,7 @@
       -moz-appearance: textfield;
     }
 
+    /* Actions Row */
     .action-row {
       display: flex;
       justify-content: flex-end;
@@ -503,6 +560,7 @@
       margin-bottom: 12px;
     }
 
+    /* Standout Analyze Button */
     .analyze-btn {
       background: linear-gradient(135deg, #73be43 0%, #51902d 100%);
       color: #0d0f12;
@@ -528,12 +586,14 @@
       transform: translateY(1px);
     }
 
+    /* Results Outputs */
     .val-price {
       font-weight: 800;
       font-size: 1.05rem;
       text-align: center;
     }
 
+    /* Responsive Mobile Layout Adjustments */
     @media (max-width: 650px) {
       body { padding: 8px; }
 
@@ -587,20 +647,33 @@
 
 <div class="container" id="appContainer">
 
+  <!-- Header with Logo & Title -->
   <header class="app-header">
     <img src="logo.png" alt="Stock Valuation Tool Logo" class="app-logo">
     <h1 class="app-title">Stock Valuation Tool</h1>
   </header>
 
+  <!-- Yahoo equity autocomplete + stock loader -->
   <div class="search-card">
-    <div class="search-wrapper">
-      <input type="text" id="tickerInput" placeholder="Search Ticker or Company Name (e.g., Apple, ADBE, BE)" autocomplete="off">
-      <div id="searchDropdown" class="search-dropdown"></div>
+    <div class="search-input-group">
+      <div class="search-wrapper">
+        <input
+          type="text"
+          id="tickerInput"
+          placeholder="Search ticker or company (e.g., AAPL, Adobe, Bloom Energy)"
+          autocomplete="off"
+          aria-autocomplete="list"
+          aria-controls="searchDropdown"
+          aria-expanded="false"
+        >
+        <div id="searchDropdown" class="search-dropdown" role="listbox"></div>
+      </div>
+      <button id="searchButton" class="search-btn" type="button" onclick="fetchStockData()">Search</button>
     </div>
-    <button class="search-btn" onclick="fetchStockData()">Search</button>
     <span class="api-status" id="apiStatus"></span>
   </div>
 
+  <!-- Always-Visible Company Header Box -->
   <div id="companyHeader" class="company-header">
     <div class="company-profile">
       <div class="company-logo-container">
@@ -615,6 +688,7 @@
     <div id="headerPrice" class="company-price">$0.00</div>
   </div>
 
+  <!-- Visible Baseline Inputs Section -->
   <div class="baseline-box">
     <div class="baseline-grid">
       <div class="baseline-field">
@@ -632,6 +706,7 @@
     </div>
   </div>
 
+  <!-- Top Controls -->
   <div class="top-controls">
     <div style="display: flex; gap: 16px;">
       <div class="dropdown-group">
@@ -653,6 +728,7 @@
     </div>
   </div>
 
+  <!-- Assumptions Table -->
   <div class="table-box">
     <table>
       <thead>
@@ -701,10 +777,12 @@
     </table>
   </div>
 
+  <!-- Action Row -->
   <div class="action-row">
     <button class="analyze-btn" onclick="calculateValuation()">Analyze</button>
   </div>
 
+  <!-- Results Table -->
   <div class="table-box">
     <table>
       <thead>
@@ -748,18 +826,62 @@
 </div>
 
 <script>
-  const workerUrl = 'https://plain-cake-183d.jpuurins.workers.dev';
-  let debounceTimer;
+  // Production Worker. For testing a Cloudflare version-preview Worker without
+  // editing this file, open the page with ?worker=https%3A%2F%2FYOUR-PREVIEW-URL.
+  const DEFAULT_WORKER_URL = 'https://plain-cake-183d.jpuurins.workers.dev';
+
+  function getConfiguredWorkerUrl() {
+    try {
+      const pageHref = (typeof window !== 'undefined' && window.location?.href)
+        ? window.location.href
+        : '';
+      if (!pageHref) return DEFAULT_WORKER_URL;
+
+      const override = new URL(pageHref).searchParams.get('worker');
+      if (!override) return DEFAULT_WORKER_URL;
+
+      const parsed = new URL(override);
+      if (parsed.protocol !== 'https:') return DEFAULT_WORKER_URL;
+      return parsed.toString().replace(/\/+$/, '');
+    } catch (error) {
+      console.warn('Ignoring invalid Worker preview URL:', error);
+      return DEFAULT_WORKER_URL;
+    }
+  }
+
+  const workerUrl = getConfiguredWorkerUrl();
+
+  // Yahoo's internal US exchange codes. We display friendly names in the UI.
+  const US_EXCHANGE_LABELS = Object.freeze({
+    NYQ: 'NYSE',
+    NMS: 'NASDAQ',
+    NGM: 'NASDAQ',
+    NCM: 'NASDAQ',
+    ASE: 'NYSE American'
+  });
+  const US_EXCHANGE_CODES = new Set(Object.keys(US_EXCHANGE_LABELS));
+
+  const tickerInput = document.getElementById('tickerInput');
+  const searchDropdown = document.getElementById('searchDropdown');
+  const searchButton = document.getElementById('searchButton');
+  const statusElem = document.getElementById('apiStatus');
+
+  let searchDebounceTimer = null;
+  let searchAbortController = null;
+  let currentSearchResults = [];
+  let activeSearchIndex = -1;
+  let selectedSearchTicker = '';
 
   function updateHeaderPrice() {
     const p = parseFloat(document.getElementById('currentPrice').value) || 0;
     document.getElementById('headerPrice').innerText = `$${p.toFixed(2)}`;
   }
 
+  // Automatic Screen Fit Scale Adjuster
   function fitToScreen() {
     const container = document.getElementById('appContainer');
     container.style.transform = 'none';
-    
+
     const viewportHeight = window.innerHeight;
     const contentHeight = container.offsetHeight;
 
@@ -770,204 +892,555 @@
     }
   }
 
-  const tickerInput = document.getElementById('tickerInput');
-  const dropdown = document.getElementById('searchDropdown');
+  function setStatus(message, tone = 'muted', details = '') {
+    const colors = {
+      muted: 'var(--muted)',
+      success: 'var(--em-green)',
+      warning: '#e2a03f',
+      error: 'var(--em-red)'
+    };
 
-  tickerInput.addEventListener('input', function() {
-    const query = this.value.trim();
-    clearTimeout(debounceTimer);
+    statusElem.innerText = message;
+    statusElem.style.color = colors[tone] || colors.muted;
+    statusElem.title = details || '';
+  }
 
-    if (query.length < 1) {
-      dropdown.style.display = 'none';
-      return;
+  function normalizeTicker(value) {
+    const ticker = String(value || '').trim().toUpperCase();
+
+    // Yahoo uses a hyphen for US class shares such as BRK-B. A dot usually
+    // denotes a foreign exchange suffix (for example .SA or .BK), so this
+    // calculator rejects dotted symbols.
+    if (!/^[A-Z0-9][A-Z0-9-]{0,14}$/.test(ticker)) {
+      throw new Error('Enter a valid US ticker, for example AAPL or BRK-B.');
     }
 
-    debounceTimer = setTimeout(async () => {
+    return ticker;
+  }
+
+  function canonicalUsExchangeCode(source) {
+    const candidates = [
+      source?.exchangeCode,
+      source?.exchange,
+      source?.exchangeName,
+      source?.fullExchangeName,
+      source?.exchDisp
+    ]
+      .filter(Boolean)
+      .map(value => String(value).trim().toUpperCase().replace(/[^A-Z0-9]/g, ''));
+
+    for (const candidate of candidates) {
+      if (US_EXCHANGE_CODES.has(candidate)) return candidate;
+      if (candidate === 'NYSE' || candidate === 'NEWYORKSTOCKEXCHANGE') return 'NYQ';
+      if (candidate === 'NYSEAMERICAN' || candidate === 'AMEX') return 'ASE';
+      if (candidate === 'NASDAQGS' || candidate === 'NASDAQGLOBALSELECT') return 'NMS';
+      if (candidate === 'NASDAQGM' || candidate === 'NASDAQGLOBALMARKET') return 'NGM';
+      if (candidate === 'NASDAQCM' || candidate === 'NASDAQCAPITALMARKET') return 'NCM';
+      if (candidate === 'NASDAQ') return 'NMS';
+    }
+
+    return '';
+  }
+
+  function toNumber(value) {
+    if (typeof value === 'number') {
+      return Number.isFinite(value) ? value : 0;
+    }
+
+    if (typeof value !== 'string') return 0;
+
+    const trimmed = value.trim();
+    if (!trimmed) return 0;
+
+    const normalized = trimmed
+      .replace(/,/g, '')
+      .replace(/^\((.*)\)$/, '-$1');
+    const number = Number(normalized);
+    return Number.isFinite(number) ? number : 0;
+  }
+
+  function getApiError(data, fallback) {
+    return data?.error ||
+      data?.query_execution_message ||
+      data?.chart?.error?.description ||
+      fallback;
+  }
+
+  async function fetchJson(url, label, options = {}) {
+    const response = await fetch(url, {
+      signal: options.signal,
+      headers: { Accept: 'application/json' }
+    });
+    const text = await response.text();
+    let data = {};
+
+    if (text) {
       try {
-        const res = await safeFetchJson(`${workerUrl}?search=${encodeURIComponent(query)}`);
-        if (res && res.quotes && res.quotes.length > 0) {
-          renderDropdown(res.quotes);
-        } else {
-          dropdown.style.display = 'none';
-        }
-      } catch (e) {
-        console.error('Search Autocomplete Error:', e);
+        data = JSON.parse(text);
+      } catch (error) {
+        throw new Error(`${label} returned non-JSON data (HTTP ${response.status}).`);
       }
-    }, 250);
-  });
+    }
 
-  function renderDropdown(quotes) {
-    dropdown.innerHTML = '';
-    
-    const matches = quotes.filter(q => {
-      const isEquity = q.quoteType === 'EQUITY';
-      const hasCleanSymbol = q.symbol && !q.symbol.includes('.') && !q.symbol.includes('-') && !q.symbol.includes('=');
-      const isNotOption = q.quoteType !== 'OPTION' && q.quoteType !== 'ETF' && q.quoteType !== 'MUTUALFUND';
-      return isEquity && hasCleanSymbol && isNotOption;
+    if (!response.ok) {
+      throw new Error(`${label}: ${getApiError(data, `HTTP ${response.status}`)}`);
+    }
+
+    return data;
+  }
+
+  async function fetchEquitySearch(query, signal) {
+    const url = `${workerUrl}?search=${encodeURIComponent(query)}`;
+    const data = await fetchJson(url, 'Yahoo US-equity search', { signal });
+
+    // Accept both the new normalized response and Gemini's older `quotes`
+    // response, then apply the strict filter again in the browser.
+    const rawResults = Array.isArray(data.results)
+      ? data.results
+      : (Array.isArray(data.quotes) ? data.quotes : []);
+
+    const seen = new Set();
+    return rawResults
+      .map(result => {
+        const symbol = String(result.symbol || '').trim().toUpperCase();
+        const exchangeCode = canonicalUsExchangeCode(result);
+        return {
+          symbol,
+          name: result.name || result.longName || result.longname || result.shortName || result.shortname || symbol,
+          exchangeCode,
+          exchange: result.exchangeLabel || US_EXCHANGE_LABELS[exchangeCode] || '',
+          quoteType: String(result.quoteType || result.type || '').toUpperCase(),
+          currency: String(result.currency || '').toUpperCase(),
+          region: String(result.region || '').toUpperCase()
+        };
+      })
+      .filter(result => result.quoteType === 'EQUITY')
+      .filter(result => US_EXCHANGE_CODES.has(result.exchangeCode))
+      .filter(result => result.symbol && !result.symbol.includes('.'))
+      .filter(result => !result.currency || result.currency === 'USD')
+      .filter(result => !result.region || result.region === 'US')
+      .filter(result => {
+        if (seen.has(result.symbol)) return false;
+        seen.add(result.symbol);
+        return true;
+      });
+  }
+
+  function hideSearchDropdown() {
+    searchDropdown.classList.remove('is-open');
+    searchDropdown.innerHTML = '';
+    tickerInput.setAttribute('aria-expanded', 'false');
+    currentSearchResults = [];
+    activeSearchIndex = -1;
+  }
+
+  function showSearchMessage(message) {
+    searchDropdown.innerHTML = '';
+    const row = document.createElement('div');
+    row.className = 'search-message';
+    row.textContent = message;
+    searchDropdown.appendChild(row);
+    searchDropdown.classList.add('is-open');
+    tickerInput.setAttribute('aria-expanded', 'true');
+  }
+
+  function setActiveSearchIndex(index) {
+    if (currentSearchResults.length === 0) return;
+
+    activeSearchIndex = (index + currentSearchResults.length) % currentSearchResults.length;
+    const items = [...searchDropdown.querySelectorAll('.search-item')];
+
+    items.forEach((item, itemIndex) => {
+      const isActive = itemIndex === activeSearchIndex;
+      item.classList.toggle('is-active', isActive);
+      item.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      if (isActive) item.scrollIntoView({ block: 'nearest' });
     });
+  }
 
-    if (matches.length === 0) {
-      dropdown.style.display = 'none';
+  function selectSearchResult(result, loadImmediately = true) {
+    selectedSearchTicker = normalizeTicker(result.symbol);
+    tickerInput.value = selectedSearchTicker;
+    hideSearchDropdown();
+
+    if (loadImmediately) {
+      fetchStockData();
+    }
+  }
+
+  function renderSearchDropdown(results) {
+    currentSearchResults = results;
+    activeSearchIndex = -1;
+    searchDropdown.innerHTML = '';
+
+    if (results.length === 0) {
+      showSearchMessage('No NYSE, NASDAQ, or NYSE American equity matches found.');
       return;
     }
 
-    matches.forEach(q => {
-      const item = document.createElement('div');
+    results.forEach((result, index) => {
+      const item = document.createElement('button');
+      item.type = 'button';
       item.className = 'search-item';
-      item.innerHTML = `
-        <span class="search-item-ticker">${q.symbol}</span>
-        <span class="search-item-name">${q.longname || q.shortname || ''}</span>
-      `;
+      item.setAttribute('role', 'option');
+      item.setAttribute('aria-selected', 'false');
 
-      item.addEventListener('click', () => {
-        tickerInput.value = q.symbol;
-        dropdown.style.display = 'none';
-        fetchStockData();
-      });
+      const identity = document.createElement('span');
+      identity.className = 'search-item-identity';
 
-      dropdown.appendChild(item);
+      const symbol = document.createElement('span');
+      symbol.className = 'search-item-ticker';
+      symbol.textContent = result.symbol;
+
+      const name = document.createElement('span');
+      name.className = 'search-item-name';
+      name.textContent = result.name || result.symbol;
+
+      const exchange = document.createElement('span');
+      exchange.className = 'search-item-exchange';
+      exchange.textContent = result.exchange || 'Equity';
+
+      identity.append(symbol, name);
+      item.append(identity, exchange);
+
+      item.addEventListener('mouseenter', () => setActiveSearchIndex(index));
+      item.addEventListener('click', () => selectSearchResult(result));
+      searchDropdown.appendChild(item);
     });
 
-    dropdown.style.display = 'block';
+    searchDropdown.classList.add('is-open');
+    tickerInput.setAttribute('aria-expanded', 'true');
   }
 
-  document.addEventListener('click', (e) => {
-    if (!tickerInput.contains(e.target) && !dropdown.contains(e.target)) {
-      dropdown.style.display = 'none';
-    }
-  });
+  async function loadSearchSuggestions(query) {
+    if (searchAbortController) searchAbortController.abort();
+    searchAbortController = new AbortController();
+    const requestedQuery = query;
 
-  // Updated Safe Fetch function handling non-JSON plain text and errors gracefully
-  async function safeFetchJson(url) {
+    showSearchMessage('Searching US-listed equities...');
+
     try {
-      const res = await fetch(url);
-      if (!res.ok) {
-        const errText = await res.text();
-        console.warn(`Fetch returned status ${res.status}:`, errText);
-        return null;
+      const results = await fetchEquitySearch(query, searchAbortController.signal);
+
+      // Ignore a response if the user has already typed something else.
+      if (tickerInput.value.trim() !== requestedQuery) return;
+      renderSearchDropdown(results);
+    } catch (error) {
+      if (error.name === 'AbortError') return;
+      console.error('Autocomplete error:', error);
+      if (tickerInput.value.trim() === requestedQuery) {
+        showSearchMessage('Search is temporarily unavailable.');
       }
-      return await res.json();
-    } catch (e) {
-      console.warn(`Fetch failed for ${url}:`, e);
-      return null;
     }
   }
 
-  // 1. Dedicated Function to Fetch Price and Name from Yahoo
-  async function fetchYahooPriceAndName(ticker) {
-    const priceUrl = `${workerUrl}?priceTicker=${encodeURIComponent(ticker)}`;
-    const yahooData = await safeFetchJson(priceUrl);
+  async function resolveTicker(rawValue) {
+    const raw = String(rawValue || '').trim();
+    if (!raw) throw new Error('Enter a ticker or company name.');
 
-    let price = 0;
-    let companyName = ticker;
-
-    if (yahooData && yahooData.chart && yahooData.chart.result && yahooData.chart.result.length > 0) {
-      const meta = yahooData.chart.result[0].meta;
-      price = meta.regularMarketPrice || 0;
-      companyName = meta.longName || meta.shortName || ticker;
+    if (selectedSearchTicker && raw.toUpperCase() === selectedSearchTicker) {
+      return selectedSearchTicker;
     }
 
-    return { price, companyName };
+    const rawUpper = raw.toUpperCase();
+    const canBeTicker = /^[A-Za-z0-9-]{1,15}$/.test(raw);
+
+    // Uppercase symbols go directly to Yahoo/Dolt. Lowercase symbols are first
+    // checked through search, but fall back to their uppercase form if the
+    // autocomplete route is unavailable. This fixes inputs such as "aapl".
+    if (/^[A-Z0-9-]{1,15}$/.test(raw)) {
+      return normalizeTicker(raw);
+    }
+
+    try {
+      const results = await fetchEquitySearch(raw);
+      if (results.length > 0) {
+        const exactSymbol = results.find(result => result.symbol === rawUpper);
+        const exactName = results.find(result => String(result.name || '').toUpperCase() === rawUpper);
+        const selected = exactSymbol || exactName || results[0];
+
+        selectedSearchTicker = normalizeTicker(selected.symbol);
+        tickerInput.value = selectedSearchTicker;
+        return selectedSearchTicker;
+      }
+    } catch (error) {
+      if (!canBeTicker) throw error;
+      console.warn('Ticker search failed; trying the typed value as a symbol:', error);
+    }
+
+    if (canBeTicker) {
+      const ticker = normalizeTicker(rawUpper);
+      tickerInput.value = ticker;
+      return ticker;
+    }
+
+    throw new Error(`No equity ticker was found for "${raw}".`);
   }
 
-  // 2. Dedicated Function to Fetch Financial Statements from Dolt Database
+  // This is intentionally the same pair of DoltHub SQL queries that worked
+  // before the Yahoo integration was added.
   async function fetchDoltFinancials(ticker) {
-    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 8`;
-    const balanceQuery = `SELECT shares_outstanding, common_stock_shares_outstanding, weighted_average_shares_diluted, date FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
+    let normalizedRouteError = null;
 
-    const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
-    const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
+    // Preferred route: the Worker owns the Dolt queries and returns a stable
+    // shape. This is also where future metrics such as revenue growth and ROIC
+    // can be added without rewriting the page.
+    try {
+      const data = await fetchJson(
+        `${workerUrl}?financials=${encodeURIComponent(ticker)}`,
+        'DoltHub financials'
+      );
 
-    const [incomeData, balanceData] = await Promise.all([
-      safeFetchJson(incomeUrl),
-      safeFetchJson(balanceUrl)
-    ]);
+      const revenue = toNumber(
+        data.revenueTtmBillion ?? data.revenue_ttm_billion ?? data.RevenueTTM
+      );
+      const shares = toNumber(
+        data.sharesOutstandingBillion ?? data.shares_outstanding_billion ?? data.SharesOutstanding
+      );
+      const hasRevenue = Boolean(data.hasRevenue ?? data.has_revenue ?? revenue > 0);
+      const hasShares = Boolean(data.hasShares ?? data.has_shares ?? shares > 0);
 
-    let revInBillions = 0;
-    let sharesOutBillions = 0;
-    const hasIncomeRows = Boolean(incomeData && incomeData.rows && incomeData.rows.length > 0);
+      if (hasRevenue || hasShares) {
+        return {
+          RevenueTTM: revenue,
+          SharesOutstanding: shares,
+          hasRevenue,
+          hasShares,
+          diagnostics: data.diagnostics || null,
+          errors: Array.isArray(data.errors) ? data.errors : []
+        };
+      }
 
-    if (hasIncomeRows) {
-      const rows = incomeData.rows;
-      const quarterlyRows = rows.filter(r => (r.period || '').toString().toLowerCase().includes('quarter') || (r.period || '').toString().toLowerCase().includes('q')).slice(0, 4);
-      const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
-
-      let rawSalesSum = 0;
-      targetRows.forEach(q => {
-        rawSalesSum += parseFloat(q.sales || 0);
-      });
-      revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
+      const routeMessage = Array.isArray(data.errors) && data.errors.length
+        ? data.errors.join(' ')
+        : `DoltHub returned no usable financial rows for ${ticker}.`;
+      throw new Error(routeMessage);
+    } catch (error) {
+      normalizedRouteError = error;
+      console.warn('Normalized Dolt route failed; trying the original SQL route:', error);
     }
 
-    if (balanceData && balanceData.rows && balanceData.rows.length > 0) {
-      const validRow = balanceData.rows.find(r => {
-        const val = parseFloat(r.shares_outstanding ?? r.common_stock_shares_outstanding ?? r.weighted_average_shares_diluted ?? 0);
-        return val > 0;
-      });
+    // Compatibility fallback: these are exactly the two SQL statements from
+    // the original file that worked before Yahoo was added.
+    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
+    const balanceQuery = `SELECT shares_outstanding, date, period FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
 
-      if (validRow) {
-        const rawShares = parseFloat(validRow.shares_outstanding ?? validRow.common_stock_shares_outstanding ?? validRow.weighted_average_shares_diluted);
-        sharesOutBillions = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
+    try {
+      const [incomeData, balanceData] = await Promise.all([
+        fetchJson(`${workerUrl}?q=${encodeURIComponent(incomeQuery)}`, 'DoltHub income query'),
+        fetchJson(`${workerUrl}?q=${encodeURIComponent(balanceQuery)}`, 'DoltHub shares query')
+      ]);
+
+      if (String(incomeData.query_execution_status || '').toLowerCase() === 'error') {
+        throw new Error(`DoltHub income query: ${incomeData.query_execution_message || 'SQL error'}`);
       }
+
+      if (String(balanceData.query_execution_status || '').toLowerCase() === 'error') {
+        throw new Error(`DoltHub shares query: ${balanceData.query_execution_message || 'SQL error'}`);
+      }
+
+      const rows = Array.isArray(incomeData.rows) ? incomeData.rows : [];
+      const quarterlyRows = rows
+        .filter(row => String(row.period || '').trim().toLowerCase() === 'quarter')
+        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
+        .slice(0, 4);
+
+      const rawSalesSum = quarterlyRows.reduce((sum, row) => sum + toNumber(row.sales), 0);
+      const revenue = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
+
+      const balanceRows = Array.isArray(balanceData.rows) ? balanceData.rows : [];
+      const shareRow = balanceRows
+        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
+        .find(row => toNumber(row.shares_outstanding) > 0);
+      const rawShares = shareRow ? toNumber(shareRow.shares_outstanding) : 0;
+      const shares = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
+
+      return {
+        RevenueTTM: revenue,
+        SharesOutstanding: shares,
+        hasRevenue: quarterlyRows.length === 4 && revenue > 0,
+        hasShares: shares > 0,
+        diagnostics: {
+          route: 'legacy-q',
+          incomeApi: incomeData.dolt_api || null,
+          balanceApi: balanceData.dolt_api || null,
+          ref: incomeData.commit_ref || balanceData.commit_ref || null
+        },
+        errors: []
+      };
+    } catch (legacyError) {
+      throw new Error(
+        `DoltHub financials failed. Normalized route: ${normalizedRouteError?.message || 'unknown error'}; ` +
+        `original SQL route: ${legacyError?.message || 'unknown error'}`
+      );
+    }
+  }
+
+  async function fetchYahooQuote(ticker) {
+    let data = null;
+    let firstError = null;
+
+    for (const route of ['quote', 'priceTicker']) {
+      try {
+        data = await fetchJson(
+          `${workerUrl}?${route}=${encodeURIComponent(ticker)}`,
+          'Yahoo quote'
+        );
+        break;
+      } catch (error) {
+        if (!firstError) firstError = error;
+      }
+    }
+
+    if (!data) throw firstError || new Error('Yahoo quote failed.');
+
+    const meta = data?.chart?.result?.[0]?.meta || {};
+    const quoteType = String(
+      data.quoteType || meta.instrumentType || meta.quoteType || ''
+    ).toUpperCase();
+    const exchangeCode = canonicalUsExchangeCode({
+      exchangeCode: data.exchangeCode,
+      exchange: data.exchange,
+      exchangeName: meta.exchangeName,
+      fullExchangeName: data.exchangeLabel || meta.fullExchangeName
+    });
+    const currency = String(data.currency || meta.currency || '').toUpperCase();
+
+    if (quoteType !== 'EQUITY' || !US_EXCHANGE_CODES.has(exchangeCode) || (currency && currency !== 'USD')) {
+      throw new Error(
+        `${ticker} is not a stock listed on NYSE, NASDAQ, or NYSE American.`
+      );
+    }
+
+    const price = [
+      data.price,
+      data.regularMarketPrice,
+      meta.regularMarketPrice,
+      meta.chartPreviousClose,
+      meta.previousClose
+    ].map(toNumber).find(value => value > 0) || 0;
+
+    if (!(price > 0)) {
+      throw new Error(`Yahoo returned no usable price for ${ticker}.`);
     }
 
     return {
-      RevenueTTM: revInBillions,
-      SharesOutstanding: sharesOutBillions,
-      hasFinancials: hasIncomeRows
+      CompanyName: data.companyName || data.longName || data.shortName || meta.longName || meta.shortName || ticker,
+      price,
+      currency: currency || 'USD',
+      exchangeCode,
+      exchange: data.exchangeLabel || US_EXCHANGE_LABELS[exchangeCode]
     };
   }
 
-  // Main Orchestrator Function
+  function resetStockUI(ticker) {
+    const nameElem = document.getElementById('companyName');
+    const tickerElem = document.getElementById('companyTickerDisplay');
+
+    nameElem.innerText = ticker;
+    nameElem.classList.remove('is-placeholder');
+    tickerElem.innerText = ticker;
+    tickerElem.classList.remove('is-placeholder');
+
+    document.getElementById('headerPrice').innerText = '$0.00';
+    document.getElementById('currentPrice').value = '';
+    document.getElementById('ttmRevenue').value = '';
+    document.getElementById('sharesOut').value = '';
+
+    const logoImg = document.getElementById('companyLogo');
+    const logoFallback = document.getElementById('companyLogoFallback');
+    logoImg.style.display = 'none';
+    logoFallback.style.display = 'flex';
+
+    calculateValuation();
+  }
+
+  // Yahoo and DoltHub are independent. A Yahoo failure cannot erase a
+  // successful DoltHub response, and a DoltHub failure cannot erase Yahoo data.
   async function fetchStockData() {
-    const statusElem = document.getElementById('apiStatus');
-    const rawTicker = tickerInput.value.trim().toUpperCase();
-
-    if (!rawTicker) {
-      alert('Please enter a stock ticker symbol or company name.');
-      return;
-    }
-
-    dropdown.style.display = 'none';
-    statusElem.innerText = 'Fetching live data...';
-    statusElem.style.color = 'var(--muted)';
+    const rawValue = tickerInput.value;
+    hideSearchDropdown();
+    setStatus('Fetching Yahoo quote and DoltHub financials...', 'muted');
+    searchButton.disabled = true;
 
     try {
-      // Execute Yahoo & Dolt fetches in parallel
-      const [yahooResult, doltResult] = await Promise.all([
-        fetchYahooPriceAndName(rawTicker),
-        fetchDoltFinancials(rawTicker)
+      const ticker = await resolveTicker(rawValue);
+      resetStockUI(ticker);
+
+      const [doltResult, yahooResult] = await Promise.allSettled([
+        fetchDoltFinancials(ticker),
+        fetchYahooQuote(ticker)
       ]);
 
-      const stockData = {
-        CompanyName: yahooResult.companyName,
-        Ticker: rawTicker,
-        RevenueTTM: doltResult.RevenueTTM,
-        SharesOutstanding: doltResult.SharesOutstanding, 
-        price: yahooResult.price
-      };
+      const yahooFailureMessage = yahooResult.status === 'rejected'
+        ? String(yahooResult.reason?.message || '')
+        : '';
 
-      if (!doltResult.hasFinancials) {
-        statusElem.innerText = `Loaded price for ${rawTicker} (Financials missing in DB)`;
-        statusElem.style.color = '#e2a03f';
-      } else {
-        statusElem.innerText = `Loaded ${rawTicker} successfully!`;
-        statusElem.style.color = 'var(--em-green)';
+      // A manually entered ETF, option, index, crypto, or other non-equity
+      // is rejected even if the Dolt database happens to contain a row for it.
+      if (/not an equity|not a stock\/equity|not a stock listed|not a us-listed/i.test(yahooFailureMessage)) {
+        setStatus(`${ticker} is not a supported US-listed equity.`, 'error', yahooFailureMessage);
+        return;
       }
 
-      populateStockUI(rawTicker, stockData);
+      const stockData = {
+        CompanyName: ticker,
+        Ticker: ticker,
+        RevenueTTM: 0,
+        SharesOutstanding: 0,
+        price: 0
+      };
+      const errors = [];
+      let doltLoaded = false;
+      let yahooLoaded = false;
+      let financialsComplete = false;
 
+      if (doltResult.status === 'fulfilled') {
+        stockData.RevenueTTM = doltResult.value.RevenueTTM;
+        stockData.SharesOutstanding = doltResult.value.SharesOutstanding;
+        doltLoaded = doltResult.value.hasRevenue || doltResult.value.hasShares;
+        financialsComplete = doltResult.value.hasRevenue && doltResult.value.hasShares;
+
+        if (!doltResult.value.hasRevenue) errors.push('DoltHub returned no usable TTM revenue.');
+        if (!doltResult.value.hasShares) errors.push('DoltHub returned no usable shares outstanding.');
+      } else {
+        errors.push(doltResult.reason?.message || 'DoltHub financials failed.');
+      }
+
+      if (yahooResult.status === 'fulfilled') {
+        stockData.CompanyName = yahooResult.value.CompanyName;
+        stockData.price = yahooResult.value.price;
+        yahooLoaded = yahooResult.value.price > 0;
+      } else {
+        errors.push(yahooResult.reason?.message || 'Yahoo quote failed.');
+      }
+
+      populateStockUI(ticker, stockData);
+
+      if (yahooLoaded && financialsComplete) {
+        setStatus(`Loaded ${ticker} successfully.`, 'success');
+      } else if (yahooLoaded || doltLoaded) {
+        setStatus(`Loaded available data for ${ticker}.`, 'warning', errors.join('\n'));
+      } else {
+        setStatus(`Could not load ${ticker}.`, 'error', errors.join('\n'));
+      }
+
+      if (errors.length > 0) {
+        console.warn(`Partial data for ${ticker}:`, errors);
+      }
     } catch (error) {
-      console.error('Fetch Error:', error);
-      statusElem.innerText = 'Failed to fetch live data!';
-      statusElem.style.color = 'var(--em-red)';
+      console.error('Stock load error:', error);
+      setStatus(error.message || 'Failed to fetch stock data.', 'error');
+    } finally {
+      searchButton.disabled = false;
     }
   }
 
+  // Populate UI with retrieved stock data
   function populateStockUI(ticker, overview) {
-    const price = parseFloat(overview.price || 0);
-    const sharesOut = parseFloat(overview.SharesOutstanding || 0);
-    const revenueTTM = parseFloat(overview.RevenueTTM || 0);
+    const price = toNumber(overview.price);
+    const sharesOut = toNumber(overview.SharesOutstanding);
+    const revenueTTM = toNumber(overview.RevenueTTM);
 
     const nameElem = document.getElementById('companyName');
     nameElem.innerText = overview.CompanyName || ticker;
@@ -977,12 +1450,12 @@
     tickerElem.innerText = ticker;
     tickerElem.classList.remove('is-placeholder');
 
-    document.getElementById('headerPrice').innerText = `$${price ? price.toFixed(2) : '0.00'}`;
-    
+    document.getElementById('headerPrice').innerText = `$${price > 0 ? price.toFixed(2) : '0.00'}`;
+
     const logoImg = document.getElementById('companyLogo');
     const logoFallback = document.getElementById('companyLogoFallback');
-    
-    logoImg.src = `https://financialmodelingprep.com/image-stock/${ticker}.png`;
+
+    logoImg.src = `https://financialmodelingprep.com/image-stock/${encodeURIComponent(ticker)}.png`;
     logoImg.onload = function() {
       logoImg.style.display = 'block';
       logoFallback.style.display = 'none';
@@ -992,29 +1465,63 @@
       logoFallback.style.display = 'flex';
     };
 
-    if (price > 0) {
-      document.getElementById('currentPrice').value = price.toFixed(2);
-    } else {
-      document.getElementById('currentPrice').value = '';
-    }
-
-    if (sharesOut > 0) {
-      const sharesInUnit = sharesOut > 1e6 ? sharesOut / 1e9 : sharesOut;
-      document.getElementById('sharesOut').value = sharesInUnit.toFixed(3);
-    } else {
-      document.getElementById('sharesOut').value = '';
-    }
-
-    if (revenueTTM > 0) {
-      const revInUnit = revenueTTM > 1e6 ? revenueTTM / 1e9 : revenueTTM;
-      document.getElementById('ttmRevenue').value = revInUnit.toFixed(2);
-    } else {
-      document.getElementById('ttmRevenue').value = '';
-    }
+    document.getElementById('currentPrice').value = price > 0 ? price.toFixed(2) : '';
+    document.getElementById('sharesOut').value = sharesOut > 0 ? sharesOut.toFixed(3) : '';
+    document.getElementById('ttmRevenue').value = revenueTTM > 0 ? revenueTTM.toFixed(2) : '';
 
     calculateValuation();
     fitToScreen();
   }
+
+  tickerInput.addEventListener('input', function() {
+    selectedSearchTicker = '';
+    clearTimeout(searchDebounceTimer);
+
+    const query = this.value.trim();
+    if (!query) {
+      if (searchAbortController) searchAbortController.abort();
+      hideSearchDropdown();
+      return;
+    }
+
+    searchDebounceTimer = setTimeout(() => loadSearchSuggestions(query), 225);
+  });
+
+  tickerInput.addEventListener('keydown', function(event) {
+    const dropdownOpen = searchDropdown.classList.contains('is-open');
+
+    if (event.key === 'ArrowDown' && dropdownOpen && currentSearchResults.length > 0) {
+      event.preventDefault();
+      setActiveSearchIndex(activeSearchIndex + 1);
+      return;
+    }
+
+    if (event.key === 'ArrowUp' && dropdownOpen && currentSearchResults.length > 0) {
+      event.preventDefault();
+      setActiveSearchIndex(activeSearchIndex - 1);
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      hideSearchDropdown();
+      return;
+    }
+
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (dropdownOpen && activeSearchIndex >= 0) {
+        selectSearchResult(currentSearchResults[activeSearchIndex]);
+      } else {
+        fetchStockData();
+      }
+    }
+  });
+
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.search-input-group')) {
+      hideSearchDropdown();
+    }
+  });
 
   const scenariosMap = {
     1: ['mid'],
@@ -1220,12 +1727,6 @@
       elem.style.color = 'var(--text)';
     }
   }
-
-  document.getElementById('tickerInput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-      fetchStockData();
-    }
-  });
 
   window.addEventListener('resize', fitToScreen);
 
