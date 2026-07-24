@@ -855,6 +855,18 @@
     }
   });
 
+  // Safe fetch helper to handle errors without throwing JSON parse exceptions
+  async function safeFetchJson(url) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) {
+      console.warn(`Fetch failed for ${url}:`, e);
+      return null;
+    }
+  }
+
   // Fetch Stock Financial Data & Live Price through Worker Proxy
   async function fetchStockData() {
     const statusElem = document.getElementById('apiStatus');
@@ -878,27 +890,14 @@
     const priceUrl = `${workerUrl}?priceTicker=${encodeURIComponent(ticker)}`;
 
     try {
-      const [incomeResponse, balanceResponse, yahooPriceResponse] = await Promise.all([
-        fetch(incomeUrl),
-        fetch(balanceUrl),
-        fetch(priceUrl)
+      const [incomeData, balanceData, yahooData] = await Promise.all([
+        safeFetchJson(incomeUrl),
+        safeFetchJson(balanceUrl),
+        safeFetchJson(priceUrl)
       ]);
-      
-      if (!incomeResponse.ok || !balanceResponse.ok) {
-        throw new Error('Network response was not ok');
-      }
 
-      const incomeData = await incomeResponse.json();
-      const balanceData = await balanceResponse.json();
-      let yahooData = {};
-      
-      if (yahooPriceResponse.ok) {
-        yahooData = await yahooPriceResponse.json();
-      }
-
-      if (incomeData.query_execution_status === 'Error') {
-        console.error('DoltHub SQL Error:', incomeData.query_execution_message);
-        statusElem.innerText = `Database Error for ${ticker}`;
+      if (!incomeData || incomeData.query_execution_status === 'Error') {
+        statusElem.innerText = `Ticker ${ticker} not found in database!`;
         statusElem.style.color = 'var(--em-red)';
         return;
       }
@@ -923,7 +922,7 @@
 
       // Shares outstanding fallback logic
       let sharesOutBillions = 0;
-      if (balanceData.rows && balanceData.rows.length > 0) {
+      if (balanceData && balanceData.rows && balanceData.rows.length > 0) {
         const validRow = balanceData.rows.find(r => {
           const val = parseFloat(r.shares_outstanding ?? r.common_stock_shares_outstanding ?? r.weighted_average_shares_diluted ?? 0);
           return val > 0;
@@ -939,7 +938,7 @@
       let livePrice = 0;
       let resolvedName = ticker;
 
-      if (yahooData.chart && yahooData.chart.result && yahooData.chart.result.length > 0) {
+      if (yahooData && yahooData.chart && yahooData.chart.result && yahooData.chart.result.length > 0) {
         const meta = yahooData.chart.result[0].meta;
         livePrice = meta.regularMarketPrice || 0;
         resolvedName = meta.longName || meta.shortName || ticker;
