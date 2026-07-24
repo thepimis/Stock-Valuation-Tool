@@ -1586,17 +1586,22 @@
   }
 
   function markResultsPending() {
-    const numEntries = parseInt(document.getElementById('entriesSelect').value) || 3;
-    const cases = scenariosMap[numEntries] || [];
-
-    cases.forEach(c => {
-      resetOutputCell(`moe_${c}`);
-      resetOutputCell(`dcf_${c}`);
-      resetRetCell(`ret_${c}`);
-    });
+    // Keep the last calculated results visible until Analyze is pressed again.
+    // Only indicate that the displayed values are based on the previous inputs.
+    const analyzeButton = document.querySelector('.analyze-btn');
+    if (analyzeButton) {
+      analyzeButton.textContent = 'Analyze Changes';
+      analyzeButton.setAttribute('aria-label', 'Analyze changed inputs');
+    }
   }
 
   function calculateValuation() {
+    const analyzeButton = document.querySelector('.analyze-btn');
+    if (analyzeButton) {
+      analyzeButton.textContent = 'Analyze';
+      analyzeButton.setAttribute('aria-label', 'Analyze valuation');
+    }
+
     const rawPrice = document.getElementById('currentPrice').value;
     const price = parseFloat(rawPrice) || 0;
     
