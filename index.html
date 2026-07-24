@@ -715,7 +715,7 @@
         <input
           type="text"
           id="tickerInput"
-          placeholder="Search ticker or company"
+          placeholder="Search ticker or company (e.g., AAPL, Adobe, Bloom Energy)"
           autocomplete="off"
           aria-autocomplete="list"
           aria-controls="searchDropdown"
@@ -737,7 +737,7 @@
         <div id="companyLogoFallback" class="company-logo-fallback">📈</div>
       </div>
       <div>
-        <h2 id="companyName" class="company-name is-placeholder">Company Name (e.g. Apple Inc.)</h2>
+        <h2 id="companyName" class="company-name is-placeholder">Company Name (e.g. Bloom Energy)</h2>
         <div id="companyTickerDisplay" class="company-ticker is-placeholder">_______</div>
       </div>
     </div>
@@ -1003,9 +1003,17 @@
   function queueAssumptionSave() {
     if (!activeAssumptionsTicker || suppressAssumptionSave) return;
 
+    const tickerAtQueueTime = activeAssumptionsTicker;
+
     clearTimeout(assumptionSaveTimer);
     assumptionSaveTimer = setTimeout(() => {
-      saveAssumptionsForTicker(activeAssumptionsTicker);
+      assumptionSaveTimer = null;
+
+      // Do not let a delayed save from the previous company write its
+      // assumptions into the newly selected company's storage.
+      if (activeAssumptionsTicker !== tickerAtQueueTime) return;
+
+      saveAssumptionsForTicker(tickerAtQueueTime);
     }, 150);
   }
 
@@ -1027,6 +1035,11 @@
   function activateTickerAssumptions(ticker) {
     const normalizedTicker = normalizeTicker(ticker);
 
+    // Cancel any delayed save before changing the active ticker. Otherwise,
+    // the old company's timer could run after the new company becomes active.
+    clearTimeout(assumptionSaveTimer);
+    assumptionSaveTimer = null;
+
     if (activeAssumptionsTicker && activeAssumptionsTicker !== normalizedTicker) {
       saveAssumptionsForTicker(activeAssumptionsTicker);
     }
@@ -1035,7 +1048,6 @@
     const saved = readSavedAssumptions(normalizedTicker);
 
     suppressAssumptionSave = true;
-    clearTimeout(assumptionSaveTimer);
 
     try {
       document.getElementById('yearsSelect').value =
