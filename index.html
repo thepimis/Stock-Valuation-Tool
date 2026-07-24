@@ -442,7 +442,7 @@
       letter-spacing: normal;
     }
 
-    /* Clean Return Value Text (No Boxes) */
+    /* Clean Return Value Text */
     .ret-val-text {
       text-align: center;
       font-weight: 800;
@@ -819,7 +819,7 @@
     }, 250);
   });
 
-  // Filtered dropdown rendering to discard leveraged ETFs, foreign symbols, and option tickers
+  // Filtered dropdown rendering
   function renderDropdown(quotes) {
     dropdown.innerHTML = '';
     
@@ -862,7 +862,7 @@
     }
   });
 
-  // Safe fetch helper to handle errors without throwing JSON parse exceptions
+  // Safe fetch helper
   async function safeFetchJson(url) {
     try {
       const res = await fetch(url);
@@ -874,7 +874,7 @@
     }
   }
 
-  // Fetch Stock Financial Data & Live Price through Worker Proxy
+  // Fetch Stock Financial Data & Live Price
   async function fetchStockData() {
     const statusElem = document.getElementById('apiStatus');
     const rawTicker = tickerInput.value.trim().toUpperCase();
@@ -888,7 +888,6 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Updated valid SQL targeting act_symbol in Dolt schema
     const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${rawTicker}' ORDER BY date DESC LIMIT 8`;
     const balanceQuery = `SELECT shares_outstanding, common_stock_shares_outstanding, weighted_average_shares_diluted, date FROM balance_sheet_equity WHERE act_symbol = '${rawTicker}' ORDER BY date DESC LIMIT 5`;
 
