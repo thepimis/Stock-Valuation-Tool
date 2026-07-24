@@ -442,7 +442,7 @@
       letter-spacing: normal;
     }
 
-    /* Clean Return Value Text */
+    /* Clean Return Value Text (No Boxes) */
     .ret-val-text {
       text-align: center;
       font-weight: 800;
@@ -819,7 +819,7 @@
     }, 250);
   });
 
-  // Filtered dropdown rendering
+  // Filtered dropdown rendering to discard leveraged ETFs, foreign symbols, and option tickers
   function renderDropdown(quotes) {
     dropdown.innerHTML = '';
     
@@ -862,7 +862,7 @@
     }
   });
 
-  // Safe fetch helper
+  // Safe fetch helper to handle errors without throwing JSON parse exceptions
   async function safeFetchJson(url) {
     try {
       const res = await fetch(url);
@@ -874,7 +874,7 @@
     }
   }
 
-  // Fetch Stock Financial Data & Live Price
+  // Fetch Stock Financial Data & Live Price through Worker Proxy
   async function fetchStockData() {
     const statusElem = document.getElementById('apiStatus');
     const rawTicker = tickerInput.value.trim().toUpperCase();
@@ -888,7 +888,8 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${rawTicker}' ORDER BY date DESC LIMIT 8`;
+    // Filter explicitly by period = 'Quarter' in the Dolt SQL query directly
+    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${rawTicker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
     const balanceQuery = `SELECT shares_outstanding, common_stock_shares_outstanding, weighted_average_shares_diluted, date FROM balance_sheet_equity WHERE act_symbol = '${rawTicker}' ORDER BY date DESC LIMIT 5`;
 
     const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
@@ -916,12 +917,8 @@
       const hasIncomeRows = incomeData && incomeData.rows && incomeData.rows.length > 0;
 
       if (hasIncomeRows) {
-        const rows = incomeData.rows;
-        const quarterlyRows = rows.filter(r => (r.period || '').toString().toLowerCase().includes('quarter') || (r.period || '').toString().toLowerCase().includes('q')).slice(0, 4);
-        const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
-
         let rawSalesSum = 0;
-        targetRows.forEach(q => {
+        incomeData.rows.forEach(q => {
           rawSalesSum += parseFloat(q.sales || 0);
         });
         revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
