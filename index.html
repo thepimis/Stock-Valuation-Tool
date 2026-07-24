@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stock Valuation Tool</title>
-
+  
   <!-- Browser Tab Favicon -->
   <link rel="icon" type="image/png" href="logo.png">
 
@@ -450,7 +450,7 @@
       display: grid;
       gap: 7px;
     }
-
+    
     .cols-1 { grid-template-columns: 1fr; }
     .cols-3 { grid-template-columns: repeat(3, 1fr); }
     .cols-5 { grid-template-columns: repeat(5, 1fr); }
@@ -798,7 +798,7 @@
 
   function renderDropdown(quotes) {
     dropdown.innerHTML = '';
-
+    
     const matches = quotes.filter(q => {
       const isEquity = q.quoteType === 'EQUITY';
       const hasCleanSymbol = q.symbol && !q.symbol.includes('.') && !q.symbol.includes('-') && !q.symbol.includes('=');
@@ -837,6 +837,7 @@
     }
   });
 
+  // Updated Safe Fetch function handling non-JSON plain text and errors gracefully
   async function safeFetchJson(url) {
     try {
       const res = await fetch(url);
@@ -852,6 +853,7 @@
     }
   }
 
+  // 1. Dedicated Function to Fetch Price and Name from Yahoo
   async function fetchYahooPriceAndName(ticker) {
     const priceUrl = `${workerUrl}?priceTicker=${encodeURIComponent(ticker)}`;
     const yahooData = await safeFetchJson(priceUrl);
@@ -868,9 +870,10 @@
     return { price, companyName };
   }
 
+  // 2. Dedicated Function to Fetch Financial Statements from Dolt Database
   async function fetchDoltFinancials(ticker) {
-    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
-    const balanceQuery = `SELECT shares_outstanding, date FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 1`;
+    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 8`;
+    const balanceQuery = `SELECT shares_outstanding, common_stock_shares_outstanding, weighted_average_shares_diluted, date FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
 
     const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
     const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
@@ -886,8 +889,11 @@
 
     if (hasIncomeRows) {
       const rows = incomeData.rows;
+      const quarterlyRows = rows.filter(r => (r.period || '').toString().toLowerCase().includes('quarter') || (r.period || '').toString().toLowerCase().includes('q')).slice(0, 4);
+      const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
+
       let rawSalesSum = 0;
-      rows.forEach(q => {
+      targetRows.forEach(q => {
         rawSalesSum += parseFloat(q.sales || 0);
       });
       revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
@@ -895,12 +901,12 @@
 
     if (balanceData && balanceData.rows && balanceData.rows.length > 0) {
       const validRow = balanceData.rows.find(r => {
-        const val = parseFloat(r.shares_outstanding || 0);
+        const val = parseFloat(r.shares_outstanding ?? r.common_stock_shares_outstanding ?? r.weighted_average_shares_diluted ?? 0);
         return val > 0;
       });
 
       if (validRow) {
-        const rawShares = parseFloat(validRow.shares_outstanding);
+        const rawShares = parseFloat(validRow.shares_outstanding ?? validRow.common_stock_shares_outstanding ?? validRow.weighted_average_shares_diluted);
         sharesOutBillions = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
       }
     }
@@ -912,6 +918,7 @@
     };
   }
 
+  // Main Orchestrator Function
   async function fetchStockData() {
     const statusElem = document.getElementById('apiStatus');
     const rawTicker = tickerInput.value.trim().toUpperCase();
@@ -926,6 +933,7 @@
     statusElem.style.color = 'var(--muted)';
 
     try {
+      // Execute Yahoo & Dolt fetches in parallel
       const [yahooResult, doltResult] = await Promise.all([
         fetchYahooPriceAndName(rawTicker),
         fetchDoltFinancials(rawTicker)
@@ -970,10 +978,10 @@
     tickerElem.classList.remove('is-placeholder');
 
     document.getElementById('headerPrice').innerText = `$${price ? price.toFixed(2) : '0.00'}`;
-
+    
     const logoImg = document.getElementById('companyLogo');
     const logoFallback = document.getElementById('companyLogoFallback');
-
+    
     logoImg.src = `https://financialmodelingprep.com/image-stock/${ticker}.png`;
     logoImg.onload = function() {
       logoImg.style.display = 'block';
@@ -991,13 +999,15 @@
     }
 
     if (sharesOut > 0) {
-      document.getElementById('sharesOut').value = sharesOut.toFixed(3);
+      const sharesInUnit = sharesOut > 1e6 ? sharesOut / 1e9 : sharesOut;
+      document.getElementById('sharesOut').value = sharesInUnit.toFixed(3);
     } else {
       document.getElementById('sharesOut').value = '';
     }
 
     if (revenueTTM > 0) {
-      document.getElementById('ttmRevenue').value = revenueTTM.toFixed(2);
+      const revInUnit = revenueTTM > 1e6 ? revenueTTM / 1e9 : revenueTTM;
+      document.getElementById('ttmRevenue').value = revInUnit.toFixed(2);
     } else {
       document.getElementById('ttmRevenue').value = '';
     }
@@ -1041,10 +1051,10 @@
       cases.forEach(c => {
         const symbolHTML = m.hasSymbol ? '<span class="symbol">%</span>' : '';
         html += `
-         <div class="input-wrapper">
-           <input type="number" id="${m.id}_${c}" value="" placeholder="0" oninput="calculateValuation()">
-           ${symbolHTML}
-         </div>`;
+          <div class="input-wrapper">
+            <input type="number" id="${m.id}_${c}" value="" placeholder="0" oninput="calculateValuation()">
+            ${symbolHTML}
+          </div>`;
       });
       rowContainer.innerHTML = html;
     });
@@ -1071,7 +1081,7 @@
   function calculateValuation() {
     const rawPrice = document.getElementById('currentPrice').value;
     const price = parseFloat(rawPrice) || 0;
-
+    
     const rawRev = parseFloat(document.getElementById('ttmRevenue').value) || 0;
     const rawShares = parseFloat(document.getElementById('sharesOut').value) || 0;
     const years = parseInt(document.getElementById('yearsSelect').value) || 10;
@@ -1111,7 +1121,7 @@
 
       for (let yr = 1; yr <= years; yr++) {
         currentRev *= (1 + g);
-
+        
         const annualEPS = currentRev * pm;
         pvEarningsCashFlows += annualEPS / Math.pow(1 + r, yr);
 
@@ -1158,12 +1168,12 @@
 
       renderPriceCell(`moe_${c}`, pvMOE, price, peInput && pmInput);
       renderPriceCell(`dcf_${c}`, pvDCF, price, pfcfInput && fcfmInput);
-
+      
       const retElem = document.getElementById(`ret_${c}`);
       if (retElem) {
         if (pfcfInput && fcfmInput) {
           retElem.innerText = `${calculatedReturn.toFixed(2)}%`;
-
+          
           if (calculatedReturn < 0) {
             retElem.style.color = 'var(--em-red)';
           } else if (calculatedReturn >= (r * 100)) {
