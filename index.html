@@ -784,14 +784,11 @@
 
     debounceTimer = setTimeout(async () => {
       try {
-        const res = await fetch(`${workerUrl}?search=${encodeURIComponent(query)}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.quotes && data.quotes.length > 0) {
-            renderDropdown(data.quotes);
-          } else {
-            dropdown.style.display = 'none';
-          }
+        const res = await safeFetchJson(`${workerUrl}?search=${encodeURIComponent(query)}`);
+        if (res && res.quotes && res.quotes.length > 0) {
+          renderDropdown(res.quotes);
+        } else {
+          dropdown.style.display = 'none';
         }
       } catch (e) {
         console.error('Search Autocomplete Error:', e);
@@ -840,10 +837,15 @@
     }
   });
 
+  // Updated Safe Fetch function handling non-JSON plain text and errors gracefully
   async function safeFetchJson(url) {
     try {
       const res = await fetch(url);
-      if (!res.ok) return null;
+      if (!res.ok) {
+        const errText = await res.text();
+        console.warn(`Fetch returned status ${res.status}:`, errText);
+        return null;
+      }
       return await res.json();
     } catch (e) {
       console.warn(`Fetch failed for ${url}:`, e);
