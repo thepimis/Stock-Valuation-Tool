@@ -585,7 +585,26 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      gap: 10px;
       margin-bottom: 12px;
+    }
+
+    .clear-assumptions-btn {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border-color);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 9px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .clear-assumptions-btn:hover {
+      color: var(--text);
+      border-color: var(--muted);
+      background: var(--card-inner);
     }
 
     /* Standout Analyze Button */
@@ -639,9 +658,17 @@
         font-size: 1.3rem;
       }
 
-      .analyze-btn {
+      .action-row {
+        flex-direction: column-reverse;
+      }
+
+      .analyze-btn,
+      .clear-assumptions-btn {
         width: 100%;
         text-align: center;
+      }
+
+      .analyze-btn {
         padding: 12px;
       }
 
@@ -688,7 +715,7 @@
         <input
           type="text"
           id="tickerInput"
-          placeholder="Search ticker or company (e.g., AAPL, Adobe, Bloom Energy)"
+          placeholder="Search ticker or company"
           autocomplete="off"
           aria-autocomplete="list"
           aria-controls="searchDropdown"
@@ -710,7 +737,7 @@
         <div id="companyLogoFallback" class="company-logo-fallback">📈</div>
       </div>
       <div>
-        <h2 id="companyName" class="company-name is-placeholder">Company Name (e.g. Bloom Energy)</h2>
+        <h2 id="companyName" class="company-name is-placeholder">Company Name (e.g. Apple Inc.)</h2>
         <div id="companyTickerDisplay" class="company-ticker is-placeholder">_______</div>
       </div>
     </div>
@@ -808,6 +835,9 @@
 
   <!-- Action Row -->
   <div class="action-row">
+    <button class="clear-assumptions-btn" type="button" onclick="clearSavedAssumptions()">
+      Clear Saved Assumptions
+    </button>
     <button class="analyze-btn" onclick="calculateValuation()">Analyze</button>
   </div>
 
@@ -902,6 +932,156 @@
   let activeSearchIndex = -1;
   let selectedSearchTicker = '';
   let searchInProgress = false;
+
+  const ASSUMPTIONS_STORAGE_PREFIX = 'stockValuationAssumptions:';
+  let activeAssumptionsTicker = '';
+  let renderedEntriesCount = 3;
+  let assumptionSaveTimer = null;
+  let suppressAssumptionSave = false;
+
+  function assumptionsStorageKey(ticker) {
+    return `${ASSUMPTIONS_STORAGE_PREFIX}${normalizeTicker(ticker)}`;
+  }
+
+  function readSavedAssumptions(ticker) {
+    if (!ticker) return null;
+
+    try {
+      const raw = localStorage.getItem(assumptionsStorageKey(ticker));
+      if (!raw) return null;
+
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : null;
+    } catch (error) {
+      console.warn(`Could not read saved assumptions for ${ticker}:`, error);
+      return null;
+    }
+  }
+
+  function captureCurrentAssumptionLayout(entryCount = renderedEntriesCount) {
+    const cases = scenariosMap[entryCount] || [];
+    const metrics = ['g', 'pm', 'fcfm', 'pe', 'pfcf', 'r'];
+    const layout = {};
+
+    metrics.forEach(metric => {
+      layout[metric] = {};
+      cases.forEach(scenario => {
+        layout[metric][scenario] =
+          document.getElementById(`${metric}_${scenario}`)?.value ?? '';
+      });
+    });
+
+    return layout;
+  }
+
+  function saveAssumptionsForTicker(ticker = activeAssumptionsTicker) {
+    if (!ticker || suppressAssumptionSave) return;
+
+    try {
+      const existing = readSavedAssumptions(ticker) || {
+        version: 1,
+        layouts: {}
+      };
+
+      existing.version = 1;
+      existing.years = document.getElementById('yearsSelect').value;
+      existing.activeEntries = String(document.getElementById('entriesSelect').value);
+      existing.layouts = existing.layouts || {};
+      existing.layouts[String(renderedEntriesCount)] =
+        captureCurrentAssumptionLayout(renderedEntriesCount);
+      existing.updatedAt = new Date().toISOString();
+
+      localStorage.setItem(
+        assumptionsStorageKey(ticker),
+        JSON.stringify(existing)
+      );
+    } catch (error) {
+      console.warn(`Could not save assumptions for ${ticker}:`, error);
+    }
+  }
+
+  function queueAssumptionSave() {
+    if (!activeAssumptionsTicker || suppressAssumptionSave) return;
+
+    clearTimeout(assumptionSaveTimer);
+    assumptionSaveTimer = setTimeout(() => {
+      saveAssumptionsForTicker(activeAssumptionsTicker);
+    }, 150);
+  }
+
+  function restoreAssumptionLayout(saved, entryCount) {
+    const layout = saved?.layouts?.[String(entryCount)];
+    if (!layout) return;
+
+    const cases = scenariosMap[entryCount] || [];
+    const metrics = ['g', 'pm', 'fcfm', 'pe', 'pfcf', 'r'];
+
+    metrics.forEach(metric => {
+      cases.forEach(scenario => {
+        const input = document.getElementById(`${metric}_${scenario}`);
+        if (input) input.value = layout?.[metric]?.[scenario] ?? '';
+      });
+    });
+  }
+
+  function activateTickerAssumptions(ticker) {
+    const normalizedTicker = normalizeTicker(ticker);
+
+    if (activeAssumptionsTicker && activeAssumptionsTicker !== normalizedTicker) {
+      saveAssumptionsForTicker(activeAssumptionsTicker);
+    }
+
+    activeAssumptionsTicker = normalizedTicker;
+    const saved = readSavedAssumptions(normalizedTicker);
+
+    suppressAssumptionSave = true;
+    clearTimeout(assumptionSaveTimer);
+
+    try {
+      document.getElementById('yearsSelect').value =
+        ['3', '5', '10'].includes(String(saved?.years))
+          ? String(saved.years)
+          : '10';
+
+      const savedEntries = ['1', '3', '5'].includes(String(saved?.activeEntries))
+        ? String(saved.activeEntries)
+        : '3';
+
+      document.getElementById('entriesSelect').value = savedEntries;
+      renderDynamicLayout({ savePrevious: false, restoreSaved: false });
+      restoreAssumptionLayout(saved, Number(savedEntries));
+    } finally {
+      suppressAssumptionSave = false;
+    }
+  }
+
+  function clearSavedAssumptions() {
+    if (!activeAssumptionsTicker) {
+      setStatus('Search for a company first.', 'warning');
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Clear all saved assumptions for ${activeAssumptionsTicker}?`
+    );
+    if (!confirmed) return;
+
+    try {
+      localStorage.removeItem(assumptionsStorageKey(activeAssumptionsTicker));
+
+      suppressAssumptionSave = true;
+      document.getElementById('yearsSelect').value = '10';
+      document.getElementById('entriesSelect').value = '3';
+      renderDynamicLayout({ savePrevious: false, restoreSaved: false });
+      suppressAssumptionSave = false;
+
+      setStatus(`Saved assumptions cleared for ${activeAssumptionsTicker}.`, 'success');
+    } catch (error) {
+      suppressAssumptionSave = false;
+      console.error('Could not clear saved assumptions:', error);
+      setStatus('Could not clear saved assumptions.', 'error');
+    }
+  }
 
   function updateHeaderPrice() {
     const p = parseFloat(document.getElementById('currentPrice').value) || 0;
@@ -1451,6 +1631,7 @@
         errors.push(yahooResult.reason?.message || 'Yahoo quote failed.');
       }
 
+      activateTickerAssumptions(ticker);
       populateStockUI(ticker, stockData);
 
       if (yahooLoaded || doltLoaded) {
@@ -1573,9 +1754,23 @@
     5: 'Bear &nbsp;&nbsp;&nbsp;&nbsp; Low &nbsp;&nbsp;&nbsp;&nbsp; Mid &nbsp;&nbsp;&nbsp;&nbsp; High &nbsp;&nbsp;&nbsp;&nbsp; Bull'
   };
 
-  function renderDynamicLayout() {
+  function renderDynamicLayout(options = {}) {
+    const {
+      savePrevious = true,
+      restoreSaved = true
+    } = options;
+
+    if (
+      savePrevious &&
+      activeAssumptionsTicker &&
+      document.getElementById('row_g')?.children.length > 0
+    ) {
+      saveAssumptionsForTicker(activeAssumptionsTicker);
+    }
+
     const numEntries = parseInt(document.getElementById('entriesSelect').value);
     const cases = scenariosMap[numEntries];
+    renderedEntriesCount = numEntries;
 
     document.getElementById('assumptionsHeader').innerHTML = headerTextMap[numEntries];
     document.getElementById('resultsHeader').innerHTML = headerTextMap[numEntries];
@@ -1619,6 +1814,13 @@
       rowContainer.innerHTML = html;
     });
 
+    if (restoreSaved && activeAssumptionsTicker) {
+      restoreAssumptionLayout(
+        readSavedAssumptions(activeAssumptionsTicker),
+        numEntries
+      );
+    }
+
     markResultsPending();
     fitToScreen();
   }
@@ -1626,9 +1828,12 @@
   function markResultsPending() {
     // Keep the last calculated results visible while inputs are edited.
     // Recalculation happens only when the Analyze button is pressed.
+    queueAssumptionSave();
   }
 
   function calculateValuation() {
+    saveAssumptionsForTicker(activeAssumptionsTicker);
+
     const rawPrice = document.getElementById('currentPrice').value;
     const price = parseFloat(rawPrice) || 0;
     
@@ -1772,6 +1977,9 @@
   }
 
   window.addEventListener('resize', fitToScreen);
+  window.addEventListener('beforeunload', () => {
+    saveAssumptionsForTicker(activeAssumptionsTicker);
+  });
 
   window.onload = function() {
     renderDynamicLayout();
