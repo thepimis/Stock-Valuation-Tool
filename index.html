@@ -837,7 +837,6 @@
     }
   });
 
-  // Updated Safe Fetch function handling non-JSON plain text and errors gracefully
   async function safeFetchJson(url) {
     try {
       const res = await fetch(url);
@@ -853,7 +852,6 @@
     }
   }
 
-  // 1. Dedicated Function to Fetch Price and Name from Yahoo
   async function fetchYahooPriceAndName(ticker) {
     const priceUrl = `${workerUrl}?priceTicker=${encodeURIComponent(ticker)}`;
     const yahooData = await safeFetchJson(priceUrl);
@@ -870,10 +868,10 @@
     return { price, companyName };
   }
 
-  // 2. Dedicated Function to Fetch Financial Statements from Dolt Database
+  // Updated Function to Fetch Financial Statements from Dolt Database using strict query logic
   async function fetchDoltFinancials(ticker) {
-    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 8`;
-    const balanceQuery = `SELECT shares_outstanding, common_stock_shares_outstanding, weighted_average_shares_diluted, date FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
+    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
+    const balanceQuery = `SELECT shares_outstanding, date FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 1`;
 
     const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
     const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
@@ -883,36 +881,25 @@
       safeFetchJson(balanceUrl)
     ]);
 
-    let revInBillions = 0;
+    let ttmRevenueBillions = 0;
     let sharesOutBillions = 0;
     const hasIncomeRows = Boolean(incomeData && incomeData.rows && incomeData.rows.length > 0);
 
     if (hasIncomeRows) {
-      const rows = incomeData.rows;
-      const quarterlyRows = rows.filter(r => (r.period || '').toString().toLowerCase().includes('quarter') || (r.period || '').toString().toLowerCase().includes('q')).slice(0, 4);
-      const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
-
-      let rawSalesSum = 0;
-      targetRows.forEach(q => {
-        rawSalesSum += parseFloat(q.sales || 0);
+      let ttmRevenueRaw = 0;
+      incomeData.rows.slice(0, 4).forEach(row => {
+        ttmRevenueRaw += parseFloat(row.sales || 0);
       });
-      revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
+      ttmRevenueBillions = ttmRevenueRaw > 1e6 ? ttmRevenueRaw / 1e9 : ttmRevenueRaw;
     }
 
     if (balanceData && balanceData.rows && balanceData.rows.length > 0) {
-      const validRow = balanceData.rows.find(r => {
-        const val = parseFloat(r.shares_outstanding ?? r.common_stock_shares_outstanding ?? r.weighted_average_shares_diluted ?? 0);
-        return val > 0;
-      });
-
-      if (validRow) {
-        const rawShares = parseFloat(validRow.shares_outstanding ?? validRow.common_stock_shares_outstanding ?? validRow.weighted_average_shares_diluted);
-        sharesOutBillions = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
-      }
+      const sharesOutstandingRaw = parseFloat(balanceData.rows[0].shares_outstanding || 0);
+      sharesOutBillions = sharesOutstandingRaw > 1e6 ? sharesOutstandingRaw / 1e9 : sharesOutstandingRaw;
     }
 
     return {
-      RevenueTTM: revInBillions,
+      RevenueTTM: ttmRevenueBillions,
       SharesOutstanding: sharesOutBillions,
       hasFinancials: hasIncomeRows
     };
@@ -933,7 +920,6 @@
     statusElem.style.color = 'var(--muted)';
 
     try {
-      // Execute Yahoo & Dolt fetches in parallel
       const [yahooResult, doltResult] = await Promise.all([
         fetchYahooPriceAndName(rawTicker),
         fetchDoltFinancials(rawTicker)
@@ -999,15 +985,13 @@
     }
 
     if (sharesOut > 0) {
-      const sharesInUnit = sharesOut > 1e6 ? sharesOut / 1e9 : sharesOut;
-      document.getElementById('sharesOut').value = sharesInUnit.toFixed(3);
+      document.getElementById('sharesOut').value = sharesOut.toFixed(3);
     } else {
       document.getElementById('sharesOut').value = '';
     }
 
     if (revenueTTM > 0) {
-      const revInUnit = revenueTTM > 1e6 ? revenueTTM / 1e9 : revenueTTM;
-      document.getElementById('ttmRevenue').value = revInUnit.toFixed(2);
+      document.getElementById('ttmRevenue').value = revenueTTM.toFixed(2);
     } else {
       document.getElementById('ttmRevenue').value = '';
     }
