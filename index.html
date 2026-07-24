@@ -1073,11 +1073,6 @@
       return;
     }
 
-    const confirmed = window.confirm(
-      `Clear all saved assumptions for ${activeAssumptionsTicker}?`
-    );
-    if (!confirmed) return;
-
     try {
       localStorage.removeItem(assumptionsStorageKey(activeAssumptionsTicker));
 
@@ -1087,7 +1082,7 @@
       renderDynamicLayout({ savePrevious: false, restoreSaved: false });
       suppressAssumptionSave = false;
 
-      setStatus(`Saved assumptions cleared for ${activeAssumptionsTicker}.`, 'success');
+      setStatus('');
     } catch (error) {
       suppressAssumptionSave = false;
       console.error('Could not clear saved assumptions:', error);
