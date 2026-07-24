@@ -819,9 +819,16 @@
     }, 250);
   });
 
+  // Filtered dropdown rendering to discard leveraged ETFs, foreign symbols, and option tickers
   function renderDropdown(quotes) {
     dropdown.innerHTML = '';
-    const matches = quotes.filter(q => q.quoteType === 'EQUITY' || q.symbol);
+    
+    const matches = quotes.filter(q => {
+      const isEquity = q.quoteType === 'EQUITY';
+      const hasCleanSymbol = q.symbol && !q.symbol.includes('.') && !q.symbol.includes('-') && !q.symbol.includes('=');
+      const isNotOption = q.quoteType !== 'OPTION' && q.quoteType !== 'ETF' && q.quoteType !== 'MUTUALFUND';
+      return isEquity && hasCleanSymbol && isNotOption;
+    });
 
     if (matches.length === 0) {
       dropdown.style.display = 'none';
@@ -870,9 +877,9 @@
   // Fetch Stock Financial Data & Live Price through Worker Proxy
   async function fetchStockData() {
     const statusElem = document.getElementById('apiStatus');
-    const ticker = tickerInput.value.trim().toUpperCase();
+    const rawTicker = tickerInput.value.trim().toUpperCase();
 
-    if (!ticker) {
+    if (!rawTicker) {
       alert('Please enter a stock ticker symbol or company name.');
       return;
     }
@@ -881,13 +888,13 @@
     statusElem.innerText = 'Fetching live data...';
     statusElem.style.color = 'var(--muted)';
 
-    // Queries: Income Statement & Balance Sheet Equity
-    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
-    const balanceQuery = `SELECT shares_outstanding, date, period FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
+    // Flexible query checking both act_symbol and symbol to avoid missing data for ADBE/MSFT
+    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE (act_symbol = '${rawTicker}' OR symbol = '${rawTicker}') ORDER BY date DESC LIMIT 8`;
+    const balanceQuery = `SELECT shares_outstanding, common_stock_shares_outstanding, weighted_average_shares_diluted, date FROM balance_sheet_equity WHERE (act_symbol = '${rawTicker}' OR symbol = '${rawTicker}') ORDER BY date DESC LIMIT 5`;
 
     const incomeUrl = `${workerUrl}?q=${encodeURIComponent(incomeQuery)}`;
     const balanceUrl = `${workerUrl}?q=${encodeURIComponent(balanceQuery)}`;
-    const priceUrl = `${workerUrl}?priceTicker=${encodeURIComponent(ticker)}`;
+    const priceUrl = `${workerUrl}?priceTicker=${encodeURIComponent(rawTicker)}`;
 
     try {
       const [incomeData, balanceData, yahooData] = await Promise.all([
@@ -896,32 +903,31 @@
         safeFetchJson(priceUrl)
       ]);
 
-      if (!incomeData || incomeData.query_execution_status === 'Error') {
-        statusElem.innerText = `Ticker ${ticker} not found in database!`;
-        statusElem.style.color = 'var(--em-red)';
-        return;
+      let livePrice = 0;
+      let resolvedName = rawTicker;
+
+      if (yahooData && yahooData.chart && yahooData.chart.result && yahooData.chart.result.length > 0) {
+        const meta = yahooData.chart.result[0].meta;
+        livePrice = meta.regularMarketPrice || 0;
+        resolvedName = meta.longName || meta.shortName || rawTicker;
       }
 
-      const rows = incomeData.rows || [];
-
-      if (rows.length === 0) {
-        statusElem.innerText = `Ticker ${ticker} not found in database!`;
-        statusElem.style.color = 'var(--em-red)';
-        return;
-      }
-
-      // Filter for quarterly rows
-      const quarterlyRows = rows.filter(r => (r.period || '').toString().toLowerCase() === 'quarter').slice(0, 4);
-      const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
-
-      let rawSalesSum = 0;
-      targetRows.forEach(q => {
-        rawSalesSum += parseFloat(q.sales || 0);
-      });
-      const revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
-
-      // Shares outstanding fallback logic
+      let revInBillions = 0;
       let sharesOutBillions = 0;
+      const hasIncomeRows = incomeData && incomeData.rows && incomeData.rows.length > 0;
+
+      if (hasIncomeRows) {
+        const rows = incomeData.rows;
+        const quarterlyRows = rows.filter(r => (r.period || '').toString().toLowerCase().includes('quarter') || (r.period || '').toString().toLowerCase().includes('q')).slice(0, 4);
+        const targetRows = quarterlyRows.length > 0 ? quarterlyRows : rows.slice(0, 4);
+
+        let rawSalesSum = 0;
+        targetRows.forEach(q => {
+          rawSalesSum += parseFloat(q.sales || 0);
+        });
+        revInBillions = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
+      }
+
       if (balanceData && balanceData.rows && balanceData.rows.length > 0) {
         const validRow = balanceData.rows.find(r => {
           const val = parseFloat(r.shares_outstanding ?? r.common_stock_shares_outstanding ?? r.weighted_average_shares_diluted ?? 0);
@@ -934,28 +940,23 @@
         }
       }
 
-      // Parse Live Price & Full Name from Yahoo Chart Meta
-      let livePrice = 0;
-      let resolvedName = ticker;
-
-      if (yahooData && yahooData.chart && yahooData.chart.result && yahooData.chart.result.length > 0) {
-        const meta = yahooData.chart.result[0].meta;
-        livePrice = meta.regularMarketPrice || 0;
-        resolvedName = meta.longName || meta.shortName || ticker;
-      }
-
       const stockData = {
         CompanyName: resolvedName,
-        Ticker: ticker,
+        Ticker: rawTicker,
         RevenueTTM: revInBillions,
         SharesOutstanding: sharesOutBillions, 
         price: livePrice
       };
 
-      statusElem.innerText = `Loaded ${ticker} successfully!`;
-      statusElem.style.color = 'var(--em-green)';
+      if (!hasIncomeRows) {
+        statusElem.innerText = `Loaded price for ${rawTicker} (Financials missing in DB)`;
+        statusElem.style.color = '#e2a03f';
+      } else {
+        statusElem.innerText = `Loaded ${rawTicker} successfully!`;
+        statusElem.style.color = 'var(--em-green)';
+      }
 
-      populateStockUI(ticker, stockData);
+      populateStockUI(rawTicker, stockData);
 
     } catch (error) {
       console.error('Fetch Error:', error);
