@@ -78,6 +78,42 @@
       letter-spacing: -0.5px;
     }
 
+
+    /* Combined company summary + baseline data card */
+    .stock-summary-card {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.22);
+    }
+
+    .stock-summary-card.is-visible {
+      display: block;
+    }
+
+    .stock-summary-card .company-header {
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
+      padding: 13px 16px;
+    }
+
+    .stock-summary-card .baseline-box {
+      margin: 0;
+      border: 0;
+      border-top: 1px solid var(--border-color);
+      border-radius: 0;
+      box-shadow: none;
+      background: rgba(255, 255, 255, 0.012);
+      padding: 12px 16px 14px;
+    }
+
+
     /* Company Header Styles */
     .company-header {
       display: flex;
@@ -138,6 +174,40 @@
     .company-logo-container.logo-has-background .company-logo {
       padding: 0;
       object-fit: cover;
+    }
+
+
+    /* Professional empty state before a company is selected */
+    .company-logo-container.logo-placeholder {
+      background: linear-gradient(145deg, #252b35, #1b2028);
+      border-color: #343c49;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.055),
+        0 3px 10px rgba(0, 0, 0, 0.22);
+    }
+
+    .company-logo-container.logo-placeholder .company-logo-fallback {
+      color: #cbd3de;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    .company-header.is-empty {
+      min-height: 66px;
+    }
+
+    .company-header.is-empty .company-name {
+      color: #eef2f6;
+      opacity: 1;
+    }
+
+    .company-header.is-empty .company-ticker {
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0;
+      opacity: 0.9;
     }
 
     .company-logo-fallback {
@@ -1134,7 +1204,81 @@
       border-radius: 0 !important;
     }
 
+
+    /* v8.0: unified two-level headers and continuous geometry */
+    .metric-matrix .matrix-group-row th {
+      height: 40px;
+      padding-top: 9px;
+      padding-bottom: 9px;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .metric-matrix .matrix-subhead th {
+      height: 34px;
+      padding-top: 7px;
+      padding-bottom: 7px;
+      border: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    /* Metric now follows the same two-row rhythm as both data groups. */
+    .metric-matrix .metric-group {
+      background: #20252d !important;
+      color: #f2f4f6 !important;
+      text-align: left !important;
+      padding-left: 14px !important;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      font-size: .82rem;
+    }
+
+    .metric-matrix .metric-subhead {
+      background: #292f38 !important;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.20) !important;
+    }
+
+    /* Historical: restrained grey-on-grey layering. */
+    .metric-matrix .matrix-group-row .history-group {
+      background: #20252d !important;
+    }
+
+    .metric-matrix .matrix-subhead th.history-header {
+      background: #292f38 !important;
+      color: #c5cdd7 !important;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.20) !important;
+    }
+
+    /* Assumptions: same family as the results table, but more subdued. */
+    .metric-matrix .matrix-group-row .assumptions-group {
+      background: #3f672f !important;
+      color: #f4f8f1 !important;
+    }
+
+    .metric-matrix .matrix-subhead th.assumption-header {
+      background: #568f3b !important;
+      color: #ffffff !important;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.16) !important;
+    }
+
+    /* Keep the split between sections clean without a bright seam. */
+    .metric-matrix .history-last,
+    .metric-matrix .assumption-cell {
+      border-right: 0 !important;
+    }
+
+    .metric-matrix .scenario-header-flex {
+      padding: 0 7px;
+    }
+
   </style>
+
+<style>
+.metric-header{
+    vertical-align:middle !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -1167,23 +1311,23 @@
     <span class="api-status" id="apiStatus"></span>
   </div>
 
-  <!-- Always-Visible Company Header Box -->
-  <div id="companyHeader" class="company-header">
+  <!-- Company details and baseline data appear only after a stock loads -->
+  <div id="stockSummaryCard" class="stock-summary-card">
+<div id="companyHeader" class="company-header">
     <div class="company-profile">
       <div id="companyLogoContainer" class="company-logo-container logo-bg-light">
         <img id="companyLogo" src="" alt="Logo" class="company-logo" style="display: none;">
-        <div id="companyLogoFallback" class="company-logo-fallback">📈</div>
+        <div id="companyLogoFallback" class="company-logo-fallback"></div>
       </div>
       <div>
-        <h2 id="companyName" class="company-name is-placeholder">Company Name (e.g. Bloom Energy)</h2>
-        <div id="companyTickerDisplay" class="company-ticker is-placeholder">_______</div>
+        <h2 id="companyName" class="company-name"></h2>
+        <div id="companyTickerDisplay" class="company-ticker"></div>
       </div>
     </div>
-    <div id="headerPrice" class="company-price">$0.00</div>
+    <div id="headerPrice" class="company-price"></div>
   </div>
 
-  <!-- Visible Baseline Inputs Section -->
-  <div class="baseline-box">
+<div class="baseline-box">
     <div class="baseline-grid">
       <div class="baseline-field">
         <label for="currentPrice">Current Stock Price ($)</label>
@@ -1198,6 +1342,7 @@
         <input type="number" id="sharesOut" placeholder="0.00" oninput="markResultsPending()">
       </div>
     </div>
+  </div>
   </div>
 
   <!-- Top Controls -->
@@ -1239,8 +1384,8 @@
       </colgroup>
       <thead>
         <tr class="matrix-group-row">
-          <th rowspan="2">Metric</th>
-          <th colspan="4" class="matrix-group-title history-group">
+          <th class="metric-group" rowspan="2">METRIC</th>
+<th colspan="4" class="matrix-group-title history-group">
             Historical Data
           </th>
           <th colspan="5" class="matrix-group-title assumptions-group">
@@ -2068,13 +2213,12 @@
   }
 
   function resetStockUI(ticker) {
+    document.getElementById('stockSummaryCard')?.classList.remove('is-visible');
     const nameElem = document.getElementById('companyName');
     const tickerElem = document.getElementById('companyTickerDisplay');
 
     nameElem.innerText = ticker;
-    nameElem.classList.remove('is-placeholder');
     tickerElem.innerText = ticker;
-    tickerElem.classList.remove('is-placeholder');
 
     document.getElementById('headerPrice').innerText = '$0.00';
     document.getElementById('currentPrice').value = '';
@@ -2086,9 +2230,10 @@
     const logoFallback = document.getElementById('companyLogoFallback');
     const logoContainer = document.getElementById('companyLogoContainer');
     logoImg.style.display = 'none';
+    logoFallback.textContent = ticker.slice(0, 2);
     logoFallback.style.display = 'flex';
-    logoContainer.classList.remove('logo-bg-dark', 'logo-has-background');
-    logoContainer.classList.add('logo-bg-light');
+    logoContainer.classList.remove('logo-bg-dark', 'logo-bg-light', 'logo-has-background', 'logo-placeholder');
+    logoContainer.classList.add('logo-bg-dark');
 
     markResultsPending();
   }
@@ -2123,6 +2268,7 @@
       // A manually entered ETF, option, index, crypto, or other non-equity
       // is rejected even if the Dolt database happens to contain a row for it.
       if (/not an equity|not a stock\/equity|not a stock listed|not a us-listed/i.test(yahooFailureMessage)) {
+        document.getElementById('stockSummaryCard')?.classList.remove('is-visible');
         setStatus(`${ticker} is not a supported US-listed equity.`, 'error', yahooFailureMessage);
         return;
       }
@@ -2264,11 +2410,9 @@
 
     const nameElem = document.getElementById('companyName');
     nameElem.innerText = overview.CompanyName || ticker;
-    nameElem.classList.remove('is-placeholder');
 
     const tickerElem = document.getElementById('companyTickerDisplay');
     tickerElem.innerText = ticker;
-    tickerElem.classList.remove('is-placeholder');
 
     document.getElementById('headerPrice').innerText = `$${price > 0 ? price.toFixed(2) : '0.00'}`;
 
@@ -2276,7 +2420,7 @@
     const logoFallback = document.getElementById('companyLogoFallback');
     const logoContainer = document.getElementById('companyLogoContainer');
 
-    logoContainer.classList.remove('logo-bg-dark', 'logo-has-background');
+    logoContainer.classList.remove('logo-bg-dark', 'logo-bg-light', 'logo-has-background', 'logo-placeholder');
     logoContainer.classList.add('logo-bg-light');
     logoImg.crossOrigin = 'anonymous';
     logoImg.src = `https://financialmodelingprep.com/image-stock/${encodeURIComponent(ticker)}.png`;
@@ -2287,12 +2431,17 @@
     };
     logoImg.onerror = function() {
       logoImg.style.display = 'none';
+      logoFallback.textContent = ticker.slice(0, 2);
       logoFallback.style.display = 'flex';
+      logoContainer.classList.remove('logo-bg-light', 'logo-has-background', 'logo-placeholder');
+      logoContainer.classList.add('logo-bg-dark');
     };
 
     document.getElementById('currentPrice').value = price > 0 ? price.toFixed(2) : '';
     document.getElementById('sharesOut').value = sharesOut > 0 ? sharesOut.toFixed(3) : '';
     document.getElementById('ttmRevenue').value = revenueTTM > 0 ? revenueTTM.toFixed(2) : '';
+
+    document.getElementById('stockSummaryCard')?.classList.add('is-visible');
 
     markResultsPending();
     fitToScreen();
