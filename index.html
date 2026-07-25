@@ -1271,6 +1271,316 @@
       padding: 0 7px;
     }
 
+  
+    /* v8.4: dedicated phone layout */
+    @media (max-width: 650px) {
+      body {
+        padding: 8px;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .app-header {
+        justify-content: flex-start;
+        margin-bottom: 10px;
+        padding: 2px 2px 0;
+      }
+
+      .app-logo {
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+      }
+
+      .app-title {
+        font-size: 1.22rem;
+        letter-spacing: -0.25px;
+      }
+
+      .search-card {
+        padding: 9px;
+        border-radius: 9px;
+      }
+
+      .search-input-group {
+        min-width: 0;
+        width: 100%;
+        gap: 7px;
+        align-items: stretch;
+      }
+
+      .search-wrapper input {
+        min-height: 42px;
+        font-size: 16px; /* Prevents iOS input zoom */
+      }
+
+      .search-btn {
+        min-height: 42px;
+        padding: 8px 15px;
+      }
+
+      .stock-summary-card {
+        border-radius: 9px;
+      }
+
+      .stock-summary-card .company-header {
+        padding: 11px 12px;
+        gap: 10px;
+      }
+
+      .company-profile {
+        min-width: 0;
+        gap: 10px;
+      }
+
+      .company-logo-container {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+      }
+
+      .company-name {
+        max-width: 190px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 1.02rem;
+      }
+
+      .company-ticker {
+        font-size: 0.75rem;
+      }
+
+      .company-price {
+        flex-shrink: 0;
+        font-size: 1.18rem;
+      }
+
+      .stock-summary-card .baseline-box {
+        padding: 10px 12px 12px;
+      }
+
+      .baseline-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .baseline-field {
+        gap: 4px;
+      }
+
+      .baseline-field label {
+        font-size: 0.76rem;
+      }
+
+      .baseline-field input {
+        min-height: 40px;
+        font-size: 16px; /* Prevents iOS input zoom */
+      }
+
+      .top-controls {
+        margin-bottom: 10px;
+      }
+
+      .top-controls > div {
+        width: 100%;
+        gap: 8px !important;
+      }
+
+      .dropdown-group {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .dropdown-group label {
+        font-size: 0.78rem;
+      }
+
+      .dropdown-group select {
+        width: 100%;
+        min-height: 40px;
+        font-size: 16px;
+      }
+
+      /* Restore real table behaviour for the historical/assumptions matrix.
+         It scrolls horizontally instead of turning every cell into a block. */
+      .metric-matrix,
+      .metric-matrix thead,
+      .metric-matrix tbody,
+      .metric-matrix tr,
+      .metric-matrix th,
+      .metric-matrix td {
+        display: revert;
+      }
+
+      .metric-matrix thead {
+        display: table-header-group;
+      }
+
+      .metric-matrix tbody {
+        display: table-row-group;
+      }
+
+      .metric-matrix tr {
+        display: table-row;
+        padding: 0;
+        border-bottom: 0;
+      }
+
+      .metric-matrix th,
+      .metric-matrix td {
+        display: table-cell;
+      }
+
+      .metric-matrix {
+        min-width: 740px;
+      }
+
+      .table-box:has(.metric-matrix) {
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+
+      .metric-matrix .metric-name {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        background: var(--card-bg);
+        box-shadow: 1px 0 0 var(--border-color);
+      }
+
+      .metric-matrix thead th:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 4;
+        background: #20252d !important;
+        box-shadow: 1px 0 0 var(--border-color);
+      }
+
+      .metric-matrix tbody td {
+        height: 46px;
+      }
+
+      .assumption-cell input {
+        min-height: 36px;
+        font-size: 16px;
+      }
+
+      .action-row {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .analyze-btn,
+      .clear-assumptions-btn {
+        min-height: 44px;
+        border-radius: 7px;
+      }
+
+      /* Results table: card-like rows rather than the old generic block conversion. */
+      .table-box:last-of-type table,
+      .table-box:last-of-type thead,
+      .table-box:last-of-type tbody,
+      .table-box:last-of-type tr,
+      .table-box:last-of-type th,
+      .table-box:last-of-type td {
+        display: block;
+        width: 100%;
+      }
+
+      .table-box:last-of-type thead {
+        display: block;
+      }
+
+      .table-box:last-of-type thead tr:first-child th:first-child {
+        display: none;
+      }
+
+      .table-box:last-of-type thead tr:first-child th:last-child {
+        padding: 9px 12px;
+        text-align: left;
+      }
+
+      .table-box:last-of-type .sub-head {
+        display: none;
+      }
+
+      .table-box:last-of-type tbody tr {
+        padding: 11px 12px;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .table-box:last-of-type tbody tr:last-child {
+        border-bottom: 0;
+      }
+
+      .table-box:last-of-type tbody td {
+        padding: 0;
+        border: 0;
+      }
+
+      .table-box:last-of-type tbody td:first-child {
+        margin-bottom: 9px;
+      }
+
+      /* Requested white labels on mobile. */
+      .table-box:last-of-type tbody .metric-name {
+        color: #ffffff !important;
+        font-size: 0.9rem;
+        font-weight: 800;
+      }
+
+      .table-box:last-of-type .inputs-flex {
+        gap: 6px;
+      }
+
+      .table-box:last-of-type .val-price,
+      .table-box:last-of-type .ret-val-text {
+        min-height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 4px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background: var(--input-bg);
+        font-size: 0.9rem;
+      }
+
+      .return-row-bg {
+        border-top: 0;
+        background: rgba(255, 255, 255, 0.018);
+      }
+
+      .info-tooltip .tooltip-text {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 18px;
+        width: auto;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .company-name {
+        max-width: 145px;
+      }
+
+      .search-btn {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .metric-matrix {
+        min-width: 700px;
+      }
+    }
+
   </style>
 
 <style>
