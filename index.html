@@ -97,14 +97,27 @@
     .company-logo-container {
       width: 40px;
       height: 40px;
-      border-radius: 8px;
-      background: #737b87;
-      border: 1px solid var(--border-color);
+      border-radius: 9px;
+      background: #eef1f5;
+      border: 1px solid rgba(255, 255, 255, 0.12);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+      transition: background-color .2s ease, border-color .2s ease;
+    }
+
+    .company-logo-container.logo-bg-dark {
+      background: #11151b;
+      border-color: #343b47;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.035);
+    }
+
+    .company-logo-container.logo-bg-light {
+      background: #eef1f5;
+      border-color: #d2d8e1;
     }
 
     .company-logo {
@@ -789,6 +802,10 @@
       border: 0;
     }
 
+    .matrix-group-row .history-group {
+      background: #20252d;
+    }
+
     .matrix-group-row th:first-child {
       padding-left: 14px;
     }
@@ -802,13 +819,46 @@
 
     .assumptions-group {
       background: #26311f !important;
+      box-shadow: inset 0 -1px 0 rgba(115, 190, 67, .28);
     }
 
     .matrix-subhead th {
       padding-top: 8px;
       padding-bottom: 8px;
-      background: var(--em-green);
       border: 0;
+    }
+
+    /* Keep historical labels calm; reserve the green treatment for editable assumptions. */
+    .matrix-subhead .history-header {
+      background: #20252d;
+      color: #b8c1cd;
+      box-shadow: inset 0 -1px 0 var(--border-color);
+    }
+
+    .matrix-subhead .history-header:first-of-type {
+      border-top-left-radius: 7px;
+    }
+
+    .matrix-subhead .assumption-header {
+      position: relative;
+      background: linear-gradient(180deg, #71bd43 0%, #63ad39 100%);
+      border-top-left-radius: 9px;
+      border-top-right-radius: 9px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .14),
+        inset 0 -1px 0 rgba(0, 0, 0, .14);
+    }
+
+    /* Soft seam instead of a hard colour collision. */
+    .matrix-subhead .assumption-header::before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: 0;
+      bottom: 0;
+      width: 10px;
+      background: linear-gradient(90deg, rgba(32,37,45,0), rgba(99,173,57,.42));
+      pointer-events: none;
     }
 
     .scenario-header-flex {
@@ -868,7 +918,7 @@
   <!-- Always-Visible Company Header Box -->
   <div id="companyHeader" class="company-header">
     <div class="company-profile">
-      <div class="company-logo-container">
+      <div id="companyLogoContainer" class="company-logo-container logo-bg-light">
         <img id="companyLogo" src="" alt="Logo" class="company-logo" style="display: none;">
         <div id="companyLogoFallback" class="company-logo-fallback">📈</div>
       </div>
@@ -1782,8 +1832,11 @@
 
     const logoImg = document.getElementById('companyLogo');
     const logoFallback = document.getElementById('companyLogoFallback');
+    const logoContainer = document.getElementById('companyLogoContainer');
     logoImg.style.display = 'none';
     logoFallback.style.display = 'flex';
+    logoContainer.classList.remove('logo-bg-dark');
+    logoContainer.classList.add('logo-bg-light');
 
     markResultsPending();
   }
@@ -1882,6 +1935,52 @@
     }
   }
 
+  function setLogoBackground(ticker, logoImg) {
+    const container = document.getElementById('companyLogoContainer');
+    const knownLightLogos = new Set(['UBER', 'NKE']);
+    const knownDarkOrColourLogos = new Set(['MSFT', 'GOOG', 'GOOGL']);
+
+    const apply = (dark) => {
+      container.classList.toggle('logo-bg-dark', dark);
+      container.classList.toggle('logo-bg-light', !dark);
+    };
+
+    if (knownLightLogos.has(ticker)) {
+      apply(true);
+      return;
+    }
+    if (knownDarkOrColourLogos.has(ticker)) {
+      apply(false);
+      return;
+    }
+
+    try {
+      const canvas = document.createElement('canvas');
+      const size = 64;
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      ctx.clearRect(0, 0, size, size);
+      ctx.drawImage(logoImg, 0, 0, size, size);
+      const pixels = ctx.getImageData(0, 0, size, size).data;
+      let luminance = 0;
+      let count = 0;
+      for (let i = 0; i < pixels.length; i += 4) {
+        const alpha = pixels[i + 3];
+        if (alpha < 40) continue;
+        const r = pixels[i];
+        const g = pixels[i + 1];
+        const b = pixels[i + 2];
+        luminance += 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        count++;
+      }
+      apply(count > 0 && luminance / count > 168);
+    } catch (error) {
+      // Some image hosts block canvas inspection. A light neutral tile is the safest fallback.
+      apply(false);
+    }
+  }
+
   // Populate UI with retrieved stock data
   function populateStockUI(ticker, overview) {
     const price = toNumber(overview.price);
@@ -1900,9 +1999,14 @@
 
     const logoImg = document.getElementById('companyLogo');
     const logoFallback = document.getElementById('companyLogoFallback');
+    const logoContainer = document.getElementById('companyLogoContainer');
 
+    logoContainer.classList.remove('logo-bg-dark');
+    logoContainer.classList.add('logo-bg-light');
+    logoImg.crossOrigin = 'anonymous';
     logoImg.src = `https://financialmodelingprep.com/image-stock/${encodeURIComponent(ticker)}.png`;
     logoImg.onload = function() {
+      setLogoBackground(ticker, logoImg);
       logoImg.style.display = 'block';
       logoFallback.style.display = 'none';
     };
