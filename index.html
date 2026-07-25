@@ -120,12 +120,24 @@
       border-color: #d2d8e1;
     }
 
+    /* Logos that already include their own square/background should fill the tile. */
+    .company-logo-container.logo-has-background {
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+    }
+
     .company-logo {
       width: 100%;
       height: 100%;
       object-fit: contain;
       background: transparent;
       padding: 5px;
+    }
+
+    .company-logo-container.logo-has-background .company-logo {
+      padding: 0;
+      object-fit: cover;
     }
 
     .company-logo-fallback {
@@ -994,6 +1006,92 @@
     .scenario-header-flex {
       padding: 0 7px;
       gap: 7px;
+    }
+
+    /* v7.7: cleaner header, exact column alignment and softer section transition */
+    .metric-matrix {
+      table-layout: fixed;
+    }
+
+    .matrix-group-row th {
+      box-shadow: none;
+    }
+
+    .matrix-group-title::before,
+    .matrix-group-row .assumptions-group::before {
+      display: none !important;
+      content: none !important;
+    }
+
+    .matrix-group-row th:first-child {
+      border-right: 0;
+    }
+
+    .matrix-group-row .history-group {
+      background: linear-gradient(180deg, #222831 0%, #1d222a 100%);
+    }
+
+    .matrix-group-row .assumptions-group {
+      background: linear-gradient(180deg, #293522 0%, #232d1e 100%) !important;
+      box-shadow: none;
+    }
+
+    .matrix-subhead .history-header,
+    .metric-matrix tbody td:nth-child(n+2):nth-child(-n+5) {
+      text-align: center;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    .matrix-subhead .history-header > *,
+    .metric-matrix .history-value {
+      width: 100%;
+      margin: 0;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* A subtle neutral seam replaces the bright line between both sections. */
+    .metric-matrix .history-last,
+    .metric-matrix .assumption-cell::before {
+      border-right: 0 !important;
+      background-image: none;
+    }
+
+    .metric-matrix .assumption-cell {
+      padding-left: 8px;
+      background: rgba(111, 190, 70, 0.035);
+    }
+
+    .metric-matrix .assumption-cell::before {
+      display: none;
+      content: none;
+    }
+
+
+
+    /* v7.8: precise historical alignment and quieter assumptions header */
+    .metric-matrix .matrix-subhead th.history-header {
+      text-align: center !important;
+    }
+
+    .metric-matrix .matrix-subhead th.assumption-header {
+      background: #557f43 !important;
+      border-radius: 0 !important;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .12) !important;
+    }
+
+    .metric-matrix .matrix-group-row .assumptions-group {
+      background: #243020 !important;
+    }
+
+    .metric-matrix .matrix-subhead th.assumption-header,
+    .metric-matrix .matrix-subhead th.assumption-header:first-child,
+    .metric-matrix .matrix-subhead th.assumption-header:last-child {
+      border-top-left-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
     }
 
   </style>
@@ -1949,7 +2047,7 @@
     const logoContainer = document.getElementById('companyLogoContainer');
     logoImg.style.display = 'none';
     logoFallback.style.display = 'flex';
-    logoContainer.classList.remove('logo-bg-dark');
+    logoContainer.classList.remove('logo-bg-dark', 'logo-has-background');
     logoContainer.classList.add('logo-bg-light');
 
     markResultsPending();
@@ -2053,18 +2151,24 @@
     const container = document.getElementById('companyLogoContainer');
     const knownLightLogos = new Set(['UBER', 'NKE']);
     const knownDarkOrColourLogos = new Set(['MSFT', 'GOOG', 'GOOGL']);
+    const knownFullBackgroundLogos = new Set(['AAPL', 'HOVR']);
 
-    const apply = (dark) => {
-      container.classList.toggle('logo-bg-dark', dark);
-      container.classList.toggle('logo-bg-light', !dark);
+    const apply = ({ dark = false, hasBackground = false } = {}) => {
+      container.classList.toggle('logo-bg-dark', dark && !hasBackground);
+      container.classList.toggle('logo-bg-light', !dark && !hasBackground);
+      container.classList.toggle('logo-has-background', hasBackground);
     };
 
+    if (knownFullBackgroundLogos.has(ticker)) {
+      apply({ hasBackground: true });
+      return;
+    }
     if (knownLightLogos.has(ticker)) {
-      apply(true);
+      apply({ dark: true });
       return;
     }
     if (knownDarkOrColourLogos.has(ticker)) {
-      apply(false);
+      apply({ dark: false });
       return;
     }
 
@@ -2077,21 +2181,38 @@
       ctx.clearRect(0, 0, size, size);
       ctx.drawImage(logoImg, 0, 0, size, size);
       const pixels = ctx.getImageData(0, 0, size, size).data;
+
       let luminance = 0;
-      let count = 0;
-      for (let i = 0; i < pixels.length; i += 4) {
-        const alpha = pixels[i + 3];
-        if (alpha < 40) continue;
-        const r = pixels[i];
-        const g = pixels[i + 1];
-        const b = pixels[i + 2];
-        luminance += 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        count++;
+      let visibleCount = 0;
+      let edgeVisible = 0;
+      let edgeSamples = 0;
+      const edgeDepth = 3;
+
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const i = (y * size + x) * 4;
+          const alpha = pixels[i + 3];
+          const onEdge = x < edgeDepth || y < edgeDepth || x >= size - edgeDepth || y >= size - edgeDepth;
+          if (onEdge) {
+            edgeSamples++;
+            if (alpha > 220) edgeVisible++;
+          }
+          if (alpha < 40) continue;
+          const r = pixels[i];
+          const g = pixels[i + 1];
+          const b = pixels[i + 2];
+          luminance += 0.2126 * r + 0.7152 * g + 0.0722 * b;
+          visibleCount++;
+        }
       }
-      apply(count > 0 && luminance / count > 168);
+
+      // Opaque image edges usually mean the logo file already has its own tile/background.
+      const hasBackground = edgeSamples > 0 && edgeVisible / edgeSamples > 0.78;
+      const averageLuminance = visibleCount ? luminance / visibleCount : 128;
+      apply({ dark: averageLuminance > 168, hasBackground });
     } catch (error) {
-      // Some image hosts block canvas inspection. A light neutral tile is the safest fallback.
-      apply(false);
+      // Cross-origin restrictions can prevent pixel inspection.
+      apply({ dark: false });
     }
   }
 
@@ -2115,7 +2236,7 @@
     const logoFallback = document.getElementById('companyLogoFallback');
     const logoContainer = document.getElementById('companyLogoContainer');
 
-    logoContainer.classList.remove('logo-bg-dark');
+    logoContainer.classList.remove('logo-bg-dark', 'logo-has-background');
     logoContainer.classList.add('logo-bg-light');
     logoImg.crossOrigin = 'anonymous';
     logoImg.src = `https://financialmodelingprep.com/image-stock/${encodeURIComponent(ticker)}.png`;
