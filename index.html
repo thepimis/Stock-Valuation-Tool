@@ -98,7 +98,7 @@
       width: 40px;
       height: 40px;
       border-radius: 8px;
-      background: var(--input-bg);
+      background: #737b87;
       border: 1px solid var(--border-color);
       display: flex;
       align-items: center;
@@ -111,8 +111,8 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      background: #ffffff;
-      padding: 3px;
+      background: transparent;
+      padding: 5px;
     }
 
     .company-logo-fallback {
@@ -710,8 +710,20 @@
     .assumption-cell .input-wrapper { width: 100%; }
     .assumption-cell input { width: 100%; min-width: 0; text-align: center; }
     .history-header { color: #0b0d10; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
-    .assumption-header { color: #0b0d10; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
-    .entries-control { display: none !important; }
+    .assumption-header { color: var(--text); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
+    .entries-control { display: flex; }
+    .matrix-group-row th { background: #20252d; color: var(--text); padding: 10px 8px; }
+    .matrix-group-title { font-size: .82rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .history-group { border-right: 3px solid var(--em-green); }
+    .assumptions-group { background: #26311f !important; }
+    .matrix-subhead th { background: var(--em-green); }
+    .history-last, .assumption-cell { border-right: 3px solid var(--em-green); }
+    .assumption-cell { border-right: 0; border-left: 3px solid var(--em-green); background: rgba(111, 190, 70, 0.035); }
+    .scenario-header-flex { display: flex; width: 100%; gap: 7px; }
+    .scenario-header-flex span { flex: 1; text-align: center; }
+    .section-help { display: block; margin-top: 3px; color: var(--muted); font-size: .7rem; font-weight: 600; letter-spacing: normal; text-transform: none; }
+    .top-controls { align-items: flex-end; }
+
     @media (max-width: 760px) {
       .metric-matrix { min-width: 760px; }
       .table-box { overflow-x: auto; }
@@ -810,15 +822,27 @@
   <div class="table-box">
     <table class="metric-matrix">
       <thead>
-        <tr>
-          <th style="width: 24%;">Metric</th>
+        <tr class="matrix-group-row">
+          <th rowspan="2" style="width: 24%;">Metric</th>
+          <th colspan="4" class="matrix-group-title history-group">
+            Historical Data
+            <span class="section-help">Reported results from previous periods</span>
+          </th>
+          <th colspan="5" class="matrix-group-title assumptions-group">
+            Assumptions
+            <span class="section-help">Your Low, Mid and High estimates</span>
+          </th>
+        </tr>
+        <tr class="matrix-subhead">
           <th class="history-header">1Y</th>
           <th class="history-header">3Y</th>
           <th class="history-header">5Y</th>
-          <th class="history-header">10Y</th>
-          <th class="assumption-header">Low</th>
-          <th class="assumption-header">Mid</th>
-          <th class="assumption-header">High</th>
+          <th class="history-header history-last">10Y</th>
+          <th class="assumption-header" colspan="5">
+            <div id="assumptionsHeader" class="scenario-header-flex">
+              <span>Low</span><span>Mid</span><span>High</span>
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -827,48 +851,48 @@
           <td><span id="hist_g_1" class="history-value">-</span></td>
           <td><span id="hist_g_3" class="history-value">-</span></td>
           <td><span id="hist_g_5" class="history-value">-</span></td>
-          <td><span id="hist_g_10" class="history-value">-</span></td>
-          <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_g"></div></td>
+          <td class="history-last"><span id="hist_g_10" class="history-value">-</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_g"></div></td>
         </tr>
         <tr>
           <td class="metric-name">Net Margin</td>
           <td><span id="hist_pm_1" class="history-value">-</span></td>
           <td><span id="hist_pm_3" class="history-value">-</span></td>
           <td><span id="hist_pm_5" class="history-value">-</span></td>
-          <td><span id="hist_pm_10" class="history-value">-</span></td>
-          <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_pm"></div></td>
+          <td class="history-last"><span id="hist_pm_10" class="history-value">-</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_pm"></div></td>
         </tr>
         <tr>
           <td class="metric-name">FCF Margin</td>
           <td><span id="hist_fcfm_1" class="history-value">-</span></td>
           <td><span id="hist_fcfm_3" class="history-value">-</span></td>
           <td><span id="hist_fcfm_5" class="history-value">-</span></td>
-          <td><span id="hist_fcfm_10" class="history-value">-</span></td>
-          <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_fcfm"></div></td>
+          <td class="history-last"><span id="hist_fcfm_10" class="history-value">-</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_fcfm"></div></td>
         </tr>
         <tr>
           <td class="metric-name">P/E</td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
-          <td><span class="history-value is-empty">&nbsp;</span></td>
-          <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_pe"></div></td>
+          <td class="history-last"><span class="history-value is-empty">&nbsp;</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_pe"></div></td>
         </tr>
         <tr>
           <td class="metric-name">P/FCF</td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
-          <td><span class="history-value is-empty">&nbsp;</span></td>
-          <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_pfcf"></div></td>
+          <td class="history-last"><span class="history-value is-empty">&nbsp;</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_pfcf"></div></td>
         </tr>
         <tr>
           <td class="metric-name">Desired Return</td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
-          <td><span class="history-value is-empty">&nbsp;</span></td>
-          <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_r"></div></td>
+          <td class="history-last"><span class="history-value is-empty">&nbsp;</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_r"></div></td>
         </tr>
       </tbody>
     </table>
@@ -894,7 +918,7 @@
       <tbody>
         <tr class="sub-head">
           <th style="text-align: left; padding-left: 16px;">Method</th>
-          <th id="resultsHeader">Low &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mid &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; High</th>
+          <th id="resultsHeader">Low     Mid     High</th>
         </tr>
 
         <tr>
@@ -1840,10 +1864,14 @@
   };
 
   const headerTextMap = {
-    1: 'Mid / Base',
-    3: 'Low &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mid &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; High',
-    5: 'Bear &nbsp;&nbsp;&nbsp;&nbsp; Low &nbsp;&nbsp;&nbsp;&nbsp; Mid &nbsp;&nbsp;&nbsp;&nbsp; High &nbsp;&nbsp;&nbsp;&nbsp; Bull'
+    1: ['Mid / Base'],
+    3: ['Low', 'Mid', 'High'],
+    5: ['Bear', 'Low', 'Mid', 'High', 'Bull']
   };
+
+  function scenarioHeaderHtml(entryCount) {
+    return headerTextMap[entryCount].map(label => `<span>${label}</span>`).join('');
+  }
 
   function renderDynamicLayout(options = {}) {
     const {
@@ -1859,14 +1887,13 @@
       saveAssumptionsForTicker(activeAssumptionsTicker);
     }
 
-    const numEntries = 3;
-    document.getElementById('entriesSelect').value = '3';
+    const numEntries = parseInt(document.getElementById('entriesSelect').value, 10) || 3;
     const cases = scenariosMap[numEntries];
     renderedEntriesCount = numEntries;
 
     const assumptionsHeader = document.getElementById('assumptionsHeader');
-    if (assumptionsHeader) assumptionsHeader.innerHTML = headerTextMap[numEntries];
-    document.getElementById('resultsHeader').innerHTML = headerTextMap[numEntries];
+    if (assumptionsHeader) assumptionsHeader.innerHTML = scenarioHeaderHtml(numEntries);
+    document.getElementById('resultsHeader').textContent = headerTextMap[numEntries].join('     ');
 
     const metrics = [
       { id: 'g', hasSymbol: true },
