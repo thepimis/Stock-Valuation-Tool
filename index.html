@@ -699,30 +699,132 @@
 
 
     /* Historical metrics + assumptions matrix */
-    .metric-matrix { table-layout: fixed; }
-    .metric-matrix th, .metric-matrix td { text-align: center; }
-    .metric-matrix th:first-child, .metric-matrix td:first-child { text-align: left; }
-    .metric-matrix .metric-name { padding-left: 16px; }
-    .history-value { display: inline-flex; min-width: 64px; justify-content: center; font-weight: 700; color: var(--text-primary, #f4f7f5); }
-    .history-value.is-empty { color: transparent; user-select: none; }
-    .history-value.is-unavailable { color: var(--text-muted, #839089); }
-    .assumption-cell { padding: 8px 6px; }
-    .assumption-cell .input-wrapper { width: 100%; }
-    .assumption-cell input { width: 100%; min-width: 0; text-align: center; }
-    .history-header { color: #0b0d10; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
-    .assumption-header { color: var(--text); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
-    .entries-control { display: flex; }
-    .matrix-group-row th { background: #20252d; color: var(--text); padding: 10px 8px; }
-    .matrix-group-title { font-size: .82rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-    .history-group { border-right: 3px solid var(--em-green); }
-    .assumptions-group { background: #26311f !important; }
-    .matrix-subhead th { background: var(--em-green); }
-    .history-last, .assumption-cell { border-right: 3px solid var(--em-green); }
-    .assumption-cell { border-right: 0; border-left: 3px solid var(--em-green); background: rgba(111, 190, 70, 0.035); }
-    .scenario-header-flex { display: flex; width: 100%; gap: 7px; }
-    .scenario-header-flex span { flex: 1; text-align: center; }
-    .section-help { display: block; margin-top: 3px; color: var(--muted); font-size: .7rem; font-weight: 600; letter-spacing: normal; text-transform: none; }
-    .top-controls { align-items: flex-end; }
+    .metric-matrix {
+      table-layout: fixed;
+      border-collapse: collapse;
+    }
+
+    .metric-matrix th,
+    .metric-matrix td {
+      text-align: center;
+    }
+
+    .metric-matrix th:first-child,
+    .metric-matrix td:first-child {
+      text-align: left;
+    }
+
+    .metric-matrix .metric-name {
+      padding-left: 14px;
+      padding-right: 8px;
+      white-space: nowrap;
+    }
+
+    .metric-matrix tbody td {
+      height: 44px;
+      padding-top: 7px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .metric-matrix tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .history-value {
+      display: inline-flex;
+      width: 100%;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--text-primary, #f4f7f5);
+    }
+
+    .history-value.is-empty {
+      color: transparent;
+      user-select: none;
+    }
+
+    .history-value.is-unavailable {
+      color: var(--text-muted, #839089);
+    }
+
+    .assumption-cell {
+      padding: 7px 8px;
+      background: rgba(111, 190, 70, 0.035);
+    }
+
+    .assumption-cell .input-wrapper {
+      width: 100%;
+    }
+
+    .assumption-cell input {
+      width: 100%;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .history-header,
+    .assumption-header {
+      font-size: .76rem;
+      letter-spacing: .045em;
+      text-transform: uppercase;
+    }
+
+    .history-header {
+      color: #0b0d10;
+    }
+
+    .assumption-header {
+      color: #ffffff;
+    }
+
+    .entries-control {
+      display: flex;
+    }
+
+    .matrix-group-row th {
+      padding: 10px 8px;
+      color: var(--text);
+      background: #20252d;
+      border: 0;
+    }
+
+    .matrix-group-row th:first-child {
+      padding-left: 14px;
+    }
+
+    .matrix-group-title {
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .assumptions-group {
+      background: #26311f !important;
+    }
+
+    .matrix-subhead th {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      background: var(--em-green);
+      border: 0;
+    }
+
+    .scenario-header-flex {
+      display: flex;
+      width: 100%;
+      gap: 7px;
+    }
+
+    .scenario-header-flex span {
+      flex: 1;
+      text-align: center;
+    }
+
+    .top-controls {
+      align-items: flex-end;
+    }
 
     @media (max-width: 760px) {
       .metric-matrix { min-width: 760px; }
@@ -821,16 +923,26 @@
   <!-- Historical metrics and assumptions table -->
   <div class="table-box">
     <table class="metric-matrix">
+      <colgroup>
+        <col style="width: 19%;">
+        <col style="width: 8.5%;">
+        <col style="width: 8.5%;">
+        <col style="width: 8.5%;">
+        <col style="width: 8.5%;">
+        <col style="width: 9.4%;">
+        <col style="width: 9.4%;">
+        <col style="width: 9.4%;">
+        <col style="width: 9.4%;">
+        <col style="width: 9.4%;">
+      </colgroup>
       <thead>
         <tr class="matrix-group-row">
-          <th rowspan="2" style="width: 24%;">Metric</th>
+          <th rowspan="2">Metric</th>
           <th colspan="4" class="matrix-group-title history-group">
             Historical Data
-            <span class="section-help">Reported results from previous periods</span>
           </th>
           <th colspan="5" class="matrix-group-title assumptions-group">
             Assumptions
-            <span class="section-help">Your Low, Mid and High estimates</span>
           </th>
         </tr>
         <tr class="matrix-subhead">
