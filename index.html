@@ -882,6 +882,120 @@
       .history-value { min-width: 52px; }
     }
 
+  
+
+    /* v7.6 refined matrix header and column alignment */
+    .metric-matrix thead {
+      background: #1f242c;
+    }
+
+    .matrix-group-row {
+      height: 42px;
+    }
+
+    .matrix-group-row th {
+      background: linear-gradient(180deg, #222831 0%, #1d222a 100%);
+      box-shadow: inset 0 -1px 0 rgba(255,255,255,.045);
+    }
+
+    .matrix-group-row th:first-child {
+      color: #f2f5f7;
+      border-right: 1px solid rgba(255,255,255,.045);
+    }
+
+    .matrix-group-title {
+      position: relative;
+      text-transform: none;
+      letter-spacing: .025em;
+      font-size: .86rem;
+    }
+
+    .matrix-group-title::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      border-radius: 50%;
+      vertical-align: 1px;
+      background: #7f8997;
+      box-shadow: 0 0 0 3px rgba(127,137,151,.10);
+    }
+
+    .matrix-group-row .assumptions-group {
+      background: linear-gradient(180deg, #293522 0%, #232d1e 100%) !important;
+      box-shadow: inset 0 -1px 0 rgba(115,190,67,.18);
+    }
+
+    .matrix-group-row .assumptions-group::before {
+      background: var(--em-green);
+      box-shadow: 0 0 0 3px rgba(115,190,67,.12);
+    }
+
+    .matrix-subhead th {
+      height: 34px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .matrix-subhead .history-header {
+      background: #1d222a;
+      color: #aeb7c4;
+      box-shadow: inset 0 -1px 0 var(--border-color);
+    }
+
+    .matrix-subhead .assumption-header {
+      background: linear-gradient(180deg, #70bb43 0%, #62a93b 100%);
+      border-radius: 8px 8px 0 0;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.12);
+    }
+
+    .matrix-subhead .assumption-header::before {
+      display: none;
+    }
+
+    .metric-matrix tbody td:nth-child(n+2):nth-child(-n+5) {
+      padding-left: 0;
+      padding-right: 0;
+      text-align: center;
+    }
+
+    .metric-matrix .history-value {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-matrix .metric-name {
+      padding-left: 14px;
+      padding-right: 6px;
+    }
+
+    .metric-matrix .assumption-cell {
+      position: relative;
+      padding-left: 14px;
+      background: linear-gradient(90deg, rgba(32,37,45,.42) 0, rgba(111,190,70,.035) 14px, rgba(111,190,70,.035) 100%);
+      box-shadow: none;
+    }
+
+    .metric-matrix .assumption-cell::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 7px;
+      bottom: 7px;
+      width: 1px;
+      background: rgba(255,255,255,.045);
+    }
+
+    .scenario-header-flex {
+      padding: 0 7px;
+      gap: 7px;
+    }
+
   </style>
 </head>
 <body>
@@ -974,11 +1088,11 @@
   <div class="table-box">
     <table class="metric-matrix">
       <colgroup>
-        <col style="width: 19%;">
-        <col style="width: 8.5%;">
-        <col style="width: 8.5%;">
-        <col style="width: 8.5%;">
-        <col style="width: 8.5%;">
+        <col style="width: 17%;">
+        <col style="width: 9%;">
+        <col style="width: 9%;">
+        <col style="width: 9%;">
+        <col style="width: 9%;">
         <col style="width: 9.4%;">
         <col style="width: 9.4%;">
         <col style="width: 9.4%;">
