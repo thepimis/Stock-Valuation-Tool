@@ -709,8 +709,8 @@
     .assumption-cell { padding: 8px 6px; }
     .assumption-cell .input-wrapper { width: 100%; }
     .assumption-cell input { width: 100%; min-width: 0; text-align: center; }
-    .history-header { color: var(--text-muted, #9aa69f); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
-    .assumption-header { color: var(--em-green); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
+    .history-header { color: #0b0d10; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
+    .assumption-header { color: #0b0d10; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
     .entries-control { display: none !important; }
     @media (max-width: 760px) {
       .metric-matrix { min-width: 760px; }
@@ -813,6 +813,7 @@
         <tr>
           <th style="width: 24%;">Metric</th>
           <th class="history-header">1Y</th>
+          <th class="history-header">3Y</th>
           <th class="history-header">5Y</th>
           <th class="history-header">10Y</th>
           <th class="assumption-header">Low</th>
@@ -822,15 +823,9 @@
       </thead>
       <tbody>
         <tr>
-          <td class="metric-name">ROIC</td>
-          <td><span id="hist_roic_1" class="history-value is-unavailable">-</span></td>
-          <td><span id="hist_roic_5" class="history-value is-unavailable">-</span></td>
-          <td><span id="hist_roic_10" class="history-value is-unavailable">-</span></td>
-          <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_roic"></div></td>
-        </tr>
-        <tr>
           <td class="metric-name">Revenue Growth</td>
           <td><span id="hist_g_1" class="history-value">-</span></td>
+          <td><span id="hist_g_3" class="history-value">-</span></td>
           <td><span id="hist_g_5" class="history-value">-</span></td>
           <td><span id="hist_g_10" class="history-value">-</span></td>
           <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_g"></div></td>
@@ -838,6 +833,7 @@
         <tr>
           <td class="metric-name">Net Margin</td>
           <td><span id="hist_pm_1" class="history-value">-</span></td>
+          <td><span id="hist_pm_3" class="history-value">-</span></td>
           <td><span id="hist_pm_5" class="history-value">-</span></td>
           <td><span id="hist_pm_10" class="history-value">-</span></td>
           <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_pm"></div></td>
@@ -845,12 +841,14 @@
         <tr>
           <td class="metric-name">FCF Margin</td>
           <td><span id="hist_fcfm_1" class="history-value">-</span></td>
+          <td><span id="hist_fcfm_3" class="history-value">-</span></td>
           <td><span id="hist_fcfm_5" class="history-value">-</span></td>
           <td><span id="hist_fcfm_10" class="history-value">-</span></td>
           <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_fcfm"></div></td>
         </tr>
         <tr>
           <td class="metric-name">P/E</td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
@@ -861,10 +859,12 @@
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
           <td class="assumption-cell" colspan="3"><div class="inputs-flex cols-3" id="row_pfcf"></div></td>
         </tr>
         <tr>
           <td class="metric-name">Desired Return</td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
           <td><span class="history-value is-empty">&nbsp;</span></td>
@@ -1606,7 +1606,7 @@
   }
 
   function resetHistoricalMetrics() {
-    ['hist_g_1','hist_g_5','hist_g_10','hist_pm_1','hist_pm_5','hist_pm_10','hist_fcfm_1','hist_fcfm_5','hist_fcfm_10'].forEach(id => setHistoricalValue(id, null));
+    ['hist_g_1','hist_g_3','hist_g_5','hist_g_10','hist_pm_1','hist_pm_3','hist_pm_5','hist_pm_10','hist_fcfm_1','hist_fcfm_3','hist_fcfm_5','hist_fcfm_10'].forEach(id => setHistoricalValue(id, null));
   }
 
   async function fetchHistoricalMetrics(ticker) {
@@ -1616,12 +1616,15 @@
     const fcfMargin = data.fcfMargins || {};
 
     setHistoricalValue('hist_g_1', revenue.oneYear);
+    setHistoricalValue('hist_g_3', revenue.threeYears);
     setHistoricalValue('hist_g_5', revenue.fiveYears);
     setHistoricalValue('hist_g_10', revenue.tenYears);
     setHistoricalValue('hist_pm_1', netMargin.oneYear);
+    setHistoricalValue('hist_pm_3', netMargin.threeYears);
     setHistoricalValue('hist_pm_5', netMargin.fiveYears);
     setHistoricalValue('hist_pm_10', netMargin.tenYears);
     setHistoricalValue('hist_fcfm_1', fcfMargin.oneYear);
+    setHistoricalValue('hist_fcfm_3', fcfMargin.threeYears);
     setHistoricalValue('hist_fcfm_5', fcfMargin.fiveYears);
     setHistoricalValue('hist_fcfm_10', fcfMargin.tenYears);
   }
@@ -1866,7 +1869,6 @@
     document.getElementById('resultsHeader').innerHTML = headerTextMap[numEntries];
 
     const metrics = [
-      { id: 'roic', hasSymbol: true },
       { id: 'g', hasSymbol: true },
       { id: 'pm', hasSymbol: true },
       { id: 'fcfm', hasSymbol: true },
