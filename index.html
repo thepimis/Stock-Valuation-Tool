@@ -1272,6 +1272,11 @@
     }
 
   
+
+    .mobile-input-label {
+      display: none;
+    }
+
     /* v8.4: dedicated phone layout */
     @media (max-width: 650px) {
       body {
@@ -1581,6 +1586,203 @@
       }
     }
 
+  
+    /* v8.5: true mobile card layout — no horizontal table scrolling */
+    @media (max-width: 650px) {
+      /* Keep only the useful company summary on phones.
+         The underlying baseline inputs remain in the DOM and calculations still use them. */
+      .stock-summary-card .baseline-box {
+        display: none !important;
+      }
+
+      .stock-summary-card .company-header {
+        border-bottom: 0;
+      }
+
+      /* Replace the desktop matrix with stacked metric cards. */
+      .table-box:has(.metric-matrix) {
+        overflow: visible !important;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+      }
+
+      .metric-matrix,
+      .metric-matrix tbody {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .metric-matrix thead {
+        display: none !important;
+      }
+
+      .metric-matrix tbody tr {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        width: 100%;
+        margin-bottom: 9px;
+        padding: 0;
+        overflow: hidden;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 9px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, .18);
+      }
+
+      .metric-matrix tbody tr:last-child {
+        margin-bottom: 0;
+      }
+
+      .metric-matrix tbody td {
+        display: block !important;
+        width: auto !important;
+        height: auto !important;
+        min-width: 0;
+        padding: 9px 5px !important;
+        border: 0 !important;
+        text-align: center !important;
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+
+      /* Metric title becomes a clean full-width card heading. */
+      .metric-matrix tbody td.metric-name {
+        position: static !important;
+        grid-column: 1 / -1;
+        padding: 10px 12px !important;
+        color: #f1f4f7 !important;
+        background: #1d222a !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        box-shadow: none !important;
+        font-size: .88rem;
+        font-weight: 800;
+        text-align: left !important;
+      }
+
+      /* Historical values: four equal columns with compact labels. */
+      .metric-matrix tbody td:nth-child(2)::before,
+      .metric-matrix tbody td:nth-child(3)::before,
+      .metric-matrix tbody td:nth-child(4)::before,
+      .metric-matrix tbody td:nth-child(5)::before {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--muted);
+        font-size: .66rem;
+        font-weight: 800;
+        letter-spacing: .04em;
+      }
+
+      .metric-matrix tbody td:nth-child(2)::before { content: "1Y"; }
+      .metric-matrix tbody td:nth-child(3)::before { content: "3Y"; }
+      .metric-matrix tbody td:nth-child(4)::before { content: "5Y"; }
+      .metric-matrix tbody td:nth-child(5)::before { content: "10Y"; }
+
+      .metric-matrix .history-value {
+        min-width: 0 !important;
+        font-size: .84rem;
+      }
+
+      /* Assumptions move below historical values and span the full card width. */
+      .metric-matrix tbody td.assumption-cell {
+        grid-column: 1 / -1;
+        padding: 9px 10px 11px !important;
+        background: rgba(77, 115, 61, .10) !important;
+        border-top: 1px solid rgba(115, 190, 67, .14) !important;
+      }
+
+      .assumption-cell .inputs-flex {
+        gap: 7px;
+      }
+
+      .assumption-cell .input-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .mobile-input-label {
+        display: block;
+        color: #b9c4b5;
+        font-size: .64rem;
+        font-weight: 800;
+        letter-spacing: .045em;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      .assumption-cell input {
+        min-height: 39px;
+        padding: 7px 22px 7px 8px;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+
+      .assumption-cell .symbol {
+        top: 28px;
+      }
+
+      /* Compact top controls so the table starts sooner. */
+      .top-controls {
+        margin-top: 0;
+        margin-bottom: 9px;
+      }
+
+      .dropdown-group label {
+        font-size: .72rem;
+      }
+
+      /* The old mobile green metric treatment is explicitly disabled. */
+      .metric-name {
+        color: #f1f4f7 !important;
+      }
+    }
+
+  
+    /* v8.6: clean mobile valuation-results header */
+    @media (max-width: 650px) {
+      .table-box:last-of-type {
+        overflow: hidden;
+        border-radius: 9px;
+      }
+
+      .table-box:last-of-type thead tr:first-child {
+        display: block !important;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        border: 0;
+      }
+
+      .table-box:last-of-type thead tr:first-child th:first-child {
+        display: none !important;
+      }
+
+      .table-box:last-of-type thead tr:first-child th:last-child {
+        display: block !important;
+        width: 100% !important;
+        padding: 10px 12px !important;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        background: #4d733d !important;
+        color: #ffffff !important;
+        text-align: center !important;
+        font-size: .9rem;
+        font-weight: 800;
+        letter-spacing: .045em;
+        text-transform: uppercase;
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,.05),
+          inset 0 -1px 0 rgba(0,0,0,.18);
+      }
+
+      .table-box:last-of-type thead {
+        background: transparent !important;
+      }
+    }
+
   </style>
 
 <style>
@@ -1607,7 +1809,7 @@
         <input
           type="text"
           id="tickerInput"
-          placeholder="Search ticker or company (e.g., AAPL, Adobe, Bloom Energy)"
+          placeholder="Search ticker or company"
           autocomplete="off"
           aria-autocomplete="list"
           aria-controls="searchDropdown"
@@ -2858,10 +3060,12 @@
       const rowContainer = document.getElementById(`row_${m.id}`);
       rowContainer.className = `inputs-flex cols-${numEntries}`;
       let html = '';
-      cases.forEach(c => {
+      cases.forEach((c, scenarioIndex) => {
         const symbolHTML = m.hasSymbol ? '<span class="symbol">%</span>' : '';
+        const mobileLabel = headerTextMap[numEntries][scenarioIndex] || c;
         html += `
           <div class="input-wrapper">
+            <span class="mobile-input-label">${mobileLabel}</span>
             <input type="number" id="${m.id}_${c}" value="" placeholder="0" oninput="markResultsPending()">
             ${symbolHTML}
           </div>`;
