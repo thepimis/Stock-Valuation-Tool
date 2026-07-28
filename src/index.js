@@ -1,12 +1,7 @@
 import { searchYahooEquities, fetchYahooQuote, fetchYahooTtmCashFlow } from './providers/yahoo.js';
+import { runDoltQuery, doltTickerPredicate } from './providers/dolt.js';
 
 const VERSION = 'stock-valuation-worker-v7.2-3year-no-roic-2026-07-25';
-const DOLT_BASE = 'https://www.dolthub.com/api/v1alpha1/post-no-preference/earnings';
-
-const DOLT_TICKER_ALIASES = {
-  META: ['META', 'FB']
-};
-
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -137,23 +132,6 @@ function validateReadOnlySql(value) {
   }
   return sql;
 }
-
-function sqlString(value) {
-  return `'${String(value).replaceAll("'", "''")}'`;
-}
-
-function getDoltTickerSymbols(ticker) {
-  const current = String(ticker || '').toUpperCase();
-  const aliases = DOLT_TICKER_ALIASES[current] || [current];
-  return [...new Set(aliases.map(symbol => String(symbol).toUpperCase()))];
-}
-
-function doltTickerPredicate(ticker, column = 'act_symbol') {
-  const symbols = getDoltTickerSymbols(ticker);
-  if (symbols.length === 1) return `${column} = ${sqlString(symbols[0])}`;
-  return `${column} IN (${symbols.map(sqlString).join(', ')})`;
-}
-
 
 async function fetchCoreFinancials(ticker) {
   const revenueSql = `SELECT sales, \`date\`, period FROM \`income_statement\` WHERE ${doltTickerPredicate(ticker)} AND period = 'Quarter' AND sales IS NOT NULL ORDER BY \`date\` DESC LIMIT 4`;
@@ -1043,31 +1021,6 @@ function calculateWeightedFcfMargin(series, years) {
   const totalRevenue = selectedRows.reduce((sum, row) => sum + row.revenue, 0);
   const totalFreeCashFlow = selectedRows.reduce((sum, row) => sum + row.freeCashFlow, 0);
   return { method: 'weighted fiscal-year FCF margin', percentage: totalRevenue > 0 ? (totalFreeCashFlow / totalRevenue) * 100 : null, years, firstFiscalYear: selectedRows[0].fiscalYear, latestFiscalYear: selectedRows.at(-1).fiscalYear, totalRevenue, totalRevenueBillions: totalRevenue / 1e9, totalFreeCashFlow, totalFreeCashFlowBillions: totalFreeCashFlow / 1e9, rowsUsed: selectedRows };
-}
-
-async function runDoltQuery(sql) {
-  const target = new URL(DOLT_BASE);
-  target.searchParams.set('q', sql);
-
-  const response = await fetch(target.toString(), {
-    headers: { Accept: 'application/json' },
-    cf: { cacheEverything: true, cacheTtl: 300 }
-  });
-
-  const text = await response.text();
-  let body;
-  try {
-    body = text ? JSON.parse(text) : {};
-  } catch {
-    throw createError(502, `DoltHub returned non-JSON: ${text.slice(0, 180)}`);
-  }
-
-  if (!response.ok || body.query_execution_status === 'Error') {
-    const message = body.query_execution_message || body.error || response.statusText || 'DoltHub query failed';
-    throw createError(response.status || 502, message, { sql, body });
-  }
-
-  return body;
 }
 
 function validateTable(value) {
