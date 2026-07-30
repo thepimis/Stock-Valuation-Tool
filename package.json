@@ -1,0 +1,25 @@
+{
+  "name": "worker",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "test": "vitest",
+    "import:data": "node --env-file-if-exists=.env scripts/import-companies.mjs",
+    "import:sample": "node --env-file-if-exists=.env scripts/import-companies.mjs --tickers AAPL,MSFT,META",
+    "import:local": "node --env-file-if-exists=.env scripts/import-companies.mjs --storage local",
+    "verify:snapshots": "node --env-file-if-exists=.env scripts/verify-snapshots.mjs",
+    "import:benchmark": "node --env-file-if-exists=.env scripts/import-companies.mjs --storage local --universe data/supported-tickers.json --limit 100 --concurrency 2 --sectionConcurrency 3",
+    "universe:update": "node --env-file-if-exists=.env scripts/update-supported-tickers.mjs",
+    "import:universe": "node --env-file-if-exists=.env scripts/import-companies.mjs --universe data/supported-tickers.json",
+    "import:overnight": "node --env-file-if-exists=.env scripts/import-companies.mjs --universe data/supported-tickers.json --concurrency 2 --sectionConcurrency 3"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.12.4",
+    "vitest": "~3.2.0",
+    "wrangler": "^4.114.0"
+  },
+  "type": "module"
+}

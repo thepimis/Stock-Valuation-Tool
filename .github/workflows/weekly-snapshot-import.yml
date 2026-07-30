@@ -1,0 +1,56 @@
+name: Weekly financial snapshot import
+
+on:
+  schedule:
+    # GitHub cron uses UTC. Every Friday at 00:15 UTC.
+    - cron: '15 0 * * 5'
+  workflow_dispatch:
+
+concurrency:
+  group: weekly-financial-snapshot-import
+  cancel-in-progress: false
+
+jobs:
+  import-to-r2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify supported ticker universe
+        shell: bash
+        run: |
+          test -f data/supported-tickers.json || {
+            echo "Missing data/supported-tickers.json. Generate it locally once with: npm run universe:update"
+            exit 1
+          }
+
+      - name: Refresh all company snapshots in R2
+        run: npm run import:universe -- --concurrency 2 --sectionConcurrency 3
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-snapshot-import-debug
+          path: |
+            data/supported-tickers.json
+            data/*.checkpoint.json
+          if-no-files-found: ignore
+          retention-days: 7
