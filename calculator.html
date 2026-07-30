@@ -1,0 +1,3277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Valuation Tool</title>
+  
+  <!-- Browser Tab Favicon -->
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Web App Manifest Link -->
+  <link rel="manifest" href="manifest.json">
+  <!-- Android Status Bar Theme Color -->
+  <meta name="theme-color" content="#0b0d10">
+
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --card-bg: #15181e;
+      --card-inner: #1c2028;
+      --border-color: #2a303c;
+      --em-green: #73be43;
+      --em-green-hover: #83e04a;
+      --em-red: #ff4d4d;
+      --text: #ffffff;
+      --muted: #9da6b4;
+      --input-bg: #232832;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header Logo & Title */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-top: 2px;
+    }
+
+    .app-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    .app-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+
+    /* Combined company summary + baseline data card */
+    .stock-summary-card {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.22);
+    }
+
+    .stock-summary-card.is-visible {
+      display: block;
+    }
+
+    .stock-summary-card .company-header {
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
+      padding: 13px 16px;
+    }
+
+    .stock-summary-card .baseline-box {
+      margin: 0;
+      border: 0;
+      border-top: 1px solid var(--border-color);
+      border-radius: 0;
+      box-shadow: none;
+      background: rgba(255, 255, 255, 0.012);
+      padding: 12px 16px 14px;
+    }
+
+
+    /* Company Header Styles */
+    .company-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 11px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .company-profile { display: flex; align-items: center; gap: 12px; }
+
+    /* Logo Container & Placeholder Styling */
+    .company-logo-container {
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+      background: #eef1f5;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+      transition: background-color .2s ease, border-color .2s ease;
+    }
+
+    .company-logo-container.logo-bg-dark {
+      background: #11151b;
+      border-color: #343b47;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.035);
+    }
+
+    .company-logo-container.logo-bg-light {
+      background: #eef1f5;
+      border-color: #d2d8e1;
+    }
+
+    /* Logos that already include their own square/background should fill the tile. */
+    .company-logo-container.logo-has-background {
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    .company-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: transparent;
+      padding: 5px;
+    }
+
+    .company-logo-container.logo-has-background .company-logo {
+      padding: 0;
+      object-fit: cover;
+    }
+
+
+    /* Professional empty state before a company is selected */
+    .company-logo-container.logo-placeholder {
+      background: linear-gradient(145deg, #252b35, #1b2028);
+      border-color: #343c49;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.055),
+        0 3px 10px rgba(0, 0, 0, 0.22);
+    }
+
+    .company-logo-container.logo-placeholder .company-logo-fallback {
+      color: #cbd3de;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    .company-header.is-empty {
+      min-height: 66px;
+    }
+
+    .company-header.is-empty .company-name {
+      color: #eef2f6;
+      opacity: 1;
+    }
+
+    .company-header.is-empty .company-ticker {
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0;
+      opacity: 0.9;
+    }
+
+    .company-logo-fallback {
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      user-select: none;
+    }
+
+    .company-name { 
+      font-size: 1.25rem; 
+      font-weight: 800; 
+      margin: 0 0 2px 0; 
+      color: var(--text); 
+      transition: color 0.3s ease;
+    }
+
+    .company-ticker { 
+      font-size: 0.85rem; 
+      color: var(--muted); 
+      font-weight: 800; 
+      text-transform: uppercase; 
+      transition: color 0.3s ease;
+    }
+
+    /* Bolder greyed-out state for placeholders */
+    .company-name.is-placeholder,
+    .company-ticker.is-placeholder {
+      color: var(--muted);
+      font-weight: 800;
+      opacity: 0.85;
+    }
+
+    .company-price { font-size: 1.55rem; font-weight: 800; color: var(--text); }
+
+    /* Top Controls Bar */
+    .top-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .dropdown-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dropdown-group label {
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .dropdown-group select {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border-color);
+      padding: 6px 11px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Ticker Search Section */
+    .search-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 11px 15px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .search-input-group {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      min-width: 250px;
+      align-items: flex-start;
+    }
+
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search-loading-spinner {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      width: 18px;
+      height: 18px;
+      margin-top: -9px;
+      border: 2px solid rgba(157, 166, 180, 0.35);
+      border-top-color: var(--em-green);
+      border-radius: 50%;
+      animation: search-spin 0.7s linear infinite;
+      display: none;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .search-wrapper.is-loading .search-loading-spinner {
+      display: block;
+    }
+
+    .search-wrapper.is-loading input {
+      padding-right: 42px;
+    }
+
+    @keyframes search-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .search-wrapper input {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: var(--input-bg);
+      color: var(--text);
+      font-weight: bold;
+      width: 100%;
+      outline: none;
+    }
+
+    .search-wrapper input:focus {
+      border-color: var(--em-green);
+    }
+
+    .search-dropdown {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      right: 0;
+      display: none;
+      max-height: 280px;
+      overflow-y: auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .search-dropdown.is-open {
+      display: block;
+    }
+
+    .search-item {
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--text);
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .search-item:last-child {
+      border-bottom: 0;
+    }
+
+    .search-item:hover,
+    .search-item.is-active {
+      background: var(--input-bg);
+    }
+
+    .search-item-identity {
+      min-width: 0;
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+    }
+
+    .search-item-ticker {
+      color: var(--em-green);
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .search-item-name {
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: var(--text);
+      font-size: 0.88rem;
+    }
+
+    .search-item-exchange {
+      color: var(--muted);
+      font-size: 0.72rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .search-message {
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .search-btn {
+      padding: 8px 19px;
+      background: var(--em-green);
+      border: none;
+      border-radius: 6px;
+      font-weight: 800;
+      color: #0b0d10;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .search-btn:hover {
+      background: var(--em-green-hover);
+    }
+
+    .search-btn:active {
+      transform: scale(0.98);
+    }
+
+    .search-btn:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    .api-status {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* Baseline Data Box */
+    .baseline-box {
+      background: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .baseline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .baseline-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .baseline-field label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .baseline-field input {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text);
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      outline: none;
+    }
+
+    .baseline-field input:focus {
+      border-color: var(--em-green);
+    }
+
+    /* Table Boxes */
+    .table-box {
+      background: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      background: var(--em-green);
+      color: #0b0d10;
+      font-size: 0.95rem;
+      padding: 8px 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sub-head th {
+      background: #5ca033;
+      color: #ffffff;
+      font-size: 0.95rem;
+      padding: 6px 13px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 7px 13px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+      vertical-align: middle;
+    }
+
+    .metric-name {
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    /* Info Tooltip Icon Styling */
+    .info-tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      margin-left: 4px;
+      color: var(--em-green);
+      font-weight: bold;
+    }
+
+    .info-tooltip .tooltip-text {
+      visibility: hidden;
+      width: 230px;
+      background-color: var(--card-inner);
+      color: var(--text);
+      text-align: left;
+      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      font-size: 0.75rem;
+      font-weight: 400;
+      line-height: 1.3;
+      text-transform: none;
+
+      position: absolute;
+      z-index: 10;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .info-tooltip .tooltip-text::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: var(--card-inner) transparent transparent transparent;
+    }
+
+    .info-tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Distinct Return Row Styling */
+    .return-row-bg {
+      background-color: var(--card-inner);
+      border-top: 2px solid var(--border-color);
+    }
+
+    .return-row-bg .metric-name {
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    /* Clean Return Value Text (No Boxes) */
+    .ret-val-text {
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    /* Dynamic Flex Layout for Entries */
+    .inputs-flex {
+      display: grid;
+      gap: 7px;
+    }
+    
+    .cols-1 { grid-template-columns: 1fr; }
+    .cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text);
+      padding: 5px 8px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--em-green);
+    }
+
+    .input-wrapper .symbol {
+      position: absolute;
+      right: 8px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      pointer-events: none;
+    }
+
+    /* Hide Chevrons / Number Arrows globally on number inputs */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    /* Actions Row */
+    .action-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .clear-assumptions-btn {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border-color);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 9px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .clear-assumptions-btn:hover {
+      color: var(--text);
+      border-color: var(--muted);
+      background: var(--card-inner);
+    }
+
+    /* Standout Analyze Button */
+    .analyze-btn {
+      background: linear-gradient(135deg, #73be43 0%, #51902d 100%);
+      color: #0d0f12;
+      border: 1px solid #8fe056;
+      font-weight: 800;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 10px 34px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(115, 190, 67, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .analyze-btn:hover {
+      background: linear-gradient(135deg, #83e04a 0%, #5ca033 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(115, 190, 67, 0.5);
+    }
+
+    .analyze-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Results Outputs */
+    .val-price {
+      font-weight: 800;
+      font-size: 1.05rem;
+      text-align: center;
+    }
+
+    /* Responsive Mobile Layout Adjustments */
+    @media (max-width: 650px) {
+      body { padding: 8px; }
+
+      .app-header {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .app-logo {
+        width: 32px;
+        height: 32px;
+      }
+
+      .app-title {
+        font-size: 1.3rem;
+      }
+
+      .action-row {
+        flex-direction: column-reverse;
+      }
+
+      .analyze-btn,
+      .clear-assumptions-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .analyze-btn {
+        padding: 12px;
+      }
+
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead { display: none; }
+
+      .sub-head { display: none; }
+
+      tr {
+        border-bottom: 1px solid var(--border-color);
+        padding: 8px;
+      }
+
+      td {
+        border: none;
+        padding: 4px 0;
+      }
+
+      .metric-name {
+        margin-bottom: 6px;
+        color: var(--em-green);
+        font-size: 0.95rem;
+      }
+    }
+
+
+    /* Historical metrics + assumptions matrix */
+    .metric-matrix {
+      table-layout: fixed;
+      border-collapse: collapse;
+    }
+
+    .metric-matrix th,
+    .metric-matrix td {
+      text-align: center;
+    }
+
+    .metric-matrix th:first-child,
+    .metric-matrix td:first-child {
+      text-align: left;
+    }
+
+    .metric-matrix .metric-name {
+      padding-left: 14px;
+      padding-right: 8px;
+      white-space: nowrap;
+    }
+
+    .metric-matrix tbody td {
+      height: 44px;
+      padding-top: 7px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .metric-matrix tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .history-value {
+      display: inline-flex;
+      width: 100%;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--text-primary, #f4f7f5);
+    }
+
+    .history-value.is-empty {
+      color: transparent;
+      user-select: none;
+    }
+
+    .history-value.is-unavailable {
+      color: var(--text-muted, #839089);
+    }
+
+    .assumption-cell {
+      padding: 7px 8px;
+      background: rgba(111, 190, 70, 0.035);
+    }
+
+    .assumption-cell .input-wrapper {
+      width: 100%;
+    }
+
+    .assumption-cell input {
+      width: 100%;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .history-header,
+    .assumption-header {
+      font-size: .76rem;
+      letter-spacing: .045em;
+      text-transform: uppercase;
+    }
+
+    .history-header {
+      color: #0b0d10;
+    }
+
+    .assumption-header {
+      color: #ffffff;
+    }
+
+    .entries-control {
+      display: flex;
+    }
+
+    .matrix-group-row th {
+      padding: 10px 8px;
+      color: var(--text);
+      background: #20252d;
+      border: 0;
+    }
+
+    .matrix-group-row .history-group {
+      background: #20252d;
+    }
+
+    .matrix-group-row th:first-child {
+      padding-left: 14px;
+    }
+
+    .matrix-group-title {
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .assumptions-group {
+      background: #26311f !important;
+      box-shadow: inset 0 -1px 0 rgba(115, 190, 67, .28);
+    }
+
+    .matrix-subhead th {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      border: 0;
+    }
+
+    /* Keep historical labels calm; reserve the green treatment for editable assumptions. */
+    .matrix-subhead .history-header {
+      background: #20252d;
+      color: #b8c1cd;
+      box-shadow: inset 0 -1px 0 var(--border-color);
+    }
+
+    .matrix-subhead .history-header:first-of-type {
+      border-top-left-radius: 7px;
+    }
+
+    .matrix-subhead .assumption-header {
+      position: relative;
+      background: linear-gradient(180deg, #71bd43 0%, #63ad39 100%);
+      border-top-left-radius: 9px;
+      border-top-right-radius: 9px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .14),
+        inset 0 -1px 0 rgba(0, 0, 0, .14);
+    }
+
+    /* Soft seam instead of a hard colour collision. */
+    .matrix-subhead .assumption-header::before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      top: 0;
+      bottom: 0;
+      width: 10px;
+      background: linear-gradient(90deg, rgba(32,37,45,0), rgba(99,173,57,.42));
+      pointer-events: none;
+    }
+
+    .scenario-header-flex {
+      display: flex;
+      width: 100%;
+      gap: 7px;
+    }
+
+    .scenario-header-flex span {
+      flex: 1;
+      text-align: center;
+    }
+
+    .top-controls {
+      align-items: flex-end;
+    }
+
+    @media (max-width: 760px) {
+      .metric-matrix { min-width: 760px; }
+      .table-box { overflow-x: auto; }
+      .history-value { min-width: 52px; }
+    }
+
+  
+
+    /* v7.6 refined matrix header and column alignment */
+    .metric-matrix thead {
+      background: #1f242c;
+    }
+
+    .matrix-group-row {
+      height: 42px;
+    }
+
+    .matrix-group-row th {
+      background: linear-gradient(180deg, #222831 0%, #1d222a 100%);
+      box-shadow: inset 0 -1px 0 rgba(255,255,255,.045);
+    }
+
+    .matrix-group-row th:first-child {
+      color: #f2f5f7;
+      border-right: 1px solid rgba(255,255,255,.045);
+    }
+
+    .matrix-group-title {
+      position: relative;
+      text-transform: none;
+      letter-spacing: .025em;
+      font-size: .86rem;
+    }
+
+    .matrix-group-title::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 8px;
+      border-radius: 50%;
+      vertical-align: 1px;
+      background: #7f8997;
+      box-shadow: 0 0 0 3px rgba(127,137,151,.10);
+    }
+
+    .matrix-group-row .assumptions-group {
+      background: linear-gradient(180deg, #293522 0%, #232d1e 100%) !important;
+      box-shadow: inset 0 -1px 0 rgba(115,190,67,.18);
+    }
+
+    .matrix-group-row .assumptions-group::before {
+      background: var(--em-green);
+      box-shadow: 0 0 0 3px rgba(115,190,67,.12);
+    }
+
+    .matrix-subhead th {
+      height: 34px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .matrix-subhead .history-header {
+      background: #1d222a;
+      color: #aeb7c4;
+      box-shadow: inset 0 -1px 0 var(--border-color);
+    }
+
+    .matrix-subhead .assumption-header {
+      background: linear-gradient(180deg, #70bb43 0%, #62a93b 100%);
+      border-radius: 8px 8px 0 0;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.12);
+    }
+
+    .matrix-subhead .assumption-header::before {
+      display: none;
+    }
+
+    .metric-matrix tbody td:nth-child(n+2):nth-child(-n+5) {
+      padding-left: 0;
+      padding-right: 0;
+      text-align: center;
+    }
+
+    .metric-matrix .history-value {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-matrix .metric-name {
+      padding-left: 14px;
+      padding-right: 6px;
+    }
+
+    .metric-matrix .assumption-cell {
+      position: relative;
+      padding-left: 14px;
+      background: linear-gradient(90deg, rgba(32,37,45,.42) 0, rgba(111,190,70,.035) 14px, rgba(111,190,70,.035) 100%);
+      box-shadow: none;
+    }
+
+    .metric-matrix .assumption-cell::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 7px;
+      bottom: 7px;
+      width: 1px;
+      background: rgba(255,255,255,.045);
+    }
+
+    .scenario-header-flex {
+      padding: 0 7px;
+      gap: 7px;
+    }
+
+    /* v7.7: cleaner header, exact column alignment and softer section transition */
+    .metric-matrix {
+      table-layout: fixed;
+    }
+
+    .matrix-group-row th {
+      box-shadow: none;
+    }
+
+    .matrix-group-title::before,
+    .matrix-group-row .assumptions-group::before {
+      display: none !important;
+      content: none !important;
+    }
+
+    .matrix-group-row th:first-child {
+      border-right: 0;
+    }
+
+    .matrix-group-row .history-group {
+      background: linear-gradient(180deg, #222831 0%, #1d222a 100%);
+    }
+
+    .matrix-group-row .assumptions-group {
+      background: linear-gradient(180deg, #293522 0%, #232d1e 100%) !important;
+      box-shadow: none;
+    }
+
+    .matrix-subhead .history-header,
+    .metric-matrix tbody td:nth-child(n+2):nth-child(-n+5) {
+      text-align: center;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    .matrix-subhead .history-header > *,
+    .metric-matrix .history-value {
+      width: 100%;
+      margin: 0;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* A subtle neutral seam replaces the bright line between both sections. */
+    .metric-matrix .history-last,
+    .metric-matrix .assumption-cell::before {
+      border-right: 0 !important;
+      background-image: none;
+    }
+
+    .metric-matrix .assumption-cell {
+      padding-left: 8px;
+      background: rgba(111, 190, 70, 0.035);
+    }
+
+    .metric-matrix .assumption-cell::before {
+      display: none;
+      content: none;
+    }
+
+
+
+    /* v7.8: precise historical alignment and quieter assumptions header */
+    .metric-matrix .matrix-subhead th.history-header {
+      text-align: center !important;
+    }
+
+    .metric-matrix .matrix-subhead th.assumption-header {
+      background: #557f43 !important;
+      border-radius: 0 !important;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .12) !important;
+    }
+
+    .metric-matrix .matrix-group-row .assumptions-group {
+      background: #243020 !important;
+    }
+
+    .metric-matrix .matrix-subhead th.assumption-header,
+    .metric-matrix .matrix-subhead th.assumption-header:first-child,
+    .metric-matrix .matrix-subhead th.assumption-header:last-child {
+      border-top-left-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+    }
+
+
+    /* v7.9: subtle two-level contrast for historical and assumptions headers */
+    .metric-matrix .matrix-group-row th {
+      background: #20252d !important;
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .035) !important;
+    }
+
+    .metric-matrix .matrix-group-row .history-group {
+      background: #20252d !important;
+    }
+
+    .metric-matrix .matrix-subhead th.history-header {
+      background: #292f38 !important;
+      color: #c2cad4 !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .025),
+        inset 0 -1px 0 rgba(0, 0, 0, .20) !important;
+    }
+
+    .metric-matrix .matrix-group-row .assumptions-group {
+      background: #273321 !important;
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .025) !important;
+    }
+
+    .metric-matrix .matrix-subhead th.assumption-header {
+      background: #4d733d !important;
+      color: #f4f7f2 !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .06),
+        inset 0 -1px 0 rgba(0, 0, 0, .18) !important;
+    }
+
+    .metric-matrix .matrix-group-title {
+      color: #f2f4f6;
+    }
+
+    .metric-matrix .matrix-subhead th {
+      border-radius: 0 !important;
+    }
+
+
+    /* v8.0: unified two-level headers and continuous geometry */
+    .metric-matrix .matrix-group-row th {
+      height: 40px;
+      padding-top: 9px;
+      padding-bottom: 9px;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .metric-matrix .matrix-subhead th {
+      height: 34px;
+      padding-top: 7px;
+      padding-bottom: 7px;
+      border: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    /* Metric now follows the same two-row rhythm as both data groups. */
+    .metric-matrix .metric-group {
+      background: #20252d !important;
+      color: #f2f4f6 !important;
+      text-align: left !important;
+      padding-left: 14px !important;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      font-size: .82rem;
+    }
+
+    .metric-matrix .metric-subhead {
+      background: #292f38 !important;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.20) !important;
+    }
+
+    /* Historical: restrained grey-on-grey layering. */
+    .metric-matrix .matrix-group-row .history-group {
+      background: #20252d !important;
+    }
+
+    .metric-matrix .matrix-subhead th.history-header {
+      background: #292f38 !important;
+      color: #c5cdd7 !important;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.20) !important;
+    }
+
+    /* Assumptions: same family as the results table, but more subdued. */
+    .metric-matrix .matrix-group-row .assumptions-group {
+      background: #3f672f !important;
+      color: #f4f8f1 !important;
+    }
+
+    .metric-matrix .matrix-subhead th.assumption-header {
+      background: #568f3b !important;
+      color: #ffffff !important;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.16) !important;
+    }
+
+    /* Keep the split between sections clean without a bright seam. */
+    .metric-matrix .history-last,
+    .metric-matrix .assumption-cell {
+      border-right: 0 !important;
+    }
+
+    .metric-matrix .scenario-header-flex {
+      padding: 0 7px;
+    }
+
+  
+
+    .mobile-input-label {
+      display: none;
+    }
+
+    /* v8.4: dedicated phone layout */
+    @media (max-width: 650px) {
+      body {
+        padding: 8px;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .app-header {
+        justify-content: flex-start;
+        margin-bottom: 10px;
+        padding: 2px 2px 0;
+      }
+
+      .app-logo {
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+      }
+
+      .app-title {
+        font-size: 1.22rem;
+        letter-spacing: -0.25px;
+      }
+
+      .search-card {
+        padding: 9px;
+        border-radius: 9px;
+      }
+
+      .search-input-group {
+        min-width: 0;
+        width: 100%;
+        gap: 7px;
+        align-items: stretch;
+      }
+
+      .search-wrapper input {
+        min-height: 42px;
+        font-size: 16px; /* Prevents iOS input zoom */
+      }
+
+      .search-btn {
+        min-height: 42px;
+        padding: 8px 15px;
+      }
+
+      .stock-summary-card {
+        border-radius: 9px;
+      }
+
+      .stock-summary-card .company-header {
+        padding: 11px 12px;
+        gap: 10px;
+      }
+
+      .company-profile {
+        min-width: 0;
+        gap: 10px;
+      }
+
+      .company-logo-container {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+      }
+
+      .company-name {
+        max-width: 190px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 1.02rem;
+      }
+
+      .company-ticker {
+        font-size: 0.75rem;
+      }
+
+      .company-price {
+        flex-shrink: 0;
+        font-size: 1.18rem;
+      }
+
+      .stock-summary-card .baseline-box {
+        padding: 10px 12px 12px;
+      }
+
+      .baseline-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .baseline-field {
+        gap: 4px;
+      }
+
+      .baseline-field label {
+        font-size: 0.76rem;
+      }
+
+      .baseline-field input {
+        min-height: 40px;
+        font-size: 16px; /* Prevents iOS input zoom */
+      }
+
+      .top-controls {
+        margin-bottom: 10px;
+      }
+
+      .top-controls > div {
+        width: 100%;
+        gap: 8px !important;
+      }
+
+      .dropdown-group {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .dropdown-group label {
+        font-size: 0.78rem;
+      }
+
+      .dropdown-group select {
+        width: 100%;
+        min-height: 40px;
+        font-size: 16px;
+      }
+
+      /* Restore real table behaviour for the historical/assumptions matrix.
+         It scrolls horizontally instead of turning every cell into a block. */
+      .metric-matrix,
+      .metric-matrix thead,
+      .metric-matrix tbody,
+      .metric-matrix tr,
+      .metric-matrix th,
+      .metric-matrix td {
+        display: revert;
+      }
+
+      .metric-matrix thead {
+        display: table-header-group;
+      }
+
+      .metric-matrix tbody {
+        display: table-row-group;
+      }
+
+      .metric-matrix tr {
+        display: table-row;
+        padding: 0;
+        border-bottom: 0;
+      }
+
+      .metric-matrix th,
+      .metric-matrix td {
+        display: table-cell;
+      }
+
+      .metric-matrix {
+        min-width: 740px;
+      }
+
+      .table-box:has(.metric-matrix) {
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+
+      .metric-matrix .metric-name {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        background: var(--card-bg);
+        box-shadow: 1px 0 0 var(--border-color);
+      }
+
+      .metric-matrix thead th:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 4;
+        background: #20252d !important;
+        box-shadow: 1px 0 0 var(--border-color);
+      }
+
+      .metric-matrix tbody td {
+        height: 46px;
+      }
+
+      .assumption-cell input {
+        min-height: 36px;
+        font-size: 16px;
+      }
+
+      .action-row {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .analyze-btn,
+      .clear-assumptions-btn {
+        min-height: 44px;
+        border-radius: 7px;
+      }
+
+      /* Results table: card-like rows rather than the old generic block conversion. */
+      .table-box:last-of-type table,
+      .table-box:last-of-type thead,
+      .table-box:last-of-type tbody,
+      .table-box:last-of-type tr,
+      .table-box:last-of-type th,
+      .table-box:last-of-type td {
+        display: block;
+        width: 100%;
+      }
+
+      .table-box:last-of-type thead {
+        display: block;
+      }
+
+      .table-box:last-of-type thead tr:first-child th:first-child {
+        display: none;
+      }
+
+      .table-box:last-of-type thead tr:first-child th:last-child {
+        padding: 9px 12px;
+        text-align: left;
+      }
+
+      .table-box:last-of-type .sub-head {
+        display: none;
+      }
+
+      .table-box:last-of-type tbody tr {
+        padding: 11px 12px;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .table-box:last-of-type tbody tr:last-child {
+        border-bottom: 0;
+      }
+
+      .table-box:last-of-type tbody td {
+        padding: 0;
+        border: 0;
+      }
+
+      .table-box:last-of-type tbody td:first-child {
+        margin-bottom: 9px;
+      }
+
+      /* Requested white labels on mobile. */
+      .table-box:last-of-type tbody .metric-name {
+        color: #ffffff !important;
+        font-size: 0.9rem;
+        font-weight: 800;
+      }
+
+      .table-box:last-of-type .inputs-flex {
+        gap: 6px;
+      }
+
+      .table-box:last-of-type .val-price,
+      .table-box:last-of-type .ret-val-text {
+        min-height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 4px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background: var(--input-bg);
+        font-size: 0.9rem;
+      }
+
+      .return-row-bg {
+        border-top: 0;
+        background: rgba(255, 255, 255, 0.018);
+      }
+
+      .info-tooltip .tooltip-text {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 18px;
+        width: auto;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .company-name {
+        max-width: 145px;
+      }
+
+      .search-btn {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .metric-matrix {
+        min-width: 700px;
+      }
+    }
+
+  
+    /* v8.5: true mobile card layout — no horizontal table scrolling */
+    @media (max-width: 650px) {
+      /* Keep only the useful company summary on phones.
+         The underlying baseline inputs remain in the DOM and calculations still use them. */
+      .stock-summary-card .baseline-box {
+        display: none !important;
+      }
+
+      .stock-summary-card .company-header {
+        border-bottom: 0;
+      }
+
+      /* Replace the desktop matrix with stacked metric cards. */
+      .table-box:has(.metric-matrix) {
+        overflow: visible !important;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+      }
+
+      .metric-matrix,
+      .metric-matrix tbody {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .metric-matrix thead {
+        display: none !important;
+      }
+
+      .metric-matrix tbody tr {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        width: 100%;
+        margin-bottom: 9px;
+        padding: 0;
+        overflow: hidden;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 9px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, .18);
+      }
+
+      .metric-matrix tbody tr:last-child {
+        margin-bottom: 0;
+      }
+
+      .metric-matrix tbody td {
+        display: block !important;
+        width: auto !important;
+        height: auto !important;
+        min-width: 0;
+        padding: 9px 5px !important;
+        border: 0 !important;
+        text-align: center !important;
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+
+      /* Metric title becomes a clean full-width card heading. */
+      .metric-matrix tbody td.metric-name {
+        position: static !important;
+        grid-column: 1 / -1;
+        padding: 10px 12px !important;
+        color: #f1f4f7 !important;
+        background: #1d222a !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        box-shadow: none !important;
+        font-size: .88rem;
+        font-weight: 800;
+        text-align: left !important;
+      }
+
+      /* Historical values: four equal columns with compact labels. */
+      .metric-matrix tbody td:nth-child(2)::before,
+      .metric-matrix tbody td:nth-child(3)::before,
+      .metric-matrix tbody td:nth-child(4)::before,
+      .metric-matrix tbody td:nth-child(5)::before {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--muted);
+        font-size: .66rem;
+        font-weight: 800;
+        letter-spacing: .04em;
+      }
+
+      .metric-matrix tbody td:nth-child(2)::before { content: "1Y"; }
+      .metric-matrix tbody td:nth-child(3)::before { content: "3Y"; }
+      .metric-matrix tbody td:nth-child(4)::before { content: "5Y"; }
+      .metric-matrix tbody td:nth-child(5)::before { content: "10Y"; }
+
+      .metric-matrix .history-value {
+        min-width: 0 !important;
+        font-size: .84rem;
+      }
+
+      /* Assumptions move below historical values and span the full card width. */
+      .metric-matrix tbody td.assumption-cell {
+        grid-column: 1 / -1;
+        padding: 9px 10px 11px !important;
+        background: rgba(77, 115, 61, .10) !important;
+        border-top: 1px solid rgba(115, 190, 67, .14) !important;
+      }
+
+      .assumption-cell .inputs-flex {
+        gap: 7px;
+      }
+
+      .assumption-cell .input-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .mobile-input-label {
+        display: block;
+        color: #b9c4b5;
+        font-size: .64rem;
+        font-weight: 800;
+        letter-spacing: .045em;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      .assumption-cell input {
+        min-height: 39px;
+        padding: 7px 22px 7px 8px;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+
+      .assumption-cell .symbol {
+        top: 28px;
+      }
+
+      /* Compact top controls so the table starts sooner. */
+      .top-controls {
+        margin-top: 0;
+        margin-bottom: 9px;
+      }
+
+      .dropdown-group label {
+        font-size: .72rem;
+      }
+
+      /* The old mobile green metric treatment is explicitly disabled. */
+      .metric-name {
+        color: #f1f4f7 !important;
+      }
+    }
+
+  
+    /* v8.6: clean mobile valuation-results header */
+    @media (max-width: 650px) {
+      .table-box:last-of-type {
+        overflow: hidden;
+        border-radius: 9px;
+      }
+
+      .table-box:last-of-type thead tr:first-child {
+        display: block !important;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        border: 0;
+      }
+
+      .table-box:last-of-type thead tr:first-child th:first-child {
+        display: none !important;
+      }
+
+      .table-box:last-of-type thead tr:first-child th:last-child {
+        display: block !important;
+        width: 100% !important;
+        padding: 10px 12px !important;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        background: #4d733d !important;
+        color: #ffffff !important;
+        text-align: center !important;
+        font-size: .9rem;
+        font-weight: 800;
+        letter-spacing: .045em;
+        text-transform: uppercase;
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,.05),
+          inset 0 -1px 0 rgba(0,0,0,.18);
+      }
+
+      .table-box:last-of-type thead {
+        background: transparent !important;
+      }
+    }
+
+  
+    .site-nav{display:flex;justify-content:center;gap:28px;margin:0 0 12px;border-bottom:1px solid var(--border-color)}
+    .site-nav a{color:var(--muted);text-decoration:none;font-weight:700;padding:10px 4px;border-bottom:2px solid transparent}
+    .site-nav a:hover{color:var(--text)}
+    .site-nav a.active{color:var(--text);border-bottom-color:var(--em-green)}
+    @media(max-width:650px){.site-nav{gap:12px;justify-content:space-between}.site-nav a{font-size:.78rem}}
+</style>
+
+<style>
+.metric-header{
+    vertical-align:middle !important;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container" id="appContainer">
+
+  <!-- Header with Logo & Title -->
+  <header class="app-header">
+    <img src="logo.png" alt="Stock Valuation Tool Logo" class="app-logo">
+    <h1 class="app-title">Stock Valuation Tool</h1>
+  </header>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a href="index.html">Overview</a>
+    <a href="financial-history.html">Financial History</a>
+    <a class="active" href="calculator.html">Valuation Calculator</a>
+  </nav>
+
+
+  <!-- Yahoo equity autocomplete + stock loader -->
+  <div class="search-card">
+    <div class="search-input-group">
+      <div class="search-wrapper">
+        <input
+          type="text"
+          id="tickerInput"
+          placeholder="Search ticker or company"
+          autocomplete="off"
+          aria-autocomplete="list"
+          aria-controls="searchDropdown"
+          aria-expanded="false"
+        >
+        <span class="search-loading-spinner" aria-hidden="true"></span>
+        <div id="searchDropdown" class="search-dropdown" role="listbox"></div>
+      </div>
+      <button id="searchButton" class="search-btn" type="button" onclick="fetchStockData()">Search</button>
+    </div>
+    <span class="api-status" id="apiStatus"></span>
+  </div>
+
+  <!-- Company details and baseline data appear only after a stock loads -->
+  <div id="stockSummaryCard" class="stock-summary-card">
+<div id="companyHeader" class="company-header">
+    <div class="company-profile">
+      <div id="companyLogoContainer" class="company-logo-container logo-bg-light">
+        <img id="companyLogo" src="" alt="Logo" class="company-logo" style="display: none;">
+        <div id="companyLogoFallback" class="company-logo-fallback"></div>
+      </div>
+      <div>
+        <h2 id="companyName" class="company-name"></h2>
+        <div id="companyTickerDisplay" class="company-ticker"></div>
+      </div>
+    </div>
+    <div id="headerPrice" class="company-price"></div>
+  </div>
+
+<div class="baseline-box">
+    <div class="baseline-grid">
+      <div class="baseline-field">
+        <label for="currentPrice">Current Stock Price ($)</label>
+        <input type="number" id="currentPrice" placeholder="0.00" oninput="updateHeaderPrice(); markResultsPending();">
+      </div>
+      <div class="baseline-field">
+        <label for="ttmRevenue">TTM Revenue ($ Billion)</label>
+        <input type="number" id="ttmRevenue" placeholder="0.00" oninput="markResultsPending()">
+      </div>
+      <div class="baseline-field">
+        <label for="sharesOut">Shares Outstanding (Billion)</label>
+        <input type="number" id="sharesOut" placeholder="0.00" oninput="markResultsPending()">
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Top Controls -->
+  <div class="top-controls">
+    <div style="display: flex; gap: 16px;">
+      <div class="dropdown-group">
+        <label for="yearsSelect">Years of Analysis</label>
+        <select id="yearsSelect" onchange="markResultsPending()">
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+        </select>
+      </div>
+      <div class="dropdown-group entries-control">
+        <label for="entriesSelect">Number of Entries</label>
+        <select id="entriesSelect" onchange="renderDynamicLayout()">
+          <option value="1">1 (Base)</option>
+          <option value="3" selected>3 (Low, Mid, High)</option>
+          <option value="5">5 (Bear, Low, Mid, High, Bull)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historical metrics and assumptions table -->
+  <div class="table-box">
+    <table class="metric-matrix">
+      <colgroup>
+        <col style="width: 17%;">
+        <col style="width: 9%;">
+        <col style="width: 9%;">
+        <col style="width: 9%;">
+        <col style="width: 9%;">
+        <col style="width: 9.4%;">
+        <col style="width: 9.4%;">
+        <col style="width: 9.4%;">
+        <col style="width: 9.4%;">
+        <col style="width: 9.4%;">
+      </colgroup>
+      <thead>
+        <tr class="matrix-group-row">
+          <th class="metric-group" rowspan="2">METRIC</th>
+<th colspan="4" class="matrix-group-title history-group">
+            Historical Data
+          </th>
+          <th colspan="5" class="matrix-group-title assumptions-group">
+            Assumptions
+          </th>
+        </tr>
+        <tr class="matrix-subhead">
+          <th class="history-header">1Y</th>
+          <th class="history-header">3Y</th>
+          <th class="history-header">5Y</th>
+          <th class="history-header history-last">10Y</th>
+          <th class="assumption-header" colspan="5">
+            <div id="assumptionsHeader" class="scenario-header-flex">
+              <span>Low</span><span>Mid</span><span>High</span>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="metric-name">Revenue Growth</td>
+          <td><span id="hist_g_1" class="history-value">-</span></td>
+          <td><span id="hist_g_3" class="history-value">-</span></td>
+          <td><span id="hist_g_5" class="history-value">-</span></td>
+          <td class="history-last"><span id="hist_g_10" class="history-value">-</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_g"></div></td>
+        </tr>
+        <tr>
+          <td class="metric-name">Net Margin</td>
+          <td><span id="hist_pm_1" class="history-value">-</span></td>
+          <td><span id="hist_pm_3" class="history-value">-</span></td>
+          <td><span id="hist_pm_5" class="history-value">-</span></td>
+          <td class="history-last"><span id="hist_pm_10" class="history-value">-</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_pm"></div></td>
+        </tr>
+        <tr>
+          <td class="metric-name">FCF Margin</td>
+          <td><span id="hist_fcfm_1" class="history-value">-</span></td>
+          <td><span id="hist_fcfm_3" class="history-value">-</span></td>
+          <td><span id="hist_fcfm_5" class="history-value">-</span></td>
+          <td class="history-last"><span id="hist_fcfm_10" class="history-value">-</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_fcfm"></div></td>
+        </tr>
+        <tr>
+          <td class="metric-name">P/E</td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
+          <td class="history-last"><span class="history-value is-empty">&nbsp;</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_pe"></div></td>
+        </tr>
+        <tr>
+          <td class="metric-name">P/FCF</td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
+          <td class="history-last"><span class="history-value is-empty">&nbsp;</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_pfcf"></div></td>
+        </tr>
+        <tr>
+          <td class="metric-name">Desired Return</td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
+          <td><span class="history-value is-empty">&nbsp;</span></td>
+          <td class="history-last"><span class="history-value is-empty">&nbsp;</span></td>
+          <td class="assumption-cell" colspan="5"><div class="inputs-flex cols-3" id="row_r"></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Action Row -->
+  <div class="action-row">
+    <button class="clear-assumptions-btn" type="button" onclick="clearSavedAssumptions()">
+      Clear Saved Assumptions
+    </button>
+    <button class="analyze-btn" onclick="calculateValuation()">Analyze</button>
+  </div>
+
+  <!-- Results Table -->
+  <div class="table-box">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 35%; text-align: left; padding-left: 16px;">Valuation Results</th>
+          <th style="width: 65%;">Calculated Fair Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="sub-head">
+          <th style="text-align: left; padding-left: 16px;">Method</th>
+          <th id="resultsHeader">Low     Mid     High</th>
+        </tr>
+
+        <tr>
+          <td class="metric-name">Multiple of Earnings Value</td>
+          <td><div class="inputs-flex cols-3" id="row_val_moe"></div></td>
+        </tr>
+
+        <tr>
+          <td class="metric-name">Discounted Cash Flow Value</td>
+          <td><div class="inputs-flex cols-3" id="row_val_dcf"></div></td>
+        </tr>
+
+        <tr class="return-row-bg">
+          <td class="metric-name">
+            Current Price Return 
+            <span class="info-tooltip">ⓘ
+              <span class="tooltip-text">
+                The estimated compound annual return (IRR) you would achieve if you buy the stock at today's market price and hold it through the analysis period.
+              </span>
+            </span>
+          </td>
+          <td><div class="inputs-flex cols-3" id="row_val_ret"></div></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // Production Worker. For testing a Cloudflare version-preview Worker without
+  // editing this file, open the page with ?worker=https%3A%2F%2FYOUR-PREVIEW-URL.
+  const DEFAULT_WORKER_URL = 'https://worker.jpuurins.workers.dev';
+
+  function getConfiguredWorkerUrl() {
+    try {
+      const pageHref = (typeof window !== 'undefined' && window.location?.href)
+        ? window.location.href
+        : '';
+      if (!pageHref) return DEFAULT_WORKER_URL;
+
+      const override = new URL(pageHref).searchParams.get('worker');
+      if (!override) return DEFAULT_WORKER_URL;
+
+      const parsed = new URL(override);
+      if (parsed.protocol !== 'https:') return DEFAULT_WORKER_URL;
+      return parsed.toString().replace(/\/+$/, '');
+    } catch (error) {
+      console.warn('Ignoring invalid Worker preview URL:', error);
+      return DEFAULT_WORKER_URL;
+    }
+  }
+
+  const workerUrl = getConfiguredWorkerUrl();
+
+  // Yahoo's internal US exchange codes. We display friendly names in the UI.
+  const US_EXCHANGE_LABELS = Object.freeze({
+    NYQ: 'NYSE',
+    NMS: 'NASDAQ',
+    NGM: 'NASDAQ',
+    NCM: 'NASDAQ',
+    ASE: 'NYSE American'
+  });
+  const US_EXCHANGE_CODES = new Set(Object.keys(US_EXCHANGE_LABELS));
+
+  const tickerInput = document.getElementById('tickerInput');
+  const searchWrapper = document.querySelector('.search-wrapper');
+  const searchDropdown = document.getElementById('searchDropdown');
+  const searchButton = document.getElementById('searchButton');
+  const statusElem = document.getElementById('apiStatus');
+
+  let searchDebounceTimer = null;
+  let searchAbortController = null;
+  let currentSearchResults = [];
+  let activeSearchIndex = -1;
+  let selectedSearchTicker = '';
+  let searchInProgress = false;
+
+  const ASSUMPTIONS_STORAGE_PREFIX = 'stockValuationAssumptions:';
+  let activeAssumptionsTicker = '';
+  let renderedEntriesCount = 3;
+  let assumptionSaveTimer = null;
+  let suppressAssumptionSave = false;
+
+  function assumptionsStorageKey(ticker) {
+    return `${ASSUMPTIONS_STORAGE_PREFIX}${normalizeTicker(ticker)}`;
+  }
+
+  function readSavedAssumptions(ticker) {
+    if (!ticker) return null;
+
+    try {
+      const raw = localStorage.getItem(assumptionsStorageKey(ticker));
+      if (!raw) return null;
+
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : null;
+    } catch (error) {
+      console.warn(`Could not read saved assumptions for ${ticker}:`, error);
+      return null;
+    }
+  }
+
+  function captureCurrentAssumptionLayout(entryCount = renderedEntriesCount) {
+    const cases = scenariosMap[entryCount] || [];
+    const metrics = ['g', 'pm', 'fcfm', 'pe', 'pfcf', 'r'];
+    const layout = {};
+
+    metrics.forEach(metric => {
+      layout[metric] = {};
+      cases.forEach(scenario => {
+        layout[metric][scenario] =
+          document.getElementById(`${metric}_${scenario}`)?.value ?? '';
+      });
+    });
+
+    return layout;
+  }
+
+  function saveAssumptionsForTicker(ticker = activeAssumptionsTicker) {
+    if (!ticker || suppressAssumptionSave) return;
+
+    try {
+      const existing = readSavedAssumptions(ticker) || {
+        version: 1,
+        layouts: {}
+      };
+
+      existing.version = 1;
+      existing.years = document.getElementById('yearsSelect').value;
+      existing.activeEntries = String(document.getElementById('entriesSelect').value);
+      existing.layouts = existing.layouts || {};
+      existing.layouts[String(renderedEntriesCount)] =
+        captureCurrentAssumptionLayout(renderedEntriesCount);
+      existing.updatedAt = new Date().toISOString();
+
+      localStorage.setItem(
+        assumptionsStorageKey(ticker),
+        JSON.stringify(existing)
+      );
+    } catch (error) {
+      console.warn(`Could not save assumptions for ${ticker}:`, error);
+    }
+  }
+
+  function queueAssumptionSave() {
+    if (!activeAssumptionsTicker || suppressAssumptionSave) return;
+
+    const tickerAtQueueTime = activeAssumptionsTicker;
+
+    clearTimeout(assumptionSaveTimer);
+    assumptionSaveTimer = setTimeout(() => {
+      assumptionSaveTimer = null;
+
+      // Do not let a delayed save from the previous company write its
+      // assumptions into the newly selected company's storage.
+      if (activeAssumptionsTicker !== tickerAtQueueTime) return;
+
+      saveAssumptionsForTicker(tickerAtQueueTime);
+    }, 150);
+  }
+
+  function restoreAssumptionLayout(saved, entryCount) {
+    const layout = saved?.layouts?.[String(entryCount)];
+    if (!layout) return;
+
+    const cases = scenariosMap[entryCount] || [];
+    const metrics = ['g', 'pm', 'fcfm', 'pe', 'pfcf', 'r'];
+
+    metrics.forEach(metric => {
+      cases.forEach(scenario => {
+        const input = document.getElementById(`${metric}_${scenario}`);
+        if (input) input.value = layout?.[metric]?.[scenario] ?? '';
+      });
+    });
+  }
+
+  function activateTickerAssumptions(ticker) {
+    const normalizedTicker = normalizeTicker(ticker);
+
+    // Cancel any delayed save before changing the active ticker. Otherwise,
+    // the old company's timer could run after the new company becomes active.
+    clearTimeout(assumptionSaveTimer);
+    assumptionSaveTimer = null;
+
+    if (activeAssumptionsTicker && activeAssumptionsTicker !== normalizedTicker) {
+      saveAssumptionsForTicker(activeAssumptionsTicker);
+    }
+
+    activeAssumptionsTicker = normalizedTicker;
+    const saved = readSavedAssumptions(normalizedTicker);
+
+    suppressAssumptionSave = true;
+
+    try {
+      document.getElementById('yearsSelect').value =
+        ['3', '5', '10'].includes(String(saved?.years))
+          ? String(saved.years)
+          : '10';
+
+      const savedEntries = ['1', '3', '5'].includes(String(saved?.activeEntries))
+        ? String(saved.activeEntries)
+        : '3';
+
+      document.getElementById('entriesSelect').value = savedEntries;
+      renderDynamicLayout({ savePrevious: false, restoreSaved: false });
+      restoreAssumptionLayout(saved, Number(savedEntries));
+    } finally {
+      suppressAssumptionSave = false;
+    }
+  }
+
+  function clearSavedAssumptions() {
+    if (!activeAssumptionsTicker) {
+      setStatus('Search for a company first.', 'warning');
+      return;
+    }
+
+    try {
+      localStorage.removeItem(assumptionsStorageKey(activeAssumptionsTicker));
+
+      suppressAssumptionSave = true;
+      document.getElementById('yearsSelect').value = '10';
+      document.getElementById('entriesSelect').value = '3';
+      renderDynamicLayout({ savePrevious: false, restoreSaved: false });
+      suppressAssumptionSave = false;
+
+      setStatus('');
+    } catch (error) {
+      suppressAssumptionSave = false;
+      console.error('Could not clear saved assumptions:', error);
+      setStatus('Could not clear saved assumptions.', 'error');
+    }
+  }
+
+  function updateHeaderPrice() {
+    const p = parseFloat(document.getElementById('currentPrice').value) || 0;
+    document.getElementById('headerPrice').innerText = `$${p.toFixed(2)}`;
+  }
+
+  // Automatic Screen Fit Scale Adjuster
+  function fitToScreen() {
+    const container = document.getElementById('appContainer');
+    container.style.transform = 'none';
+
+    const viewportHeight = window.innerHeight;
+    const contentHeight = container.offsetHeight;
+
+    if (contentHeight > viewportHeight && window.innerWidth > 650) {
+      const scale = Math.max(0.70, (viewportHeight - 20) / contentHeight);
+      container.style.transformOrigin = 'top center';
+      container.style.transform = `scale(${scale})`;
+    }
+  }
+
+  function setStatus(message, tone = 'muted', details = '') {
+    const colors = {
+      muted: 'var(--muted)',
+      success: 'var(--em-green)',
+      warning: '#e2a03f',
+      error: 'var(--em-red)'
+    };
+
+    statusElem.innerText = message;
+    statusElem.style.color = colors[tone] || colors.muted;
+    statusElem.title = details || '';
+  }
+
+  function normalizeTicker(value) {
+    const ticker = String(value || '').trim().toUpperCase();
+
+    // Yahoo uses a hyphen for US class shares such as BRK-B. A dot usually
+    // denotes a foreign exchange suffix (for example .SA or .BK), so this
+    // calculator rejects dotted symbols.
+    if (!/^[A-Z0-9][A-Z0-9-]{0,14}$/.test(ticker)) {
+      throw new Error('Enter a valid US ticker, for example AAPL or BRK-B.');
+    }
+
+    return ticker;
+  }
+
+  function canonicalUsExchangeCode(source) {
+    const candidates = [
+      source?.exchangeCode,
+      source?.exchange,
+      source?.exchangeName,
+      source?.fullExchangeName,
+      source?.exchDisp
+    ]
+      .filter(Boolean)
+      .map(value => String(value).trim().toUpperCase().replace(/[^A-Z0-9]/g, ''));
+
+    for (const candidate of candidates) {
+      if (US_EXCHANGE_CODES.has(candidate)) return candidate;
+      if (candidate === 'NYSE' || candidate === 'NEWYORKSTOCKEXCHANGE') return 'NYQ';
+      if (candidate === 'NYSEAMERICAN' || candidate === 'AMEX') return 'ASE';
+      if (candidate === 'NASDAQGS' || candidate === 'NASDAQGLOBALSELECT') return 'NMS';
+      if (candidate === 'NASDAQGM' || candidate === 'NASDAQGLOBALMARKET') return 'NGM';
+      if (candidate === 'NASDAQCM' || candidate === 'NASDAQCAPITALMARKET') return 'NCM';
+      if (candidate === 'NASDAQ') return 'NMS';
+    }
+
+    return '';
+  }
+
+  function toNumber(value) {
+    if (typeof value === 'number') {
+      return Number.isFinite(value) ? value : 0;
+    }
+
+    if (typeof value !== 'string') return 0;
+
+    const trimmed = value.trim();
+    if (!trimmed) return 0;
+
+    const normalized = trimmed
+      .replace(/,/g, '')
+      .replace(/^\((.*)\)$/, '-$1');
+    const number = Number(normalized);
+    return Number.isFinite(number) ? number : 0;
+  }
+
+  function getApiError(data, fallback) {
+    return data?.error ||
+      data?.query_execution_message ||
+      data?.chart?.error?.description ||
+      fallback;
+  }
+
+  async function fetchJson(url, label, options = {}) {
+    const response = await fetch(url, {
+      signal: options.signal,
+      headers: { Accept: 'application/json' }
+    });
+    const text = await response.text();
+    let data = {};
+
+    if (text) {
+      try {
+        data = JSON.parse(text);
+      } catch (error) {
+        throw new Error(`${label} returned non-JSON data (HTTP ${response.status}).`);
+      }
+    }
+
+    if (!response.ok) {
+      throw new Error(`${label}: ${getApiError(data, `HTTP ${response.status}`)}`);
+    }
+
+    return data;
+  }
+
+  async function fetchEquitySearch(query, signal) {
+    const url = `${workerUrl}?search=${encodeURIComponent(query)}`;
+    const data = await fetchJson(url, 'Yahoo US-equity search', { signal });
+
+    // Accept both the new normalized response and Gemini's older `quotes`
+    // response, then apply the strict filter again in the browser.
+    const rawResults = Array.isArray(data.results)
+      ? data.results
+      : (Array.isArray(data.quotes) ? data.quotes : []);
+
+    const seen = new Set();
+    return rawResults
+      .map(result => {
+        const symbol = String(result.symbol || '').trim().toUpperCase();
+        const exchangeCode = canonicalUsExchangeCode(result);
+        return {
+          symbol,
+          name: result.name || result.longName || result.longname || result.shortName || result.shortname || symbol,
+          exchangeCode,
+          exchange: result.exchangeLabel || US_EXCHANGE_LABELS[exchangeCode] || '',
+          quoteType: String(result.quoteType || result.type || '').toUpperCase(),
+          currency: String(result.currency || '').toUpperCase(),
+          region: String(result.region || '').toUpperCase()
+        };
+      })
+      .filter(result => result.quoteType === 'EQUITY')
+      .filter(result => US_EXCHANGE_CODES.has(result.exchangeCode))
+      .filter(result => result.symbol && !result.symbol.includes('.'))
+      .filter(result => !result.currency || result.currency === 'USD')
+      .filter(result => !result.region || result.region === 'US')
+      .filter(result => {
+        if (seen.has(result.symbol)) return false;
+        seen.add(result.symbol);
+        return true;
+      });
+  }
+
+  function hideSearchDropdown() {
+    searchDropdown.classList.remove('is-open');
+    searchDropdown.innerHTML = '';
+    tickerInput.setAttribute('aria-expanded', 'false');
+    currentSearchResults = [];
+    activeSearchIndex = -1;
+  }
+
+  function showSearchMessage(message) {
+    searchDropdown.innerHTML = '';
+    const row = document.createElement('div');
+    row.className = 'search-message';
+    row.textContent = message;
+    searchDropdown.appendChild(row);
+    searchDropdown.classList.add('is-open');
+    tickerInput.setAttribute('aria-expanded', 'true');
+  }
+
+  function setActiveSearchIndex(index) {
+    if (currentSearchResults.length === 0) return;
+
+    activeSearchIndex = (index + currentSearchResults.length) % currentSearchResults.length;
+    const items = [...searchDropdown.querySelectorAll('.search-item')];
+
+    items.forEach((item, itemIndex) => {
+      const isActive = itemIndex === activeSearchIndex;
+      item.classList.toggle('is-active', isActive);
+      item.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      if (isActive) item.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  function selectSearchResult(result, loadImmediately = true) {
+    selectedSearchTicker = normalizeTicker(result.symbol);
+    tickerInput.value = selectedSearchTicker;
+    hideSearchDropdown();
+
+    if (loadImmediately) {
+      fetchStockData();
+    }
+  }
+
+  function renderSearchDropdown(results) {
+    currentSearchResults = results;
+    activeSearchIndex = -1;
+    searchDropdown.innerHTML = '';
+
+    if (results.length === 0) {
+      showSearchMessage('No NYSE, NASDAQ, or NYSE American equity matches found.');
+      return;
+    }
+
+    results.forEach((result, index) => {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'search-item';
+      item.setAttribute('role', 'option');
+      item.setAttribute('aria-selected', 'false');
+
+      const identity = document.createElement('span');
+      identity.className = 'search-item-identity';
+
+      const symbol = document.createElement('span');
+      symbol.className = 'search-item-ticker';
+      symbol.textContent = result.symbol;
+
+      const name = document.createElement('span');
+      name.className = 'search-item-name';
+      name.textContent = result.name || result.symbol;
+
+      const exchange = document.createElement('span');
+      exchange.className = 'search-item-exchange';
+      exchange.textContent = result.exchange || 'Equity';
+
+      identity.append(symbol, name);
+      item.append(identity, exchange);
+
+      item.addEventListener('mouseenter', () => setActiveSearchIndex(index));
+      item.addEventListener('click', () => selectSearchResult(result));
+      searchDropdown.appendChild(item);
+    });
+
+    searchDropdown.classList.add('is-open');
+    tickerInput.setAttribute('aria-expanded', 'true');
+  }
+
+  async function loadSearchSuggestions(query) {
+    if (searchAbortController) searchAbortController.abort();
+    searchAbortController = new AbortController();
+    const requestedQuery = query;
+
+    showSearchMessage('Searching US-listed equities...');
+
+    try {
+      const results = await fetchEquitySearch(query, searchAbortController.signal);
+
+      // Ignore a response if the user has already typed something else.
+      if (tickerInput.value.trim() !== requestedQuery) return;
+      renderSearchDropdown(results);
+    } catch (error) {
+      if (error.name === 'AbortError') return;
+      console.error('Autocomplete error:', error);
+      if (tickerInput.value.trim() === requestedQuery) {
+        showSearchMessage('Search is temporarily unavailable.');
+      }
+    }
+  }
+
+  async function resolveTicker(rawValue) {
+    const raw = String(rawValue || '').trim();
+    if (!raw) throw new Error('Enter a ticker or company name.');
+
+    if (selectedSearchTicker && raw.toUpperCase() === selectedSearchTicker) {
+      return selectedSearchTicker;
+    }
+
+    const rawUpper = raw.toUpperCase();
+    const canBeTicker = /^[A-Za-z0-9-]{1,15}$/.test(raw);
+
+    // Uppercase symbols go directly to Yahoo/Dolt. Lowercase symbols are first
+    // checked through search, but fall back to their uppercase form if the
+    // autocomplete route is unavailable. This fixes inputs such as "aapl".
+    if (/^[A-Z0-9-]{1,15}$/.test(raw)) {
+      return normalizeTicker(raw);
+    }
+
+    try {
+      const results = await fetchEquitySearch(raw);
+      if (results.length > 0) {
+        const exactSymbol = results.find(result => result.symbol === rawUpper);
+        const exactName = results.find(result => String(result.name || '').toUpperCase() === rawUpper);
+        const selected = exactSymbol || exactName || results[0];
+
+        selectedSearchTicker = normalizeTicker(selected.symbol);
+        tickerInput.value = selectedSearchTicker;
+        return selectedSearchTicker;
+      }
+    } catch (error) {
+      if (!canBeTicker) throw error;
+      console.warn('Ticker search failed; trying the typed value as a symbol:', error);
+    }
+
+    if (canBeTicker) {
+      const ticker = normalizeTicker(rawUpper);
+      tickerInput.value = ticker;
+      return ticker;
+    }
+
+    throw new Error(`No equity ticker was found for "${raw}".`);
+  }
+
+  // This is intentionally the same pair of DoltHub SQL queries that worked
+  // before the Yahoo integration was added.
+  async function fetchDoltFinancials(ticker) {
+    let normalizedRouteError = null;
+
+    // Preferred route: the Worker owns the Dolt queries and returns a stable
+    // shape. This is also where future metrics such as revenue growth and ROIC
+    // can be added without rewriting the page.
+    try {
+      const data = await fetchJson(
+        `${workerUrl}?financials=${encodeURIComponent(ticker)}`,
+        'DoltHub financials'
+      );
+
+      const revenue = toNumber(
+        data.revenueTtmBillion ?? data.revenue_ttm_billion ?? data.RevenueTTM
+      );
+      const shares = toNumber(
+        data.sharesOutstandingBillion ?? data.shares_outstanding_billion ?? data.SharesOutstanding
+      );
+      const hasRevenue = Boolean(data.hasRevenue ?? data.has_revenue ?? revenue > 0);
+      const hasShares = Boolean(data.hasShares ?? data.has_shares ?? shares > 0);
+
+      if (hasRevenue || hasShares) {
+        return {
+          RevenueTTM: revenue,
+          SharesOutstanding: shares,
+          hasRevenue,
+          hasShares,
+          diagnostics: data.diagnostics || null,
+          errors: Array.isArray(data.errors) ? data.errors : []
+        };
+      }
+
+      const routeMessage = Array.isArray(data.errors) && data.errors.length
+        ? data.errors.join(' ')
+        : `DoltHub returned no usable financial rows for ${ticker}.`;
+      throw new Error(routeMessage);
+    } catch (error) {
+      normalizedRouteError = error;
+      console.warn('Normalized Dolt route failed; trying the original SQL route:', error);
+    }
+
+    // Compatibility fallback: these are exactly the two SQL statements from
+    // the original file that worked before Yahoo was added.
+    const incomeQuery = `SELECT sales, date, period FROM income_statement WHERE act_symbol = '${ticker}' AND period = 'Quarter' ORDER BY date DESC LIMIT 4`;
+    const balanceQuery = `SELECT shares_outstanding, date, period FROM balance_sheet_equity WHERE act_symbol = '${ticker}' ORDER BY date DESC LIMIT 5`;
+
+    try {
+      const [incomeData, balanceData] = await Promise.all([
+        fetchJson(`${workerUrl}?q=${encodeURIComponent(incomeQuery)}`, 'DoltHub income query'),
+        fetchJson(`${workerUrl}?q=${encodeURIComponent(balanceQuery)}`, 'DoltHub shares query')
+      ]);
+
+      if (String(incomeData.query_execution_status || '').toLowerCase() === 'error') {
+        throw new Error(`DoltHub income query: ${incomeData.query_execution_message || 'SQL error'}`);
+      }
+
+      if (String(balanceData.query_execution_status || '').toLowerCase() === 'error') {
+        throw new Error(`DoltHub shares query: ${balanceData.query_execution_message || 'SQL error'}`);
+      }
+
+      const rows = Array.isArray(incomeData.rows) ? incomeData.rows : [];
+      const quarterlyRows = rows
+        .filter(row => String(row.period || '').trim().toLowerCase() === 'quarter')
+        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
+        .slice(0, 4);
+
+      const rawSalesSum = quarterlyRows.reduce((sum, row) => sum + toNumber(row.sales), 0);
+      const revenue = rawSalesSum > 1e6 ? rawSalesSum / 1e9 : rawSalesSum;
+
+      const balanceRows = Array.isArray(balanceData.rows) ? balanceData.rows : [];
+      const shareRow = balanceRows
+        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
+        .find(row => toNumber(row.shares_outstanding) > 0);
+      const rawShares = shareRow ? toNumber(shareRow.shares_outstanding) : 0;
+      const shares = rawShares > 1e6 ? rawShares / 1e9 : rawShares;
+
+      return {
+        RevenueTTM: revenue,
+        SharesOutstanding: shares,
+        hasRevenue: quarterlyRows.length === 4 && revenue > 0,
+        hasShares: shares > 0,
+        diagnostics: {
+          route: 'legacy-q',
+          incomeApi: incomeData.dolt_api || null,
+          balanceApi: balanceData.dolt_api || null,
+          ref: incomeData.commit_ref || balanceData.commit_ref || null
+        },
+        errors: []
+      };
+    } catch (legacyError) {
+      throw new Error(
+        `DoltHub financials failed. Normalized route: ${normalizedRouteError?.message || 'unknown error'}; ` +
+        `original SQL route: ${legacyError?.message || 'unknown error'}`
+      );
+    }
+  }
+
+  async function fetchYahooQuote(ticker) {
+    let data = null;
+    let firstError = null;
+
+    for (const route of ['quote', 'priceTicker']) {
+      try {
+        data = await fetchJson(
+          `${workerUrl}?${route}=${encodeURIComponent(ticker)}`,
+          'Yahoo quote'
+        );
+        break;
+      } catch (error) {
+        if (!firstError) firstError = error;
+      }
+    }
+
+    if (!data) throw firstError || new Error('Yahoo quote failed.');
+
+    const meta = data?.chart?.result?.[0]?.meta || {};
+    const quoteType = String(
+      data.quoteType || meta.instrumentType || meta.quoteType || ''
+    ).toUpperCase();
+    const exchangeCode = canonicalUsExchangeCode({
+      exchangeCode: data.exchangeCode,
+      exchange: data.exchange,
+      exchangeName: meta.exchangeName,
+      fullExchangeName: data.exchangeLabel || meta.fullExchangeName
+    });
+    const currency = String(data.currency || meta.currency || '').toUpperCase();
+
+    if (quoteType !== 'EQUITY' || !US_EXCHANGE_CODES.has(exchangeCode) || (currency && currency !== 'USD')) {
+      throw new Error(
+        `${ticker} is not a stock listed on NYSE, NASDAQ, or NYSE American.`
+      );
+    }
+
+    const price = [
+      data.price,
+      data.regularMarketPrice,
+      meta.regularMarketPrice,
+      meta.chartPreviousClose,
+      meta.previousClose
+    ].map(toNumber).find(value => value > 0) || 0;
+
+    if (!(price > 0)) {
+      throw new Error(`Yahoo returned no usable price for ${ticker}.`);
+    }
+
+    return {
+      CompanyName: data.companyName || data.longName || data.shortName || meta.longName || meta.shortName || ticker,
+      price,
+      currency: currency || 'USD',
+      exchangeCode,
+      exchange: data.exchangeLabel || US_EXCHANGE_LABELS[exchangeCode]
+    };
+  }
+
+  function formatHistoricalPercent(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? `${number.toFixed(2)}%` : '-';
+  }
+
+  function setHistoricalValue(id, value) {
+    const element = document.getElementById(id);
+    if (!element) return;
+    const available = Number.isFinite(Number(value));
+    element.textContent = formatHistoricalPercent(value);
+    element.classList.toggle('is-unavailable', !available);
+  }
+
+  function resetHistoricalMetrics() {
+    ['hist_g_1','hist_g_3','hist_g_5','hist_g_10','hist_pm_1','hist_pm_3','hist_pm_5','hist_pm_10','hist_fcfm_1','hist_fcfm_3','hist_fcfm_5','hist_fcfm_10'].forEach(id => setHistoricalValue(id, null));
+  }
+
+  async function fetchHistoricalMetrics(ticker) {
+    const data = await fetchJson(`${workerUrl}?dashboard=${encodeURIComponent(ticker)}`, 'Historical metrics');
+    const revenue = data.revenueGrowth || {};
+    const netMargin = data.netMargins || {};
+    const fcfMargin = data.fcfMargins || {};
+
+    setHistoricalValue('hist_g_1', revenue.oneYear);
+    setHistoricalValue('hist_g_3', revenue.threeYears);
+    setHistoricalValue('hist_g_5', revenue.fiveYears);
+    setHistoricalValue('hist_g_10', revenue.tenYears);
+    setHistoricalValue('hist_pm_1', netMargin.oneYear);
+    setHistoricalValue('hist_pm_3', netMargin.threeYears);
+    setHistoricalValue('hist_pm_5', netMargin.fiveYears);
+    setHistoricalValue('hist_pm_10', netMargin.tenYears);
+    setHistoricalValue('hist_fcfm_1', fcfMargin.oneYear);
+    setHistoricalValue('hist_fcfm_3', fcfMargin.threeYears);
+    setHistoricalValue('hist_fcfm_5', fcfMargin.fiveYears);
+    setHistoricalValue('hist_fcfm_10', fcfMargin.tenYears);
+  }
+
+  function resetStockUI(ticker) {
+    document.getElementById('stockSummaryCard')?.classList.remove('is-visible');
+    const nameElem = document.getElementById('companyName');
+    const tickerElem = document.getElementById('companyTickerDisplay');
+
+    nameElem.innerText = ticker;
+    tickerElem.innerText = ticker;
+
+    document.getElementById('headerPrice').innerText = '$0.00';
+    document.getElementById('currentPrice').value = '';
+    document.getElementById('ttmRevenue').value = '';
+    document.getElementById('sharesOut').value = '';
+    resetHistoricalMetrics();
+
+    const logoImg = document.getElementById('companyLogo');
+    const logoFallback = document.getElementById('companyLogoFallback');
+    const logoContainer = document.getElementById('companyLogoContainer');
+    logoImg.style.display = 'none';
+    logoFallback.textContent = ticker.slice(0, 2);
+    logoFallback.style.display = 'flex';
+    logoContainer.classList.remove('logo-bg-dark', 'logo-bg-light', 'logo-has-background', 'logo-placeholder');
+    logoContainer.classList.add('logo-bg-dark');
+
+    markResultsPending();
+  }
+
+  // Yahoo and DoltHub are independent. A Yahoo failure cannot erase a
+  // successful DoltHub response, and a DoltHub failure cannot erase Yahoo data.
+  async function fetchStockData() {
+
+    if (searchInProgress) return;
+    searchInProgress = true;
+
+    const rawValue = tickerInput.value;
+    hideSearchDropdown();
+    setStatus('');
+    searchWrapper.classList.add('is-loading');
+    searchButton.disabled = true;
+
+    try {
+      const ticker = await resolveTicker(rawValue);
+      resetStockUI(ticker);
+
+      const [doltResult, yahooResult, historyResult] = await Promise.allSettled([
+        fetchDoltFinancials(ticker),
+        fetchYahooQuote(ticker),
+        fetchHistoricalMetrics(ticker)
+      ]);
+
+      const yahooFailureMessage = yahooResult.status === 'rejected'
+        ? String(yahooResult.reason?.message || '')
+        : '';
+
+      // A manually entered ETF, option, index, crypto, or other non-equity
+      // is rejected even if the Dolt database happens to contain a row for it.
+      if (/not an equity|not a stock\/equity|not a stock listed|not a us-listed/i.test(yahooFailureMessage)) {
+        document.getElementById('stockSummaryCard')?.classList.remove('is-visible');
+        setStatus(`${ticker} is not a supported US-listed equity.`, 'error', yahooFailureMessage);
+        return;
+      }
+
+      const stockData = {
+        CompanyName: ticker,
+        Ticker: ticker,
+        RevenueTTM: 0,
+        SharesOutstanding: 0,
+        price: 0
+      };
+      const errors = [];
+      let doltLoaded = false;
+      let yahooLoaded = false;
+      let financialsComplete = false;
+
+      if (doltResult.status === 'fulfilled') {
+        stockData.RevenueTTM = doltResult.value.RevenueTTM;
+        stockData.SharesOutstanding = doltResult.value.SharesOutstanding;
+        doltLoaded = doltResult.value.hasRevenue || doltResult.value.hasShares;
+        financialsComplete = doltResult.value.hasRevenue && doltResult.value.hasShares;
+
+        if (!doltResult.value.hasRevenue) errors.push('DoltHub returned no usable TTM revenue.');
+        if (!doltResult.value.hasShares) errors.push('DoltHub returned no usable shares outstanding.');
+      } else {
+        errors.push(doltResult.reason?.message || 'DoltHub financials failed.');
+      }
+
+      if (yahooResult.status === 'fulfilled') {
+        stockData.CompanyName = yahooResult.value.CompanyName;
+        stockData.price = yahooResult.value.price;
+        yahooLoaded = yahooResult.value.price > 0;
+      } else {
+        errors.push(yahooResult.reason?.message || 'Yahoo quote failed.');
+      }
+
+      if (historyResult.status === 'rejected') {
+        errors.push(historyResult.reason?.message || 'Historical metrics failed.');
+      }
+
+      activateTickerAssumptions(ticker);
+      populateStockUI(ticker, stockData);
+
+      if (yahooLoaded || doltLoaded) {
+        setStatus('');
+      } else {
+        setStatus(`Could not load ${ticker}.`, 'error', errors.join('\n'));
+      }
+
+      if (errors.length > 0) {
+        console.warn(`Partial data for ${ticker}:`, errors);
+      }
+    } catch (error) {
+      console.error('Stock load error:', error);
+      setStatus(error.message || 'Failed to fetch stock data.', 'error');
+    } finally {
+      searchInProgress = false;
+      searchWrapper.classList.remove('is-loading');
+      searchButton.disabled = false;
+      hideSearchDropdown();
+      setStatus('');
+    }
+  }
+
+  function setLogoBackground(ticker, logoImg) {
+    const container = document.getElementById('companyLogoContainer');
+    const knownLightLogos = new Set(['UBER', 'NKE']);
+    const knownDarkOrColourLogos = new Set(['MSFT', 'GOOG', 'GOOGL']);
+    const knownFullBackgroundLogos = new Set(['AAPL', 'HOVR']);
+
+    const apply = ({ dark = false, hasBackground = false } = {}) => {
+      container.classList.toggle('logo-bg-dark', dark && !hasBackground);
+      container.classList.toggle('logo-bg-light', !dark && !hasBackground);
+      container.classList.toggle('logo-has-background', hasBackground);
+    };
+
+    if (knownFullBackgroundLogos.has(ticker)) {
+      apply({ hasBackground: true });
+      return;
+    }
+    if (knownLightLogos.has(ticker)) {
+      apply({ dark: true });
+      return;
+    }
+    if (knownDarkOrColourLogos.has(ticker)) {
+      apply({ dark: false });
+      return;
+    }
+
+    try {
+      const canvas = document.createElement('canvas');
+      const size = 64;
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      ctx.clearRect(0, 0, size, size);
+      ctx.drawImage(logoImg, 0, 0, size, size);
+      const pixels = ctx.getImageData(0, 0, size, size).data;
+
+      let luminance = 0;
+      let visibleCount = 0;
+      let edgeVisible = 0;
+      let edgeSamples = 0;
+      const edgeDepth = 3;
+
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const i = (y * size + x) * 4;
+          const alpha = pixels[i + 3];
+          const onEdge = x < edgeDepth || y < edgeDepth || x >= size - edgeDepth || y >= size - edgeDepth;
+          if (onEdge) {
+            edgeSamples++;
+            if (alpha > 220) edgeVisible++;
+          }
+          if (alpha < 40) continue;
+          const r = pixels[i];
+          const g = pixels[i + 1];
+          const b = pixels[i + 2];
+          luminance += 0.2126 * r + 0.7152 * g + 0.0722 * b;
+          visibleCount++;
+        }
+      }
+
+      // Opaque image edges usually mean the logo file already has its own tile/background.
+      const hasBackground = edgeSamples > 0 && edgeVisible / edgeSamples > 0.78;
+      const averageLuminance = visibleCount ? luminance / visibleCount : 128;
+      apply({ dark: averageLuminance > 168, hasBackground });
+    } catch (error) {
+      // Cross-origin restrictions can prevent pixel inspection.
+      apply({ dark: false });
+    }
+  }
+
+  // Populate UI with retrieved stock data
+  function populateStockUI(ticker, overview) {
+    const price = toNumber(overview.price);
+    const sharesOut = toNumber(overview.SharesOutstanding);
+    const revenueTTM = toNumber(overview.RevenueTTM);
+
+    const nameElem = document.getElementById('companyName');
+    nameElem.innerText = overview.CompanyName || ticker;
+
+    const tickerElem = document.getElementById('companyTickerDisplay');
+    tickerElem.innerText = ticker;
+
+    document.getElementById('headerPrice').innerText = `$${price > 0 ? price.toFixed(2) : '0.00'}`;
+
+    const logoImg = document.getElementById('companyLogo');
+    const logoFallback = document.getElementById('companyLogoFallback');
+    const logoContainer = document.getElementById('companyLogoContainer');
+
+    logoContainer.classList.remove('logo-bg-dark', 'logo-bg-light', 'logo-has-background', 'logo-placeholder');
+    logoContainer.classList.add('logo-bg-light');
+    logoImg.crossOrigin = 'anonymous';
+    logoImg.src = `https://financialmodelingprep.com/image-stock/${encodeURIComponent(ticker)}.png`;
+    logoImg.onload = function() {
+      setLogoBackground(ticker, logoImg);
+      logoImg.style.display = 'block';
+      logoFallback.style.display = 'none';
+    };
+    logoImg.onerror = function() {
+      logoImg.style.display = 'none';
+      logoFallback.textContent = ticker.slice(0, 2);
+      logoFallback.style.display = 'flex';
+      logoContainer.classList.remove('logo-bg-light', 'logo-has-background', 'logo-placeholder');
+      logoContainer.classList.add('logo-bg-dark');
+    };
+
+    document.getElementById('currentPrice').value = price > 0 ? price.toFixed(2) : '';
+    document.getElementById('sharesOut').value = sharesOut > 0 ? sharesOut.toFixed(3) : '';
+    document.getElementById('ttmRevenue').value = revenueTTM > 0 ? revenueTTM.toFixed(2) : '';
+
+    document.getElementById('stockSummaryCard')?.classList.add('is-visible');
+
+    markResultsPending();
+    fitToScreen();
+  }
+
+  tickerInput.addEventListener('input', function() {
+    selectedSearchTicker = '';
+    clearTimeout(searchDebounceTimer);
+
+    const query = this.value.trim();
+    if (!query) {
+      if (searchAbortController) searchAbortController.abort();
+      hideSearchDropdown();
+      return;
+    }
+
+    searchDebounceTimer = setTimeout(() => loadSearchSuggestions(query), 225);
+  });
+
+  tickerInput.addEventListener('keydown', function(event) {
+    const dropdownOpen = searchDropdown.classList.contains('is-open');
+
+    if (event.key === 'ArrowDown' && dropdownOpen && currentSearchResults.length > 0) {
+      event.preventDefault();
+      setActiveSearchIndex(activeSearchIndex + 1);
+      return;
+    }
+
+    if (event.key === 'ArrowUp' && dropdownOpen && currentSearchResults.length > 0) {
+      event.preventDefault();
+      setActiveSearchIndex(activeSearchIndex - 1);
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      hideSearchDropdown();
+      return;
+    }
+
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (dropdownOpen && activeSearchIndex >= 0) {
+        selectSearchResult(currentSearchResults[activeSearchIndex]);
+      } else {
+        fetchStockData();
+      }
+    }
+  });
+
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.search-input-group')) {
+      hideSearchDropdown();
+    }
+  });
+
+  const scenariosMap = {
+    1: ['mid'],
+    3: ['low', 'mid', 'high'],
+    5: ['bear', 'low', 'mid', 'high', 'bull']
+  };
+
+  const headerTextMap = {
+    1: ['Mid / Base'],
+    3: ['Low', 'Mid', 'High'],
+    5: ['Bear', 'Low', 'Mid', 'High', 'Bull']
+  };
+
+  function scenarioHeaderHtml(entryCount) {
+    return headerTextMap[entryCount].map(label => `<span>${label}</span>`).join('');
+  }
+
+  function renderDynamicLayout(options = {}) {
+    const {
+      savePrevious = true,
+      restoreSaved = true
+    } = options;
+
+    if (
+      savePrevious &&
+      activeAssumptionsTicker &&
+      document.getElementById('row_g')?.children.length > 0
+    ) {
+      saveAssumptionsForTicker(activeAssumptionsTicker);
+    }
+
+    const numEntries = parseInt(document.getElementById('entriesSelect').value, 10) || 3;
+    const cases = scenariosMap[numEntries];
+    renderedEntriesCount = numEntries;
+
+    const assumptionsHeader = document.getElementById('assumptionsHeader');
+    if (assumptionsHeader) assumptionsHeader.innerHTML = scenarioHeaderHtml(numEntries);
+    document.getElementById('resultsHeader').textContent = headerTextMap[numEntries].join('     ');
+
+    const metrics = [
+      { id: 'g', hasSymbol: true },
+      { id: 'pm', hasSymbol: true },
+      { id: 'fcfm', hasSymbol: true },
+      { id: 'pe', hasSymbol: false },
+      { id: 'pfcf', hasSymbol: false },
+      { id: 'r', hasSymbol: true }
+    ];
+
+    metrics.forEach(m => {
+      const rowContainer = document.getElementById(`row_${m.id}`);
+      rowContainer.className = `inputs-flex cols-${numEntries}`;
+      let html = '';
+      cases.forEach((c, scenarioIndex) => {
+        const symbolHTML = m.hasSymbol ? '<span class="symbol">%</span>' : '';
+        const mobileLabel = headerTextMap[numEntries][scenarioIndex] || c;
+        html += `
+          <div class="input-wrapper">
+            <span class="mobile-input-label">${mobileLabel}</span>
+            <input type="number" id="${m.id}_${c}" value="" placeholder="0" oninput="markResultsPending()">
+            ${symbolHTML}
+          </div>`;
+      });
+      rowContainer.innerHTML = html;
+    });
+
+    const results = ['moe', 'dcf', 'ret'];
+    results.forEach(res => {
+      const rowContainer = document.getElementById(`row_val_${res}`);
+      rowContainer.className = `inputs-flex cols-${numEntries}`;
+      let html = '';
+      cases.forEach(c => {
+        if (res === 'ret') {
+          html += `<div class="ret-val-text" id="ret_${c}">0.00%</div>`;
+        } else {
+          html += `<div class="val-price" id="${res}_${c}">$0.00</div>`;
+        }
+      });
+      rowContainer.innerHTML = html;
+    });
+
+    if (restoreSaved && activeAssumptionsTicker) {
+      restoreAssumptionLayout(
+        readSavedAssumptions(activeAssumptionsTicker),
+        numEntries
+      );
+    }
+
+    markResultsPending();
+    fitToScreen();
+  }
+
+  function markResultsPending() {
+    // Keep the last calculated results visible while inputs are edited.
+    // Recalculation happens only when the Analyze button is pressed.
+    queueAssumptionSave();
+  }
+
+  function calculateValuation() {
+    saveAssumptionsForTicker(activeAssumptionsTicker);
+
+    const rawPrice = document.getElementById('currentPrice').value;
+    const price = parseFloat(rawPrice) || 0;
+    
+    const rawRev = parseFloat(document.getElementById('ttmRevenue').value) || 0;
+    const rawShares = parseFloat(document.getElementById('sharesOut').value) || 0;
+    const years = parseInt(document.getElementById('yearsSelect').value) || 10;
+
+    const totalRev = rawRev * 1e9;
+    const totalShares = rawShares * 1e9;
+
+    const numEntries = parseInt(document.getElementById('entriesSelect').value);
+    const cases = scenariosMap[numEntries];
+
+    cases.forEach(c => {
+      const gInput = document.getElementById(`g_${c}`)?.value;
+      const pmInput = document.getElementById(`pm_${c}`)?.value;
+      const fcfmInput = document.getElementById(`fcfm_${c}`)?.value;
+      const peInput = document.getElementById(`pe_${c}`)?.value;
+      const pfcfInput = document.getElementById(`pfcf_${c}`)?.value;
+      const rInput = document.getElementById(`r_${c}`)?.value;
+
+      if (!totalRev || !totalShares || !rawPrice) {
+        resetOutputCell(`moe_${c}`);
+        resetOutputCell(`dcf_${c}`);
+        resetRetCell(`ret_${c}`);
+        return;
+      }
+
+      const revPerShare = totalRev / totalShares;
+      const g = (parseFloat(gInput) || 0) / 100;
+      const pm = (parseFloat(pmInput) || 0) / 100;
+      const fcfm = (parseFloat(fcfmInput) || 0) / 100;
+      const pe = parseFloat(peInput) || 0;
+      const pfcf = parseFloat(pfcfInput) || 0;
+      const r = (parseFloat(rInput) || 0) / 100;
+
+      let pvEarningsCashFlows = 0;
+      let pvFreeCashFlows = 0;
+      let currentRev = revPerShare;
+
+      for (let yr = 1; yr <= years; yr++) {
+        currentRev *= (1 + g);
+        
+        const annualEPS = currentRev * pm;
+        pvEarningsCashFlows += annualEPS / Math.pow(1 + r, yr);
+
+        const annualFCFPS = currentRev * fcfm;
+        pvFreeCashFlows += annualFCFPS / Math.pow(1 + r, yr);
+      }
+
+      const yearN_EPS = currentRev * pm;
+      const terminalPriceMOE = yearN_EPS * pe;
+      const pvTerminalMOE = terminalPriceMOE / Math.pow(1 + r, years);
+
+      const yearN_FCFPS = currentRev * fcfm;
+      const terminalPriceDCF = yearN_FCFPS * pfcf;
+      const pvTerminalDCF = terminalPriceDCF / Math.pow(1 + r, years);
+
+      const pvMOE = peInput && pmInput ? (pvEarningsCashFlows + pvTerminalMOE) : 0;
+      const pvDCF = pfcfInput && fcfmInput ? (pvFreeCashFlows + pvTerminalDCF) : 0;
+
+      const targetTerminalValue = terminalPriceDCF;
+      let calculatedReturn = 0;
+
+      if (price > 0 && (fcfmInput || pmInput)) {
+        let rate = 0.10;
+        for (let iter = 0; iter < 25; iter++) {
+          let npv = -price;
+          let derivative = 0;
+          let revIter = revPerShare;
+
+          for (let yr = 1; yr <= years; yr++) {
+            revIter *= (1 + g);
+            const cf = revIter * fcfm;
+            npv += cf / Math.pow(1 + rate, yr);
+            derivative -= (yr * cf) / Math.pow(1 + rate, yr + 1);
+          }
+
+          npv += targetTerminalValue / Math.pow(1 + rate, years);
+          derivative -= (years * targetTerminalValue) / Math.pow(1 + rate, years + 1);
+
+          if (Math.abs(npv) < 0.0001) break;
+          rate = rate - (npv / derivative);
+        }
+        calculatedReturn = rate * 100;
+      }
+
+      renderPriceCell(`moe_${c}`, pvMOE, price, peInput && pmInput);
+      renderPriceCell(`dcf_${c}`, pvDCF, price, pfcfInput && fcfmInput);
+      
+      const retElem = document.getElementById(`ret_${c}`);
+      if (retElem) {
+        if (pfcfInput && fcfmInput) {
+          retElem.innerText = `${calculatedReturn.toFixed(2)}%`;
+          
+          if (calculatedReturn < 0) {
+            retElem.style.color = 'var(--em-red)';
+          } else if (calculatedReturn >= (r * 100)) {
+            retElem.style.color = 'var(--em-green)';
+          } else {
+            retElem.style.color = 'var(--text)';
+          }
+        } else {
+          resetRetCell(`ret_${c}`);
+        }
+      }
+    });
+  }
+
+  function renderPriceCell(elemId, calculatedValue, currentPrice, hasInput) {
+    const elem = document.getElementById(elemId);
+    if (!elem) return;
+
+    if (!hasInput) {
+      resetOutputCell(elemId);
+      return;
+    }
+    elem.innerText = `$${calculatedValue.toFixed(2)}`;
+
+    if (calculatedValue < currentPrice) {
+      elem.style.color = 'var(--em-red)';
+    } else {
+      elem.style.color = 'var(--em-green)';
+    }
+  }
+
+  function resetOutputCell(elemId) {
+    const elem = document.getElementById(elemId);
+    if (elem) {
+      elem.innerText = '$0.00';
+      elem.style.color = 'var(--text)';
+    }
+  }
+
+  function resetRetCell(elemId) {
+    const elem = document.getElementById(elemId);
+    if (elem) {
+      elem.innerText = '0.00%';
+      elem.style.color = 'var(--text)';
+    }
+  }
+
+  window.addEventListener('resize', fitToScreen);
+  window.addEventListener('beforeunload', () => {
+    saveAssumptionsForTicker(activeAssumptionsTicker);
+  });
+
+  window.onload = function() {
+    renderDynamicLayout();
+    fitToScreen();
+  };
+</script>
+
+</body>
+</html>
