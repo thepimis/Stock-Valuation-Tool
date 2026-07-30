@@ -1,0 +1,9 @@
+name = "fundamentals-lab"
+main = "src/index.js"
+compatibility_date = "2026-07-29"
+
+[[d1_databases]]
+binding = "METRICS_DB"
+database_name = "fundamentals-metrics"
+database_id = "PASTE_YOUR_D1_DATABASE_ID_HERE"
+migrations_dir = "migrations"
