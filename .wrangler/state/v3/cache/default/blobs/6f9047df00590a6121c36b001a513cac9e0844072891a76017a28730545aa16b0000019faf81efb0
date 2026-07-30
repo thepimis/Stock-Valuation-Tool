@@ -1,0 +1,2120 @@
+{
+  "ok": true,
+  "version": "stock-valuation-worker-v26-progressive-cached-loading-2026-07-29",
+  "ticker": "META",
+  "purpose": "Historical annual detail for expandable DCF assumption rows. DCF calculations are unchanged.",
+  "methodology": {
+    "revenueGrowth": "Each annual percentage compares the fiscal year with the immediately preceding fiscal year.",
+    "netMargin": "Fiscal-year net income divided by fiscal-year revenue.",
+    "fcfMargin": "Fiscal-year free cash flow divided by fiscal-year revenue. Free cash flow equals operating cash flow minus the absolute value of capital expenditures.",
+    "roic": "Finviz-style ROIC: net income divided by common equity plus long-term debt and non-current operating leases. Error of +/- 5% possible.",
+    "summary": "Growth metrics use CAGR where applicable; margin and ROIC summaries use period averages."
+  },
+  "metrics": {
+    "revenueGrowth": {
+      "label": "Revenue Growth",
+      "summary": {
+        "oneYear": 26.181615402676695,
+        "threeYears": 19.89383144293926,
+        "fiveYears": 18.511415178759826,
+        "tenYears": 27.338307879318414
+      },
+      "annual": [
+        {
+          "fiscalYear": 2012,
+          "date": "2012-12-31",
+          "revenue": 5089000000,
+          "revenueBillions": 5.089,
+          "growthPercentage": null,
+          "source": null
+        },
+        {
+          "fiscalYear": 2013,
+          "date": "2013-12-31",
+          "revenue": 7872000000,
+          "revenueBillions": 7.872,
+          "growthPercentage": 54.6865788956573,
+          "source": null
+        },
+        {
+          "fiscalYear": 2014,
+          "date": "2014-12-31",
+          "revenue": 12466000000,
+          "revenueBillions": 12.466,
+          "growthPercentage": 58.358739837398375,
+          "source": null
+        },
+        {
+          "fiscalYear": 2015,
+          "date": "2015-12-31",
+          "revenue": 17928000000,
+          "revenueBillions": 17.928,
+          "growthPercentage": 43.81517728220761,
+          "source": null
+        },
+        {
+          "fiscalYear": 2016,
+          "date": "2016-12-31",
+          "revenue": 27638000000,
+          "revenueBillions": 27.638,
+          "growthPercentage": 54.16108879964302,
+          "source": null
+        },
+        {
+          "fiscalYear": 2017,
+          "date": "2017-12-31",
+          "revenue": 40653000000,
+          "revenueBillions": 40.653,
+          "growthPercentage": 47.090961719371876,
+          "source": null
+        },
+        {
+          "fiscalYear": 2018,
+          "date": "2018-12-31",
+          "revenue": 55838000000,
+          "revenueBillions": 55.838,
+          "growthPercentage": 37.35271689666199,
+          "source": null
+        },
+        {
+          "fiscalYear": 2019,
+          "date": "2019-12-31",
+          "revenue": 70697000000,
+          "revenueBillions": 70.697,
+          "growthPercentage": 26.610910132884413,
+          "source": null
+        },
+        {
+          "fiscalYear": 2020,
+          "date": "2020-12-31",
+          "revenue": 85965000000,
+          "revenueBillions": 85.965,
+          "growthPercentage": 21.596390228722576,
+          "source": null
+        },
+        {
+          "fiscalYear": 2021,
+          "date": "2021-12-31",
+          "revenue": 117929000000,
+          "revenueBillions": 117.929,
+          "growthPercentage": 37.182574303495606,
+          "source": null
+        },
+        {
+          "fiscalYear": 2022,
+          "date": "2022-12-31",
+          "revenue": 116609000000,
+          "revenueBillions": 116.609,
+          "growthPercentage": -1.1193175554782961,
+          "source": null
+        },
+        {
+          "fiscalYear": 2023,
+          "date": "2023-12-31",
+          "revenue": 134902000000,
+          "revenueBillions": 134.902,
+          "growthPercentage": 15.687468377226457,
+          "source": null
+        },
+        {
+          "fiscalYear": 2024,
+          "date": "2024-12-31",
+          "revenue": 164501000000,
+          "revenueBillions": 164.501,
+          "growthPercentage": 21.941112807816044,
+          "source": null
+        },
+        {
+          "fiscalYear": 2025,
+          "date": "2025-12-31",
+          "revenue": 200966000000,
+          "revenueBillions": 200.966,
+          "growthPercentage": 22.16703849824621,
+          "source": null
+        }
+      ],
+      "quarterly": [
+        {
+          "date": "2016-09-30",
+          "revenue": 7011000000,
+          "revenueBillions": 7.011,
+          "value": 7011000000,
+          "growthPercentage": null
+        },
+        {
+          "date": "2016-12-31",
+          "revenue": 8809000000,
+          "revenueBillions": 8.809,
+          "value": 8809000000,
+          "growthPercentage": null
+        },
+        {
+          "date": "2017-03-31",
+          "revenue": 8032000000,
+          "revenueBillions": 8.032,
+          "value": 8032000000,
+          "growthPercentage": null
+        },
+        {
+          "date": "2017-06-30",
+          "revenue": 9321000000,
+          "revenueBillions": 9.321,
+          "value": 9321000000,
+          "growthPercentage": null
+        },
+        {
+          "date": "2017-09-30",
+          "revenue": 10328000000,
+          "revenueBillions": 10.328,
+          "value": 10328000000,
+          "growthPercentage": 47.31136785052061
+        },
+        {
+          "date": "2017-12-31",
+          "revenue": 12972000000,
+          "revenueBillions": 12.972,
+          "value": 12972000000,
+          "growthPercentage": 47.25848563968668
+        },
+        {
+          "date": "2018-03-31",
+          "revenue": 11966000000,
+          "revenueBillions": 11.966,
+          "value": 11966000000,
+          "growthPercentage": 48.97908366533865
+        },
+        {
+          "date": "2018-06-30",
+          "revenue": 13231000000,
+          "revenueBillions": 13.231,
+          "value": 13231000000,
+          "growthPercentage": 41.9482888102135
+        },
+        {
+          "date": "2018-09-30",
+          "revenue": 13727000000,
+          "revenueBillions": 13.727,
+          "value": 13727000000,
+          "growthPercentage": 32.910534469403565
+        },
+        {
+          "date": "2018-12-31",
+          "revenue": 16914000000,
+          "revenueBillions": 16.914,
+          "value": 16914000000,
+          "growthPercentage": 30.388529139685478
+        },
+        {
+          "date": "2019-03-31",
+          "revenue": 15077000000,
+          "revenueBillions": 15.077,
+          "value": 15077000000,
+          "growthPercentage": 25.99866287815477
+        },
+        {
+          "date": "2019-06-30",
+          "revenue": 16886000000,
+          "revenueBillions": 16.886,
+          "value": 16886000000,
+          "growthPercentage": 27.62451817700854
+        },
+        {
+          "date": "2019-09-30",
+          "revenue": 17652000000,
+          "revenueBillions": 17.652,
+          "value": 17652000000,
+          "growthPercentage": 28.593283310264443
+        },
+        {
+          "date": "2019-12-31",
+          "revenue": 21082000000,
+          "revenueBillions": 21.082,
+          "value": 21082000000,
+          "growthPercentage": 24.64230814709708
+        },
+        {
+          "date": "2020-03-31",
+          "revenue": 17737000000,
+          "revenueBillions": 17.737,
+          "value": 17737000000,
+          "growthPercentage": 17.64276712873914
+        },
+        {
+          "date": "2020-06-30",
+          "revenue": 18687000000,
+          "revenueBillions": 18.687,
+          "value": 18687000000,
+          "growthPercentage": 10.665640175293142
+        },
+        {
+          "date": "2020-09-30",
+          "revenue": 21470000000,
+          "revenueBillions": 21.47,
+          "value": 21470000000,
+          "growthPercentage": 21.62927713573533
+        },
+        {
+          "date": "2020-12-31",
+          "revenue": 28071000000,
+          "revenueBillions": 28.071,
+          "value": 28071000000,
+          "growthPercentage": 33.1515036524049
+        },
+        {
+          "date": "2021-03-31",
+          "revenue": 26171000000,
+          "revenueBillions": 26.171,
+          "value": 26171000000,
+          "growthPercentage": 47.55031854315837
+        },
+        {
+          "date": "2021-06-30",
+          "revenue": 29077000000,
+          "revenueBillions": 29.077,
+          "value": 29077000000,
+          "growthPercentage": 55.60014983678493
+        },
+        {
+          "date": "2021-09-30",
+          "revenue": 29010000000,
+          "revenueBillions": 29.01,
+          "value": 29010000000,
+          "growthPercentage": 35.11877037727061
+        },
+        {
+          "date": "2021-12-31",
+          "revenue": 33671000000,
+          "revenueBillions": 33.671,
+          "value": 33671000000,
+          "growthPercentage": 19.949413985964163
+        },
+        {
+          "date": "2022-03-31",
+          "revenue": 27908000000,
+          "revenueBillions": 27.908,
+          "value": 27908000000,
+          "growthPercentage": 6.637117420045088
+        },
+        {
+          "date": "2022-06-30",
+          "revenue": 28822000000,
+          "revenueBillions": 28.822,
+          "value": 28822000000,
+          "growthPercentage": -0.8769818069264367
+        },
+        {
+          "date": "2022-09-30",
+          "revenue": 27714000000,
+          "revenueBillions": 27.714,
+          "value": 27714000000,
+          "growthPercentage": -4.467425025853154
+        },
+        {
+          "date": "2022-12-31",
+          "revenue": 32165000000,
+          "revenueBillions": 32.165,
+          "value": 32165000000,
+          "growthPercentage": -4.472691633750111
+        },
+        {
+          "date": "2023-03-31",
+          "revenue": 28645000000,
+          "revenueBillions": 28.645,
+          "value": 28645000000,
+          "growthPercentage": 2.640819836605991
+        },
+        {
+          "date": "2023-06-30",
+          "revenue": 31999000000,
+          "revenueBillions": 31.999,
+          "value": 31999000000,
+          "growthPercentage": 11.022829782804802
+        },
+        {
+          "date": "2023-09-30",
+          "revenue": 34146000000,
+          "revenueBillions": 34.146,
+          "value": 34146000000,
+          "growthPercentage": 23.208486685429747
+        },
+        {
+          "date": "2023-12-31",
+          "revenue": 40112000000,
+          "revenueBillions": 40.112,
+          "value": 40112000000,
+          "growthPercentage": 24.706979636250583
+        },
+        {
+          "date": "2024-03-31",
+          "revenue": 36455000000,
+          "revenueBillions": 36.455,
+          "value": 36455000000,
+          "growthPercentage": 27.26479315761913
+        },
+        {
+          "date": "2024-06-30",
+          "revenue": 39071000000,
+          "revenueBillions": 39.071,
+          "value": 39071000000,
+          "growthPercentage": 22.100690646582706
+        },
+        {
+          "date": "2024-09-30",
+          "revenue": 40589000000,
+          "revenueBillions": 40.589,
+          "value": 40589000000,
+          "growthPercentage": 18.868974404029753
+        },
+        {
+          "date": "2024-12-31",
+          "revenue": 48386000000,
+          "revenueBillions": 48.386,
+          "value": 48386000000,
+          "growthPercentage": 20.627243717590744
+        },
+        {
+          "date": "2025-03-31",
+          "revenue": 42314000000,
+          "revenueBillions": 42.314,
+          "value": 42314000000,
+          "growthPercentage": 16.071869428061994
+        },
+        {
+          "date": "2025-06-30",
+          "revenue": 47516000000,
+          "revenueBillions": 47.516,
+          "value": 47516000000,
+          "growthPercentage": 21.61449668552123
+        },
+        {
+          "date": "2025-09-30",
+          "revenue": 51242000000,
+          "revenueBillions": 51.242,
+          "value": 51242000000,
+          "growthPercentage": 26.246027248761976
+        },
+        {
+          "date": "2025-12-31",
+          "revenue": 59894000000,
+          "revenueBillions": 59.894,
+          "value": 59894000000,
+          "growthPercentage": 23.783739098086222
+        },
+        {
+          "date": "2026-03-31",
+          "revenue": 56311000000,
+          "revenueBillions": 56.311,
+          "value": 56311000000,
+          "growthPercentage": 33.07888642057002
+        }
+      ]
+    },
+    "netIncomeGrowth": {
+      "label": "Net Income Growth",
+      "summary": {
+        "oneYear": -3.0500320718409237,
+        "threeYears": 37.61166951953074,
+        "fiveYears": 15.711084264935149,
+        "tenYears": 32.271502369405525
+      },
+      "annual": [
+        {
+          "fiscalYear": 2012,
+          "date": "2012-12-31",
+          "revenue": 5089000000,
+          "revenueBillions": 5.089,
+          "netIncome": 53000000,
+          "netIncomeBillions": 0.053,
+          "marginPercentage": 1.0414619768127333,
+          "growthPercentage": null
+        },
+        {
+          "fiscalYear": 2013,
+          "date": "2013-12-31",
+          "revenue": 7872000000,
+          "revenueBillions": 7.872,
+          "netIncome": 1500000000,
+          "netIncomeBillions": 1.5,
+          "marginPercentage": 19.054878048780488,
+          "growthPercentage": 2730.188679245283
+        },
+        {
+          "fiscalYear": 2014,
+          "date": "2014-12-31",
+          "revenue": 12466000000,
+          "revenueBillions": 12.466,
+          "netIncome": 2940000000,
+          "netIncomeBillions": 2.94,
+          "marginPercentage": 23.58414888496711,
+          "growthPercentage": 96
+        },
+        {
+          "fiscalYear": 2015,
+          "date": "2015-12-31",
+          "revenue": 17928000000,
+          "revenueBillions": 17.928,
+          "netIncome": 3688000000,
+          "netIncomeBillions": 3.688,
+          "marginPercentage": 20.57117358322178,
+          "growthPercentage": 25.442176870748302
+        },
+        {
+          "fiscalYear": 2016,
+          "date": "2016-12-31",
+          "revenue": 27638000000,
+          "revenueBillions": 27.638,
+          "netIncome": 10217000000,
+          "netIncomeBillions": 10.217,
+          "marginPercentage": 36.967219046240686,
+          "growthPercentage": 177.03362255965294
+        },
+        {
+          "fiscalYear": 2017,
+          "date": "2017-12-31",
+          "revenue": 40653000000,
+          "revenueBillions": 40.653,
+          "netIncome": 15934000000,
+          "netIncomeBillions": 15.934,
+          "marginPercentage": 39.195139350109464,
+          "growthPercentage": 55.955760007830094
+        },
+        {
+          "fiscalYear": 2018,
+          "date": "2018-12-31",
+          "revenue": 55838000000,
+          "revenueBillions": 55.838,
+          "netIncome": 22112000000,
+          "netIncomeBillions": 22.112,
+          "marginPercentage": 39.60027221605358,
+          "growthPercentage": 38.77243629973641
+        },
+        {
+          "fiscalYear": 2019,
+          "date": "2019-12-31",
+          "revenue": 70697000000,
+          "revenueBillions": 70.697,
+          "netIncome": 18485000000,
+          "netIncomeBillions": 18.485,
+          "marginPercentage": 26.14679547929898,
+          "growthPercentage": -16.402858176555714
+        },
+        {
+          "fiscalYear": 2020,
+          "date": "2020-12-31",
+          "revenue": 85965000000,
+          "revenueBillions": 85.965,
+          "netIncome": 29146000000,
+          "netIncomeBillions": 29.146,
+          "marginPercentage": 33.90449601582039,
+          "growthPercentage": 57.67378955910198
+        },
+        {
+          "fiscalYear": 2021,
+          "date": "2021-12-31",
+          "revenue": 117929000000,
+          "revenueBillions": 117.929,
+          "netIncome": 39370000000,
+          "netIncomeBillions": 39.37,
+          "marginPercentage": 33.38449405998525,
+          "growthPercentage": 35.07856995814177
+        },
+        {
+          "fiscalYear": 2022,
+          "date": "2022-12-31",
+          "revenue": 116609000000,
+          "revenueBillions": 116.609,
+          "netIncome": 23200000000,
+          "netIncomeBillions": 23.2,
+          "marginPercentage": 19.895548371051976,
+          "growthPercentage": -41.071882143764284
+        },
+        {
+          "fiscalYear": 2023,
+          "date": "2023-12-31",
+          "revenue": 134902000000,
+          "revenueBillions": 134.902,
+          "netIncome": 39098000000,
+          "netIncomeBillions": 39.098,
+          "marginPercentage": 28.982520644616095,
+          "growthPercentage": 68.52586206896551
+        },
+        {
+          "fiscalYear": 2024,
+          "date": "2024-12-31",
+          "revenue": 164501000000,
+          "revenueBillions": 164.501,
+          "netIncome": 62360000000,
+          "netIncomeBillions": 62.36,
+          "marginPercentage": 37.90858414234564,
+          "growthPercentage": 59.49664944498439
+        },
+        {
+          "fiscalYear": 2025,
+          "date": "2025-12-31",
+          "revenue": 200966000000,
+          "revenueBillions": 200.966,
+          "netIncome": 60458000000,
+          "netIncomeBillions": 60.458,
+          "marginPercentage": 30.08369574952977,
+          "growthPercentage": -3.0500320718409237
+        }
+      ],
+      "quarterly": [
+        {
+          "date": "2016-09-30",
+          "revenue": 7011000000,
+          "revenueBillions": 7.011,
+          "netIncome": 2379000000,
+          "netIncomeBillions": 2.379,
+          "netMarginPercentage": 33.9323919554985,
+          "value": 2379000000,
+          "growthPercentage": null,
+          "marginPercentage": 33.9323919554985
+        },
+        {
+          "date": "2016-12-31",
+          "revenue": 8809000000,
+          "revenueBillions": 8.809,
+          "netIncome": 4273000000,
+          "netIncomeBillions": 4.273,
+          "netMarginPercentage": 48.50720853672381,
+          "value": 4273000000,
+          "growthPercentage": null,
+          "marginPercentage": 48.50720853672381
+        },
+        {
+          "date": "2017-03-31",
+          "revenue": 8032000000,
+          "revenueBillions": 8.032,
+          "netIncome": 3064000000,
+          "netIncomeBillions": 3.064,
+          "netMarginPercentage": 38.147410358565736,
+          "value": 3064000000,
+          "growthPercentage": null,
+          "marginPercentage": 38.147410358565736
+        },
+        {
+          "date": "2017-06-30",
+          "revenue": 9321000000,
+          "revenueBillions": 9.321,
+          "netIncome": 3894000000,
+          "netIncomeBillions": 3.894,
+          "netMarginPercentage": 41.77663340843257,
+          "value": 3894000000,
+          "growthPercentage": null,
+          "marginPercentage": 41.77663340843257
+        },
+        {
+          "date": "2017-09-30",
+          "revenue": 10328000000,
+          "revenueBillions": 10.328,
+          "netIncome": 4707000000,
+          "netIncomeBillions": 4.707,
+          "netMarginPercentage": 45.57513555383424,
+          "value": 4707000000,
+          "growthPercentage": 97.8562421185372,
+          "marginPercentage": 45.57513555383424
+        },
+        {
+          "date": "2017-12-31",
+          "revenue": 12972000000,
+          "revenueBillions": 12.972,
+          "netIncome": 4269000000,
+          "netIncomeBillions": 4.269,
+          "netMarginPercentage": 32.909343200740054,
+          "value": 4269000000,
+          "growthPercentage": -0.0936110461034402,
+          "marginPercentage": 32.909343200740054
+        },
+        {
+          "date": "2018-03-31",
+          "revenue": 11966000000,
+          "revenueBillions": 11.966,
+          "netIncome": 4988000000,
+          "netIncomeBillions": 4.988,
+          "netMarginPercentage": 41.68477352498746,
+          "value": 4988000000,
+          "growthPercentage": 62.793733681462136,
+          "marginPercentage": 41.68477352498746
+        },
+        {
+          "date": "2018-06-30",
+          "revenue": 13231000000,
+          "revenueBillions": 13.231,
+          "netIncome": 5106000000,
+          "netIncomeBillions": 5.106,
+          "netMarginPercentage": 38.59118736301111,
+          "value": 5106000000,
+          "growthPercentage": 31.124807395993837,
+          "marginPercentage": 38.59118736301111
+        },
+        {
+          "date": "2018-09-30",
+          "revenue": 13727000000,
+          "revenueBillions": 13.727,
+          "netIncome": 5137000000,
+          "netIncomeBillions": 5.137,
+          "netMarginPercentage": 37.42259779995629,
+          "value": 5137000000,
+          "growthPercentage": 9.135330359039727,
+          "marginPercentage": 37.42259779995629
+        },
+        {
+          "date": "2018-12-31",
+          "revenue": 16914000000,
+          "revenueBillions": 16.914,
+          "netIncome": 6881000000,
+          "netIncomeBillions": 6.881,
+          "netMarginPercentage": 40.68227503842971,
+          "value": 6881000000,
+          "growthPercentage": 61.18528929491684,
+          "marginPercentage": 40.68227503842971
+        },
+        {
+          "date": "2019-03-31",
+          "revenue": 15077000000,
+          "revenueBillions": 15.077,
+          "netIncome": 2429000000,
+          "netIncomeBillions": 2.429,
+          "netMarginPercentage": 16.110632088611794,
+          "value": 2429000000,
+          "growthPercentage": -51.303127506014434,
+          "marginPercentage": 16.110632088611794
+        },
+        {
+          "date": "2019-06-30",
+          "revenue": 16886000000,
+          "revenueBillions": 16.886,
+          "netIncome": 2616000000,
+          "netIncomeBillions": 2.616,
+          "netMarginPercentage": 15.492123652730072,
+          "value": 2616000000,
+          "growthPercentage": -48.766157461809634,
+          "marginPercentage": 15.492123652730072
+        },
+        {
+          "date": "2019-09-30",
+          "revenue": 17652000000,
+          "revenueBillions": 17.652,
+          "netIncome": 6091000000,
+          "netIncomeBillions": 6.091,
+          "netMarginPercentage": 34.50600498527079,
+          "value": 6091000000,
+          "growthPercentage": 18.57115047693206,
+          "marginPercentage": 34.50600498527079
+        },
+        {
+          "date": "2019-12-31",
+          "revenue": 21082000000,
+          "revenueBillions": 21.082,
+          "netIncome": 7349000000,
+          "netIncomeBillions": 7.349,
+          "netMarginPercentage": 34.85912152547196,
+          "value": 7349000000,
+          "growthPercentage": 6.801337014968754,
+          "marginPercentage": 34.85912152547196
+        },
+        {
+          "date": "2020-03-31",
+          "revenue": 17737000000,
+          "revenueBillions": 17.737,
+          "netIncome": 4902000000,
+          "netIncomeBillions": 4.902,
+          "netMarginPercentage": 27.637142696059087,
+          "value": 4902000000,
+          "growthPercentage": 101.81144503911075,
+          "marginPercentage": 27.637142696059087
+        },
+        {
+          "date": "2020-06-30",
+          "revenue": 18687000000,
+          "revenueBillions": 18.687,
+          "netIncome": 5178000000,
+          "netIncomeBillions": 5.178,
+          "netMarginPercentage": 27.70910258468454,
+          "value": 5178000000,
+          "growthPercentage": 97.93577981651376,
+          "marginPercentage": 27.70910258468454
+        },
+        {
+          "date": "2020-09-30",
+          "revenue": 21470000000,
+          "revenueBillions": 21.47,
+          "netIncome": 7846000000,
+          "netIncomeBillions": 7.846,
+          "netMarginPercentage": 36.54401490451793,
+          "value": 7846000000,
+          "growthPercentage": 28.813002791003118,
+          "marginPercentage": 36.54401490451793
+        },
+        {
+          "date": "2020-12-31",
+          "revenue": 28071000000,
+          "revenueBillions": 28.071,
+          "netIncome": 11220000000,
+          "netIncomeBillions": 11.22,
+          "netMarginPercentage": 39.97007587902105,
+          "value": 11220000000,
+          "growthPercentage": 52.673833174581574,
+          "marginPercentage": 39.97007587902105
+        },
+        {
+          "date": "2021-03-31",
+          "revenue": 26171000000,
+          "revenueBillions": 26.171,
+          "netIncome": 9497000000,
+          "netIncomeBillions": 9.497,
+          "netMarginPercentage": 36.28825799549119,
+          "value": 9497000000,
+          "growthPercentage": 93.73725010199918,
+          "marginPercentage": 36.28825799549119
+        },
+        {
+          "date": "2021-06-30",
+          "revenue": 29077000000,
+          "revenueBillions": 29.077,
+          "netIncome": 10394000000,
+          "netIncomeBillions": 10.394,
+          "netMarginPercentage": 35.74646627918974,
+          "value": 10394000000,
+          "growthPercentage": 100.7338740826574,
+          "marginPercentage": 35.74646627918974
+        },
+        {
+          "date": "2021-09-30",
+          "revenue": 29010000000,
+          "revenueBillions": 29.01,
+          "netIncome": 9194000000,
+          "netIncomeBillions": 9.194,
+          "netMarginPercentage": 31.692519820751464,
+          "value": 9194000000,
+          "growthPercentage": 17.180729033902626,
+          "marginPercentage": 31.692519820751464
+        },
+        {
+          "date": "2021-12-31",
+          "revenue": 33671000000,
+          "revenueBillions": 33.671,
+          "netIncome": 10285000000,
+          "netIncomeBillions": 10.285,
+          "netMarginPercentage": 30.545573342045085,
+          "value": 10285000000,
+          "growthPercentage": -8.333333333333332,
+          "marginPercentage": 30.545573342045085
+        },
+        {
+          "date": "2022-03-31",
+          "revenue": 27908000000,
+          "revenueBillions": 27.908,
+          "netIncome": 7465000000,
+          "netIncomeBillions": 7.465,
+          "netMarginPercentage": 26.748602551239784,
+          "value": 7465000000,
+          "growthPercentage": -21.39623038854375,
+          "marginPercentage": 26.748602551239784
+        },
+        {
+          "date": "2022-06-30",
+          "revenue": 28822000000,
+          "revenueBillions": 28.822,
+          "netIncome": 6687000000,
+          "netIncomeBillions": 6.687,
+          "netMarginPercentage": 23.201026993269032,
+          "value": 6687000000,
+          "growthPercentage": -35.66480661920339,
+          "marginPercentage": 23.201026993269032
+        },
+        {
+          "date": "2022-09-30",
+          "revenue": 27714000000,
+          "revenueBillions": 27.714,
+          "netIncome": 4395000000,
+          "netIncomeBillions": 4.395,
+          "netMarginPercentage": 15.858410911452694,
+          "value": 4395000000,
+          "growthPercentage": -52.19708505547096,
+          "marginPercentage": 15.858410911452694
+        },
+        {
+          "date": "2022-12-31",
+          "revenue": 32165000000,
+          "revenueBillions": 32.165,
+          "netIncome": 4653000000,
+          "netIncomeBillions": 4.653,
+          "netMarginPercentage": 14.46603450956008,
+          "value": 4653000000,
+          "growthPercentage": -54.75935828877005,
+          "marginPercentage": 14.46603450956008
+        },
+        {
+          "date": "2023-03-31",
+          "revenue": 28645000000,
+          "revenueBillions": 28.645,
+          "netIncome": 5709000000,
+          "netIncomeBillions": 5.709,
+          "netMarginPercentage": 19.93017978704835,
+          "value": 5709000000,
+          "growthPercentage": -23.523107836570663,
+          "marginPercentage": 19.93017978704835
+        },
+        {
+          "date": "2023-06-30",
+          "revenue": 31999000000,
+          "revenueBillions": 31.999,
+          "netIncome": 7788000000,
+          "netIncomeBillions": 7.788,
+          "netMarginPercentage": 24.338260570642834,
+          "value": 7788000000,
+          "growthPercentage": 16.464782413638403,
+          "marginPercentage": 24.338260570642834
+        },
+        {
+          "date": "2023-09-30",
+          "revenue": 34146000000,
+          "revenueBillions": 34.146,
+          "netIncome": 11583000000,
+          "netIncomeBillions": 11.583,
+          "netMarginPercentage": 33.92198207696362,
+          "value": 11583000000,
+          "growthPercentage": 163.5494880546075,
+          "marginPercentage": 33.92198207696362
+        },
+        {
+          "date": "2023-12-31",
+          "revenue": 40112000000,
+          "revenueBillions": 40.112,
+          "netIncome": 14018000000,
+          "netIncomeBillions": 14.018,
+          "netMarginPercentage": 34.94714798564021,
+          "value": 14018000000,
+          "growthPercentage": 201.26799914033958,
+          "marginPercentage": 34.94714798564021
+        },
+        {
+          "date": "2024-03-31",
+          "revenue": 36455000000,
+          "revenueBillions": 36.455,
+          "netIncome": 12369000000,
+          "netIncomeBillions": 12.369,
+          "netMarginPercentage": 33.929502125908655,
+          "value": 12369000000,
+          "growthPercentage": 116.65790856542301,
+          "marginPercentage": 33.929502125908655
+        },
+        {
+          "date": "2024-06-30",
+          "revenue": 39071000000,
+          "revenueBillions": 39.071,
+          "netIncome": 13465000000,
+          "netIncomeBillions": 13.465,
+          "netMarginPercentage": 34.462900872770085,
+          "value": 13465000000,
+          "growthPercentage": 72.89419619928094,
+          "marginPercentage": 34.462900872770085
+        },
+        {
+          "date": "2024-09-30",
+          "revenue": 40589000000,
+          "revenueBillions": 40.589,
+          "netIncome": 15688000000,
+          "netIncomeBillions": 15.688,
+          "netMarginPercentage": 38.65086599817685,
+          "value": 15688000000,
+          "growthPercentage": 35.43986877320211,
+          "marginPercentage": 38.65086599817685
+        },
+        {
+          "date": "2024-12-31",
+          "revenue": 48386000000,
+          "revenueBillions": 48.386,
+          "netIncome": 20838000000,
+          "netIncomeBillions": 20.838,
+          "netMarginPercentage": 43.06617616665977,
+          "value": 20838000000,
+          "growthPercentage": 48.65173348551862,
+          "marginPercentage": 43.06617616665977
+        },
+        {
+          "date": "2025-03-31",
+          "revenue": 42314000000,
+          "revenueBillions": 42.314,
+          "netIncome": 16644000000,
+          "netIncomeBillions": 16.644,
+          "netMarginPercentage": 39.33449922011628,
+          "value": 16644000000,
+          "growthPercentage": 34.56221198156682,
+          "marginPercentage": 39.33449922011628
+        },
+        {
+          "date": "2025-06-30",
+          "revenue": 47516000000,
+          "revenueBillions": 47.516,
+          "netIncome": 18337000000,
+          "netIncomeBillions": 18.337,
+          "netMarginPercentage": 38.59121138142941,
+          "value": 18337000000,
+          "growthPercentage": 36.18269587820275,
+          "marginPercentage": 38.59121138142941
+        },
+        {
+          "date": "2025-09-30",
+          "revenue": 51242000000,
+          "revenueBillions": 51.242,
+          "netIncome": 2709000000,
+          "netIncomeBillions": 2.709,
+          "netMarginPercentage": 5.286678896217946,
+          "value": 2709000000,
+          "growthPercentage": -82.7320244773075,
+          "marginPercentage": 5.286678896217946
+        },
+        {
+          "date": "2025-12-31",
+          "revenue": 59894000000,
+          "revenueBillions": 59.894,
+          "netIncome": 22768000000,
+          "netIncomeBillions": 22.768,
+          "netMarginPercentage": 38.01382442314756,
+          "value": 22768000000,
+          "growthPercentage": 9.261925328726365,
+          "marginPercentage": 38.01382442314756
+        },
+        {
+          "date": "2026-03-31",
+          "revenue": 56311000000,
+          "revenueBillions": 56.311,
+          "netIncome": 26773000000,
+          "netIncomeBillions": 26.773,
+          "netMarginPercentage": 47.54488465841488,
+          "value": 26773000000,
+          "growthPercentage": 60.85676520067291,
+          "marginPercentage": 47.54488465841488
+        }
+      ]
+    },
+    "freeCashFlowGrowth": {
+      "label": "Free Cash Flow Growth",
+      "summary": {
+        "oneYear": -14.726660748631454,
+        "threeYears": 33.70839123575327,
+        "fiveYears": 14.302846308012285,
+        "tenYears": 22.46635551272107
+      },
+      "annual": [
+        {
+          "fiscalYear": 2012,
+          "date": "2012-12-31",
+          "revenue": 5089000000,
+          "revenueBillions": 5.089,
+          "operatingCashFlow": 1612000000,
+          "operatingCashFlowBillions": 1.612,
+          "capitalExpenditures": 1235000000,
+          "capitalExpendituresBillions": 1.235,
+          "freeCashFlow": 377000000,
+          "freeCashFlowBillions": 0.377,
+          "marginPercentage": 7.408135193554726,
+          "growthPercentage": null
+        },
+        {
+          "fiscalYear": 2013,
+          "date": "2013-12-31",
+          "revenue": 7872000000,
+          "revenueBillions": 7.872,
+          "operatingCashFlow": 4222000000,
+          "operatingCashFlowBillions": 4.222,
+          "capitalExpenditures": 1362000000,
+          "capitalExpendituresBillions": 1.362,
+          "freeCashFlow": 2860000000,
+          "freeCashFlowBillions": 2.86,
+          "marginPercentage": 36.331300813008134,
+          "growthPercentage": 658.6206896551724
+        },
+        {
+          "fiscalYear": 2014,
+          "date": "2014-12-31",
+          "revenue": 12466000000,
+          "revenueBillions": 12.466,
+          "operatingCashFlow": 5457000000,
+          "operatingCashFlowBillions": 5.457,
+          "capitalExpenditures": 1831000000,
+          "capitalExpendituresBillions": 1.831,
+          "freeCashFlow": 3626000000,
+          "freeCashFlowBillions": 3.626,
+          "marginPercentage": 29.087116958126103,
+          "growthPercentage": 26.783216783216783
+        },
+        {
+          "fiscalYear": 2015,
+          "date": "2015-12-31",
+          "revenue": 17928000000,
+          "revenueBillions": 17.928,
+          "operatingCashFlow": 8599000000,
+          "operatingCashFlowBillions": 8.599,
+          "capitalExpenditures": 2523000000,
+          "capitalExpendituresBillions": 2.523,
+          "freeCashFlow": 6076000000,
+          "freeCashFlowBillions": 6.076,
+          "marginPercentage": 33.89112003569835,
+          "growthPercentage": 67.56756756756756
+        },
+        {
+          "fiscalYear": 2016,
+          "date": "2016-12-31",
+          "revenue": 27638000000,
+          "revenueBillions": 27.638,
+          "operatingCashFlow": 16108000000,
+          "operatingCashFlowBillions": 16.108,
+          "capitalExpenditures": 4491000000,
+          "capitalExpendituresBillions": 4.491,
+          "freeCashFlow": 11617000000,
+          "freeCashFlowBillions": 11.617,
+          "marginPercentage": 42.03270858962298,
+          "growthPercentage": 91.1948650427913
+        },
+        {
+          "fiscalYear": 2017,
+          "date": "2017-12-31",
+          "revenue": 40653000000,
+          "revenueBillions": 40.653,
+          "operatingCashFlow": 24216000000,
+          "operatingCashFlowBillions": 24.216,
+          "capitalExpenditures": 6733000000,
+          "capitalExpendituresBillions": 6.733,
+          "freeCashFlow": 17483000000,
+          "freeCashFlowBillions": 17.483,
+          "marginPercentage": 43.00543625316705,
+          "growthPercentage": 50.49496427649135
+        },
+        {
+          "fiscalYear": 2018,
+          "date": "2018-12-31",
+          "revenue": 55838000000,
+          "revenueBillions": 55.838,
+          "operatingCashFlow": 29274000000,
+          "operatingCashFlowBillions": 29.274,
+          "capitalExpenditures": 13915000000,
+          "capitalExpendituresBillions": 13.915,
+          "freeCashFlow": 15359000000,
+          "freeCashFlowBillions": 15.359,
+          "marginPercentage": 27.50635767756725,
+          "growthPercentage": -12.14894468912658
+        },
+        {
+          "fiscalYear": 2019,
+          "date": "2019-12-31",
+          "revenue": 70697000000,
+          "revenueBillions": 70.697,
+          "operatingCashFlow": 36314000000,
+          "operatingCashFlowBillions": 36.314,
+          "capitalExpenditures": 15102000000,
+          "capitalExpendituresBillions": 15.102,
+          "freeCashFlow": 21212000000,
+          "freeCashFlowBillions": 21.212,
+          "marginPercentage": 30.004102012815252,
+          "growthPercentage": 38.10794973631096
+        },
+        {
+          "fiscalYear": 2020,
+          "date": "2020-12-31",
+          "revenue": 85965000000,
+          "revenueBillions": 85.965,
+          "operatingCashFlow": 38747000000,
+          "operatingCashFlowBillions": 38.747,
+          "capitalExpenditures": 15115000000,
+          "capitalExpendituresBillions": 15.115,
+          "freeCashFlow": 23632000000,
+          "freeCashFlowBillions": 23.632,
+          "marginPercentage": 27.49025766300238,
+          "growthPercentage": 11.40863662078069
+        },
+        {
+          "fiscalYear": 2021,
+          "date": "2021-12-31",
+          "revenue": 117929000000,
+          "revenueBillions": 117.929,
+          "operatingCashFlow": 57683000000,
+          "operatingCashFlowBillions": 57.683,
+          "capitalExpenditures": 18567000000,
+          "capitalExpendituresBillions": 18.567,
+          "freeCashFlow": 39116000000,
+          "freeCashFlowBillions": 39.116,
+          "marginPercentage": 33.169110227340184,
+          "growthPercentage": 65.52132701421802
+        },
+        {
+          "fiscalYear": 2022,
+          "date": "2022-12-31",
+          "revenue": 116609000000,
+          "revenueBillions": 116.609,
+          "operatingCashFlow": 50475000000,
+          "operatingCashFlowBillions": 50.475,
+          "capitalExpenditures": 31186000000,
+          "capitalExpendituresBillions": 31.186,
+          "freeCashFlow": 19289000000,
+          "freeCashFlowBillions": 19.289,
+          "marginPercentage": 16.54160485039748,
+          "growthPercentage": -50.687698128643014
+        },
+        {
+          "fiscalYear": 2023,
+          "date": "2023-12-31",
+          "revenue": 134902000000,
+          "revenueBillions": 134.902,
+          "operatingCashFlow": 71113000000,
+          "operatingCashFlowBillions": 71.113,
+          "capitalExpenditures": 27045000000,
+          "capitalExpendituresBillions": 27.045,
+          "freeCashFlow": 44068000000,
+          "freeCashFlowBillions": 44.068,
+          "marginPercentage": 32.66667655038472,
+          "growthPercentage": 128.46181761625797
+        },
+        {
+          "fiscalYear": 2024,
+          "date": "2024-12-31",
+          "revenue": 164501000000,
+          "revenueBillions": 164.501,
+          "operatingCashFlow": 91328000000,
+          "operatingCashFlowBillions": 91.328,
+          "capitalExpenditures": 37256000000,
+          "capitalExpendituresBillions": 37.256,
+          "freeCashFlow": 54072000000,
+          "freeCashFlowBillions": 54.072,
+          "marginPercentage": 32.87031689776962,
+          "growthPercentage": 22.70127984024689
+        },
+        {
+          "fiscalYear": 2025,
+          "date": "2025-12-31",
+          "revenue": 200966000000,
+          "revenueBillions": 200.966,
+          "operatingCashFlow": 115800000000,
+          "operatingCashFlowBillions": 115.8,
+          "capitalExpenditures": 69691000000,
+          "capitalExpendituresBillions": 69.691,
+          "freeCashFlow": 46109000000,
+          "freeCashFlowBillions": 46.109,
+          "marginPercentage": 22.943682015863377,
+          "growthPercentage": -14.726660748631454
+        }
+      ]
+    },
+    "netMargin": {
+      "label": "Net Margin",
+      "summary": {
+        "oneYear": 32.83681377725469,
+        "threeYears": 32.35931882270884,
+        "fiveYears": 30.546177951768044,
+        "tenYears": 31.542840489988166
+      },
+      "annual": [
+        {
+          "fiscalYear": 2012,
+          "date": "2012-12-31",
+          "revenue": 5089000000,
+          "revenueBillions": 5.089,
+          "netIncome": 53000000,
+          "netIncomeBillions": 0.053,
+          "marginPercentage": 1.0414619768127333
+        },
+        {
+          "fiscalYear": 2013,
+          "date": "2013-12-31",
+          "revenue": 7872000000,
+          "revenueBillions": 7.872,
+          "netIncome": 1500000000,
+          "netIncomeBillions": 1.5,
+          "marginPercentage": 19.054878048780488
+        },
+        {
+          "fiscalYear": 2014,
+          "date": "2014-12-31",
+          "revenue": 12466000000,
+          "revenueBillions": 12.466,
+          "netIncome": 2940000000,
+          "netIncomeBillions": 2.94,
+          "marginPercentage": 23.58414888496711
+        },
+        {
+          "fiscalYear": 2015,
+          "date": "2015-12-31",
+          "revenue": 17928000000,
+          "revenueBillions": 17.928,
+          "netIncome": 3688000000,
+          "netIncomeBillions": 3.688,
+          "marginPercentage": 20.57117358322178
+        },
+        {
+          "fiscalYear": 2016,
+          "date": "2016-12-31",
+          "revenue": 27638000000,
+          "revenueBillions": 27.638,
+          "netIncome": 10217000000,
+          "netIncomeBillions": 10.217,
+          "marginPercentage": 36.967219046240686
+        },
+        {
+          "fiscalYear": 2017,
+          "date": "2017-12-31",
+          "revenue": 40653000000,
+          "revenueBillions": 40.653,
+          "netIncome": 15934000000,
+          "netIncomeBillions": 15.934,
+          "marginPercentage": 39.195139350109464
+        },
+        {
+          "fiscalYear": 2018,
+          "date": "2018-12-31",
+          "revenue": 55838000000,
+          "revenueBillions": 55.838,
+          "netIncome": 22112000000,
+          "netIncomeBillions": 22.112,
+          "marginPercentage": 39.60027221605358
+        },
+        {
+          "fiscalYear": 2019,
+          "date": "2019-12-31",
+          "revenue": 70697000000,
+          "revenueBillions": 70.697,
+          "netIncome": 18485000000,
+          "netIncomeBillions": 18.485,
+          "marginPercentage": 26.14679547929898
+        },
+        {
+          "fiscalYear": 2020,
+          "date": "2020-12-31",
+          "revenue": 85965000000,
+          "revenueBillions": 85.965,
+          "netIncome": 29146000000,
+          "netIncomeBillions": 29.146,
+          "marginPercentage": 33.90449601582039
+        },
+        {
+          "fiscalYear": 2021,
+          "date": "2021-12-31",
+          "revenue": 117929000000,
+          "revenueBillions": 117.929,
+          "netIncome": 39370000000,
+          "netIncomeBillions": 39.37,
+          "marginPercentage": 33.38449405998525
+        },
+        {
+          "fiscalYear": 2022,
+          "date": "2022-12-31",
+          "revenue": 116609000000,
+          "revenueBillions": 116.609,
+          "netIncome": 23200000000,
+          "netIncomeBillions": 23.2,
+          "marginPercentage": 19.895548371051976
+        },
+        {
+          "fiscalYear": 2023,
+          "date": "2023-12-31",
+          "revenue": 134902000000,
+          "revenueBillions": 134.902,
+          "netIncome": 39098000000,
+          "netIncomeBillions": 39.098,
+          "marginPercentage": 28.982520644616095
+        },
+        {
+          "fiscalYear": 2024,
+          "date": "2024-12-31",
+          "revenue": 164501000000,
+          "revenueBillions": 164.501,
+          "netIncome": 62360000000,
+          "netIncomeBillions": 62.36,
+          "marginPercentage": 37.90858414234564
+        },
+        {
+          "fiscalYear": 2025,
+          "date": "2025-12-31",
+          "revenue": 200966000000,
+          "revenueBillions": 200.966,
+          "netIncome": 60458000000,
+          "netIncomeBillions": 60.458,
+          "marginPercentage": 30.08369574952977
+        }
+      ],
+      "quarterly": [
+        {
+          "date": "2016-09-30",
+          "revenue": 7011000000,
+          "revenueBillions": 7.011,
+          "netIncome": 2379000000,
+          "netIncomeBillions": 2.379,
+          "netMarginPercentage": 33.9323919554985,
+          "value": 2379000000,
+          "growthPercentage": null,
+          "marginPercentage": 33.9323919554985
+        },
+        {
+          "date": "2016-12-31",
+          "revenue": 8809000000,
+          "revenueBillions": 8.809,
+          "netIncome": 4273000000,
+          "netIncomeBillions": 4.273,
+          "netMarginPercentage": 48.50720853672381,
+          "value": 4273000000,
+          "growthPercentage": null,
+          "marginPercentage": 48.50720853672381
+        },
+        {
+          "date": "2017-03-31",
+          "revenue": 8032000000,
+          "revenueBillions": 8.032,
+          "netIncome": 3064000000,
+          "netIncomeBillions": 3.064,
+          "netMarginPercentage": 38.147410358565736,
+          "value": 3064000000,
+          "growthPercentage": null,
+          "marginPercentage": 38.147410358565736
+        },
+        {
+          "date": "2017-06-30",
+          "revenue": 9321000000,
+          "revenueBillions": 9.321,
+          "netIncome": 3894000000,
+          "netIncomeBillions": 3.894,
+          "netMarginPercentage": 41.77663340843257,
+          "value": 3894000000,
+          "growthPercentage": null,
+          "marginPercentage": 41.77663340843257
+        },
+        {
+          "date": "2017-09-30",
+          "revenue": 10328000000,
+          "revenueBillions": 10.328,
+          "netIncome": 4707000000,
+          "netIncomeBillions": 4.707,
+          "netMarginPercentage": 45.57513555383424,
+          "value": 4707000000,
+          "growthPercentage": 97.8562421185372,
+          "marginPercentage": 45.57513555383424
+        },
+        {
+          "date": "2017-12-31",
+          "revenue": 12972000000,
+          "revenueBillions": 12.972,
+          "netIncome": 4269000000,
+          "netIncomeBillions": 4.269,
+          "netMarginPercentage": 32.909343200740054,
+          "value": 4269000000,
+          "growthPercentage": -0.0936110461034402,
+          "marginPercentage": 32.909343200740054
+        },
+        {
+          "date": "2018-03-31",
+          "revenue": 11966000000,
+          "revenueBillions": 11.966,
+          "netIncome": 4988000000,
+          "netIncomeBillions": 4.988,
+          "netMarginPercentage": 41.68477352498746,
+          "value": 4988000000,
+          "growthPercentage": 62.793733681462136,
+          "marginPercentage": 41.68477352498746
+        },
+        {
+          "date": "2018-06-30",
+          "revenue": 13231000000,
+          "revenueBillions": 13.231,
+          "netIncome": 5106000000,
+          "netIncomeBillions": 5.106,
+          "netMarginPercentage": 38.59118736301111,
+          "value": 5106000000,
+          "growthPercentage": 31.124807395993837,
+          "marginPercentage": 38.59118736301111
+        },
+        {
+          "date": "2018-09-30",
+          "revenue": 13727000000,
+          "revenueBillions": 13.727,
+          "netIncome": 5137000000,
+          "netIncomeBillions": 5.137,
+          "netMarginPercentage": 37.42259779995629,
+          "value": 5137000000,
+          "growthPercentage": 9.135330359039727,
+          "marginPercentage": 37.42259779995629
+        },
+        {
+          "date": "2018-12-31",
+          "revenue": 16914000000,
+          "revenueBillions": 16.914,
+          "netIncome": 6881000000,
+          "netIncomeBillions": 6.881,
+          "netMarginPercentage": 40.68227503842971,
+          "value": 6881000000,
+          "growthPercentage": 61.18528929491684,
+          "marginPercentage": 40.68227503842971
+        },
+        {
+          "date": "2019-03-31",
+          "revenue": 15077000000,
+          "revenueBillions": 15.077,
+          "netIncome": 2429000000,
+          "netIncomeBillions": 2.429,
+          "netMarginPercentage": 16.110632088611794,
+          "value": 2429000000,
+          "growthPercentage": -51.303127506014434,
+          "marginPercentage": 16.110632088611794
+        },
+        {
+          "date": "2019-06-30",
+          "revenue": 16886000000,
+          "revenueBillions": 16.886,
+          "netIncome": 2616000000,
+          "netIncomeBillions": 2.616,
+          "netMarginPercentage": 15.492123652730072,
+          "value": 2616000000,
+          "growthPercentage": -48.766157461809634,
+          "marginPercentage": 15.492123652730072
+        },
+        {
+          "date": "2019-09-30",
+          "revenue": 17652000000,
+          "revenueBillions": 17.652,
+          "netIncome": 6091000000,
+          "netIncomeBillions": 6.091,
+          "netMarginPercentage": 34.50600498527079,
+          "value": 6091000000,
+          "growthPercentage": 18.57115047693206,
+          "marginPercentage": 34.50600498527079
+        },
+        {
+          "date": "2019-12-31",
+          "revenue": 21082000000,
+          "revenueBillions": 21.082,
+          "netIncome": 7349000000,
+          "netIncomeBillions": 7.349,
+          "netMarginPercentage": 34.85912152547196,
+          "value": 7349000000,
+          "growthPercentage": 6.801337014968754,
+          "marginPercentage": 34.85912152547196
+        },
+        {
+          "date": "2020-03-31",
+          "revenue": 17737000000,
+          "revenueBillions": 17.737,
+          "netIncome": 4902000000,
+          "netIncomeBillions": 4.902,
+          "netMarginPercentage": 27.637142696059087,
+          "value": 4902000000,
+          "growthPercentage": 101.81144503911075,
+          "marginPercentage": 27.637142696059087
+        },
+        {
+          "date": "2020-06-30",
+          "revenue": 18687000000,
+          "revenueBillions": 18.687,
+          "netIncome": 5178000000,
+          "netIncomeBillions": 5.178,
+          "netMarginPercentage": 27.70910258468454,
+          "value": 5178000000,
+          "growthPercentage": 97.93577981651376,
+          "marginPercentage": 27.70910258468454
+        },
+        {
+          "date": "2020-09-30",
+          "revenue": 21470000000,
+          "revenueBillions": 21.47,
+          "netIncome": 7846000000,
+          "netIncomeBillions": 7.846,
+          "netMarginPercentage": 36.54401490451793,
+          "value": 7846000000,
+          "growthPercentage": 28.813002791003118,
+          "marginPercentage": 36.54401490451793
+        },
+        {
+          "date": "2020-12-31",
+          "revenue": 28071000000,
+          "revenueBillions": 28.071,
+          "netIncome": 11220000000,
+          "netIncomeBillions": 11.22,
+          "netMarginPercentage": 39.97007587902105,
+          "value": 11220000000,
+          "growthPercentage": 52.673833174581574,
+          "marginPercentage": 39.97007587902105
+        },
+        {
+          "date": "2021-03-31",
+          "revenue": 26171000000,
+          "revenueBillions": 26.171,
+          "netIncome": 9497000000,
+          "netIncomeBillions": 9.497,
+          "netMarginPercentage": 36.28825799549119,
+          "value": 9497000000,
+          "growthPercentage": 93.73725010199918,
+          "marginPercentage": 36.28825799549119
+        },
+        {
+          "date": "2021-06-30",
+          "revenue": 29077000000,
+          "revenueBillions": 29.077,
+          "netIncome": 10394000000,
+          "netIncomeBillions": 10.394,
+          "netMarginPercentage": 35.74646627918974,
+          "value": 10394000000,
+          "growthPercentage": 100.7338740826574,
+          "marginPercentage": 35.74646627918974
+        },
+        {
+          "date": "2021-09-30",
+          "revenue": 29010000000,
+          "revenueBillions": 29.01,
+          "netIncome": 9194000000,
+          "netIncomeBillions": 9.194,
+          "netMarginPercentage": 31.692519820751464,
+          "value": 9194000000,
+          "growthPercentage": 17.180729033902626,
+          "marginPercentage": 31.692519820751464
+        },
+        {
+          "date": "2021-12-31",
+          "revenue": 33671000000,
+          "revenueBillions": 33.671,
+          "netIncome": 10285000000,
+          "netIncomeBillions": 10.285,
+          "netMarginPercentage": 30.545573342045085,
+          "value": 10285000000,
+          "growthPercentage": -8.333333333333332,
+          "marginPercentage": 30.545573342045085
+        },
+        {
+          "date": "2022-03-31",
+          "revenue": 27908000000,
+          "revenueBillions": 27.908,
+          "netIncome": 7465000000,
+          "netIncomeBillions": 7.465,
+          "netMarginPercentage": 26.748602551239784,
+          "value": 7465000000,
+          "growthPercentage": -21.39623038854375,
+          "marginPercentage": 26.748602551239784
+        },
+        {
+          "date": "2022-06-30",
+          "revenue": 28822000000,
+          "revenueBillions": 28.822,
+          "netIncome": 6687000000,
+          "netIncomeBillions": 6.687,
+          "netMarginPercentage": 23.201026993269032,
+          "value": 6687000000,
+          "growthPercentage": -35.66480661920339,
+          "marginPercentage": 23.201026993269032
+        },
+        {
+          "date": "2022-09-30",
+          "revenue": 27714000000,
+          "revenueBillions": 27.714,
+          "netIncome": 4395000000,
+          "netIncomeBillions": 4.395,
+          "netMarginPercentage": 15.858410911452694,
+          "value": 4395000000,
+          "growthPercentage": -52.19708505547096,
+          "marginPercentage": 15.858410911452694
+        },
+        {
+          "date": "2022-12-31",
+          "revenue": 32165000000,
+          "revenueBillions": 32.165,
+          "netIncome": 4653000000,
+          "netIncomeBillions": 4.653,
+          "netMarginPercentage": 14.46603450956008,
+          "value": 4653000000,
+          "growthPercentage": -54.75935828877005,
+          "marginPercentage": 14.46603450956008
+        },
+        {
+          "date": "2023-03-31",
+          "revenue": 28645000000,
+          "revenueBillions": 28.645,
+          "netIncome": 5709000000,
+          "netIncomeBillions": 5.709,
+          "netMarginPercentage": 19.93017978704835,
+          "value": 5709000000,
+          "growthPercentage": -23.523107836570663,
+          "marginPercentage": 19.93017978704835
+        },
+        {
+          "date": "2023-06-30",
+          "revenue": 31999000000,
+          "revenueBillions": 31.999,
+          "netIncome": 7788000000,
+          "netIncomeBillions": 7.788,
+          "netMarginPercentage": 24.338260570642834,
+          "value": 7788000000,
+          "growthPercentage": 16.464782413638403,
+          "marginPercentage": 24.338260570642834
+        },
+        {
+          "date": "2023-09-30",
+          "revenue": 34146000000,
+          "revenueBillions": 34.146,
+          "netIncome": 11583000000,
+          "netIncomeBillions": 11.583,
+          "netMarginPercentage": 33.92198207696362,
+          "value": 11583000000,
+          "growthPercentage": 163.5494880546075,
+          "marginPercentage": 33.92198207696362
+        },
+        {
+          "date": "2023-12-31",
+          "revenue": 40112000000,
+          "revenueBillions": 40.112,
+          "netIncome": 14018000000,
+          "netIncomeBillions": 14.018,
+          "netMarginPercentage": 34.94714798564021,
+          "value": 14018000000,
+          "growthPercentage": 201.26799914033958,
+          "marginPercentage": 34.94714798564021
+        },
+        {
+          "date": "2024-03-31",
+          "revenue": 36455000000,
+          "revenueBillions": 36.455,
+          "netIncome": 12369000000,
+          "netIncomeBillions": 12.369,
+          "netMarginPercentage": 33.929502125908655,
+          "value": 12369000000,
+          "growthPercentage": 116.65790856542301,
+          "marginPercentage": 33.929502125908655
+        },
+        {
+          "date": "2024-06-30",
+          "revenue": 39071000000,
+          "revenueBillions": 39.071,
+          "netIncome": 13465000000,
+          "netIncomeBillions": 13.465,
+          "netMarginPercentage": 34.462900872770085,
+          "value": 13465000000,
+          "growthPercentage": 72.89419619928094,
+          "marginPercentage": 34.462900872770085
+        },
+        {
+          "date": "2024-09-30",
+          "revenue": 40589000000,
+          "revenueBillions": 40.589,
+          "netIncome": 15688000000,
+          "netIncomeBillions": 15.688,
+          "netMarginPercentage": 38.65086599817685,
+          "value": 15688000000,
+          "growthPercentage": 35.43986877320211,
+          "marginPercentage": 38.65086599817685
+        },
+        {
+          "date": "2024-12-31",
+          "revenue": 48386000000,
+          "revenueBillions": 48.386,
+          "netIncome": 20838000000,
+          "netIncomeBillions": 20.838,
+          "netMarginPercentage": 43.06617616665977,
+          "value": 20838000000,
+          "growthPercentage": 48.65173348551862,
+          "marginPercentage": 43.06617616665977
+        },
+        {
+          "date": "2025-03-31",
+          "revenue": 42314000000,
+          "revenueBillions": 42.314,
+          "netIncome": 16644000000,
+          "netIncomeBillions": 16.644,
+          "netMarginPercentage": 39.33449922011628,
+          "value": 16644000000,
+          "growthPercentage": 34.56221198156682,
+          "marginPercentage": 39.33449922011628
+        },
+        {
+          "date": "2025-06-30",
+          "revenue": 47516000000,
+          "revenueBillions": 47.516,
+          "netIncome": 18337000000,
+          "netIncomeBillions": 18.337,
+          "netMarginPercentage": 38.59121138142941,
+          "value": 18337000000,
+          "growthPercentage": 36.18269587820275,
+          "marginPercentage": 38.59121138142941
+        },
+        {
+          "date": "2025-09-30",
+          "revenue": 51242000000,
+          "revenueBillions": 51.242,
+          "netIncome": 2709000000,
+          "netIncomeBillions": 2.709,
+          "netMarginPercentage": 5.286678896217946,
+          "value": 2709000000,
+          "growthPercentage": -82.7320244773075,
+          "marginPercentage": 5.286678896217946
+        },
+        {
+          "date": "2025-12-31",
+          "revenue": 59894000000,
+          "revenueBillions": 59.894,
+          "netIncome": 22768000000,
+          "netIncomeBillions": 22.768,
+          "netMarginPercentage": 38.01382442314756,
+          "value": 22768000000,
+          "growthPercentage": 9.261925328726365,
+          "marginPercentage": 38.01382442314756
+        },
+        {
+          "date": "2026-03-31",
+          "revenue": 56311000000,
+          "revenueBillions": 56.311,
+          "netIncome": 26773000000,
+          "netIncomeBillions": 26.773,
+          "netMarginPercentage": 47.54488465841488,
+          "value": 26773000000,
+          "growthPercentage": 60.85676520067291,
+          "marginPercentage": 47.54488465841488
+        }
+      ]
+    },
+    "fcfMargin": {
+      "label": "FCF Margin",
+      "summary": {
+        "oneYear": 22.44711880649228,
+        "threeYears": 28.82852454888292,
+        "fiveYears": 27.575461929196482,
+        "tenYears": 28.74446932060514
+      },
+      "annual": [
+        {
+          "fiscalYear": 2012,
+          "date": "2012-12-31",
+          "revenue": 5089000000,
+          "revenueBillions": 5.089,
+          "operatingCashFlow": 1612000000,
+          "operatingCashFlowBillions": 1.612,
+          "capitalExpenditures": 1235000000,
+          "capitalExpendituresBillions": 1.235,
+          "freeCashFlow": 377000000,
+          "freeCashFlowBillions": 0.377,
+          "marginPercentage": 7.408135193554726
+        },
+        {
+          "fiscalYear": 2013,
+          "date": "2013-12-31",
+          "revenue": 7872000000,
+          "revenueBillions": 7.872,
+          "operatingCashFlow": 4222000000,
+          "operatingCashFlowBillions": 4.222,
+          "capitalExpenditures": 1362000000,
+          "capitalExpendituresBillions": 1.362,
+          "freeCashFlow": 2860000000,
+          "freeCashFlowBillions": 2.86,
+          "marginPercentage": 36.331300813008134
+        },
+        {
+          "fiscalYear": 2014,
+          "date": "2014-12-31",
+          "revenue": 12466000000,
+          "revenueBillions": 12.466,
+          "operatingCashFlow": 5457000000,
+          "operatingCashFlowBillions": 5.457,
+          "capitalExpenditures": 1831000000,
+          "capitalExpendituresBillions": 1.831,
+          "freeCashFlow": 3626000000,
+          "freeCashFlowBillions": 3.626,
+          "marginPercentage": 29.087116958126103
+        },
+        {
+          "fiscalYear": 2015,
+          "date": "2015-12-31",
+          "revenue": 17928000000,
+          "revenueBillions": 17.928,
+          "operatingCashFlow": 8599000000,
+          "operatingCashFlowBillions": 8.599,
+          "capitalExpenditures": 2523000000,
+          "capitalExpendituresBillions": 2.523,
+          "freeCashFlow": 6076000000,
+          "freeCashFlowBillions": 6.076,
+          "marginPercentage": 33.89112003569835
+        },
+        {
+          "fiscalYear": 2016,
+          "date": "2016-12-31",
+          "revenue": 27638000000,
+          "revenueBillions": 27.638,
+          "operatingCashFlow": 16108000000,
+          "operatingCashFlowBillions": 16.108,
+          "capitalExpenditures": 4491000000,
+          "capitalExpendituresBillions": 4.491,
+          "freeCashFlow": 11617000000,
+          "freeCashFlowBillions": 11.617,
+          "marginPercentage": 42.03270858962298
+        },
+        {
+          "fiscalYear": 2017,
+          "date": "2017-12-31",
+          "revenue": 40653000000,
+          "revenueBillions": 40.653,
+          "operatingCashFlow": 24216000000,
+          "operatingCashFlowBillions": 24.216,
+          "capitalExpenditures": 6733000000,
+          "capitalExpendituresBillions": 6.733,
+          "freeCashFlow": 17483000000,
+          "freeCashFlowBillions": 17.483,
+          "marginPercentage": 43.00543625316705
+        },
+        {
+          "fiscalYear": 2018,
+          "date": "2018-12-31",
+          "revenue": 55838000000,
+          "revenueBillions": 55.838,
+          "operatingCashFlow": 29274000000,
+          "operatingCashFlowBillions": 29.274,
+          "capitalExpenditures": 13915000000,
+          "capitalExpendituresBillions": 13.915,
+          "freeCashFlow": 15359000000,
+          "freeCashFlowBillions": 15.359,
+          "marginPercentage": 27.50635767756725
+        },
+        {
+          "fiscalYear": 2019,
+          "date": "2019-12-31",
+          "revenue": 70697000000,
+          "revenueBillions": 70.697,
+          "operatingCashFlow": 36314000000,
+          "operatingCashFlowBillions": 36.314,
+          "capitalExpenditures": 15102000000,
+          "capitalExpendituresBillions": 15.102,
+          "freeCashFlow": 21212000000,
+          "freeCashFlowBillions": 21.212,
+          "marginPercentage": 30.004102012815252
+        },
+        {
+          "fiscalYear": 2020,
+          "date": "2020-12-31",
+          "revenue": 85965000000,
+          "revenueBillions": 85.965,
+          "operatingCashFlow": 38747000000,
+          "operatingCashFlowBillions": 38.747,
+          "capitalExpenditures": 15115000000,
+          "capitalExpendituresBillions": 15.115,
+          "freeCashFlow": 23632000000,
+          "freeCashFlowBillions": 23.632,
+          "marginPercentage": 27.49025766300238
+        },
+        {
+          "fiscalYear": 2021,
+          "date": "2021-12-31",
+          "revenue": 117929000000,
+          "revenueBillions": 117.929,
+          "operatingCashFlow": 57683000000,
+          "operatingCashFlowBillions": 57.683,
+          "capitalExpenditures": 18567000000,
+          "capitalExpendituresBillions": 18.567,
+          "freeCashFlow": 39116000000,
+          "freeCashFlowBillions": 39.116,
+          "marginPercentage": 33.169110227340184
+        },
+        {
+          "fiscalYear": 2022,
+          "date": "2022-12-31",
+          "revenue": 116609000000,
+          "revenueBillions": 116.609,
+          "operatingCashFlow": 50475000000,
+          "operatingCashFlowBillions": 50.475,
+          "capitalExpenditures": 31186000000,
+          "capitalExpendituresBillions": 31.186,
+          "freeCashFlow": 19289000000,
+          "freeCashFlowBillions": 19.289,
+          "marginPercentage": 16.54160485039748
+        },
+        {
+          "fiscalYear": 2023,
+          "date": "2023-12-31",
+          "revenue": 134902000000,
+          "revenueBillions": 134.902,
+          "operatingCashFlow": 71113000000,
+          "operatingCashFlowBillions": 71.113,
+          "capitalExpenditures": 27045000000,
+          "capitalExpendituresBillions": 27.045,
+          "freeCashFlow": 44068000000,
+          "freeCashFlowBillions": 44.068,
+          "marginPercentage": 32.66667655038472
+        },
+        {
+          "fiscalYear": 2024,
+          "date": "2024-12-31",
+          "revenue": 164501000000,
+          "revenueBillions": 164.501,
+          "operatingCashFlow": 91328000000,
+          "operatingCashFlowBillions": 91.328,
+          "capitalExpenditures": 37256000000,
+          "capitalExpendituresBillions": 37.256,
+          "freeCashFlow": 54072000000,
+          "freeCashFlowBillions": 54.072,
+          "marginPercentage": 32.87031689776962
+        },
+        {
+          "fiscalYear": 2025,
+          "date": "2025-12-31",
+          "revenue": 200966000000,
+          "revenueBillions": 200.966,
+          "operatingCashFlow": 115800000000,
+          "operatingCashFlowBillions": 115.8,
+          "capitalExpenditures": 69691000000,
+          "capitalExpendituresBillions": 69.691,
+          "freeCashFlow": 46109000000,
+          "freeCashFlowBillions": 46.109,
+          "marginPercentage": 22.943682015863377
+        }
+      ]
+    },
+    "roic": {
+      "label": "ROIC",
+      "summary": {
+        "oneYear": 23.340023608847034,
+        "threeYears": 24.72884042843465,
+        "fiveYears": 24.56352849040083,
+        "tenYears": 22.880488263116426
+      },
+      "annual": [
+        {
+          "fiscalYear": 2012,
+          "date": "2012-12-31",
+          "roicPercentage": 0.39984911354205954,
+          "netIncome": 53000000,
+          "investedCapital": 13255000000,
+          "equity": 11755000000,
+          "finvizStyleLongTermDebt": 1500000000,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2013,
+          "date": "2013-12-31",
+          "roicPercentage": 9.696186166774403,
+          "netIncome": 1500000000,
+          "investedCapital": 15470000000,
+          "equity": 15470000000,
+          "finvizStyleLongTermDebt": 0,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2014,
+          "date": "2014-12-31",
+          "roicPercentage": 8.144946808510637,
+          "netIncome": 2940000000,
+          "investedCapital": 36096000000,
+          "equity": 36096000000,
+          "finvizStyleLongTermDebt": 0,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2015,
+          "date": "2015-12-31",
+          "roicPercentage": 8.340494821113573,
+          "netIncome": 3688000000,
+          "investedCapital": 44218000000,
+          "equity": 44218000000,
+          "finvizStyleLongTermDebt": 0,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2016,
+          "date": "2016-12-31",
+          "roicPercentage": 17.260195290063184,
+          "netIncome": 10217000000,
+          "investedCapital": 59194000000,
+          "equity": 59194000000,
+          "finvizStyleLongTermDebt": 0,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2017,
+          "date": "2017-12-31",
+          "roicPercentage": 21.43193403903318,
+          "netIncome": 15934000000,
+          "investedCapital": 74347000000,
+          "equity": 74347000000,
+          "finvizStyleLongTermDebt": 0,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2018,
+          "date": "2018-12-31",
+          "roicPercentage": 26.284070512439527,
+          "netIncome": 22112000000,
+          "investedCapital": 84127000000,
+          "equity": 84127000000,
+          "finvizStyleLongTermDebt": 0,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2019,
+          "date": "2019-12-31",
+          "roicPercentage": 18.292200209788824,
+          "netIncome": 18485000000,
+          "investedCapital": 101054000000,
+          "equity": 101054000000,
+          "finvizStyleLongTermDebt": 0,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2020,
+          "date": "2020-12-31",
+          "roicPercentage": 22.718840127835374,
+          "netIncome": 29146000000,
+          "investedCapital": 128290000000,
+          "equity": 128290000000,
+          "finvizStyleLongTermDebt": 0,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2021,
+          "date": "2021-12-31",
+          "roicPercentage": 31.526517669103693,
+          "netIncome": 39370000000,
+          "investedCapital": 124879000000,
+          "equity": 124879000000,
+          "finvizStyleLongTermDebt": 0,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2022,
+          "date": "2022-12-31",
+          "roicPercentage": 17.104603497596507,
+          "netIncome": 23200000000,
+          "investedCapital": 135636000000,
+          "equity": 125713000000,
+          "finvizStyleLongTermDebt": 9923000000,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2023,
+          "date": "2023-12-31",
+          "roicPercentage": 22.790624471737598,
+          "netIncome": 39098000000,
+          "investedCapital": 171553000000,
+          "equity": 153168000000,
+          "finvizStyleLongTermDebt": 18385000000,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2024,
+          "date": "2024-12-31",
+          "roicPercentage": 29.489792540539007,
+          "netIncome": 62360000000,
+          "investedCapital": 211463000000,
+          "equity": 182637000000,
+          "finvizStyleLongTermDebt": 28826000000,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        },
+        {
+          "fiscalYear": 2025,
+          "date": "2025-12-31",
+          "roicPercentage": 21.906104273027353,
+          "netIncome": 60458000000,
+          "investedCapital": 275987000000,
+          "equity": 217243000000,
+          "finvizStyleLongTermDebt": 58744000000,
+          "operatingLeaseLiabilitiesNonCurrent": 0
+        }
+      ]
+    }
+  },
+  "availability": {
+    "revenueGrowthYears": 14,
+    "netMarginYears": 14,
+    "fcfMarginYears": 14,
+    "roicYears": 14
+  }
+}

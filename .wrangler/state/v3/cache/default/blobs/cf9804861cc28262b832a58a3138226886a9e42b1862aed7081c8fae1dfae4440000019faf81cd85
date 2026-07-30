@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "version": "stock-valuation-worker-v26-progressive-cached-loading-2026-07-29",
+  "ticker": "NOW",
+  "companyName": "ServiceNow, Inc.",
+  "exchange": "NYSE",
+  "currency": "USD",
+  "price": 115.8,
+  "marketCap": 119721219600,
+  "enterpriseValue": 122574219600,
+  "revenueTtm": 13960000000,
+  "netIncomeTtm": 1757000000,
+  "freeCashFlowTtm": 4571000000,
+  "cash": 4664000000,
+  "totalDebt": 7517000000,
+  "sharesOutstanding": 1033862000,
+  "asOf": {
+    "balanceSheet": "2026-06-30",
+    "incomeQuarters": [
+      "2026-03-31",
+      "2025-12-31",
+      "2025-09-30",
+      "2025-06-30"
+    ],
+    "cashFlow": "2026-06-30"
+  },
+  "methodology": {
+    "marketCap": "Current Yahoo price multiplied by the latest reported shares outstanding.",
+    "enterpriseValue": "Market capitalisation plus total debt minus cash and short-term investments.",
+    "revenueTtm": "Sum of the latest four reported quarterly revenue values.",
+    "netIncomeTtm": "Sum of the latest four reported quarterly net-income values.",
+    "freeCashFlowTtm": "Yahoo trailing operating cash flow minus the absolute value of trailing capital expenditures."
+  },
+  "roic": 13.291474392919284,
+  "roicFiscalYear": 2026,
+  "availability": {
+    "quote": true,
+    "marketCap": true,
+    "enterpriseValue": true,
+    "revenueTtm": true,
+    "netIncomeTtm": true,
+    "freeCashFlowTtm": true,
+    "totalDebt": true,
+    "sharesOutstanding": true,
+    "roic": true
+  },
+  "fields": {
+    "sharesOutstanding": "quarterlyOrdinarySharesNumber",
+    "totalDebt": "quarterlyCurrentDebt + quarterlyLongTermDebt",
+    "cashForEnterpriseValue": "quarterlyCashCashEquivalentsAndShortTermInvestments"
+  },
+  "diagnostics": {
+    "yahooTotalDebtRaw": 7517000000,
+    "yahooTotalDebtType": "quarterlyCurrentDebt + quarterlyLongTermDebt",
+    "yahooTotalDebtAsOfDate": "2026-06-30",
+    "yahooCurrentDebtRaw": 2082000000,
+    "yahooLongTermDebtRaw": 5435000000,
+    "yahooDebtFallbackUsed": false
+  },
+  "source": {
+    "quote": "Yahoo Finance chart API",
+    "totalDebt": "Yahoo Finance fundamentals timeseries",
+    "financialStatements": "DoltHub earnings database",
+    "trailingCashFlow": "Yahoo Finance fundamentals timeseries",
+    "commitRef": "master"
+  }
+}
